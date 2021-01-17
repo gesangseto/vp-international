@@ -26,6 +26,10 @@ class _Task extends _Base_Model
         if (@$data['search']) {
             $where .= "AND (a.id LIKE '%" . $data['search'] . "%' OR a.task_name LIKE '%" . $data['search'] . "%' OR a.task_phone LIKE '%" . $data['search'] . "%'  OR a.task_address LIKE '%" . $data['search'] . "%' OR a.task_country LIKE '%" . $data['search'] . "%' OR  a.task_postal_code LIKE '%" . $data['search'] . "%')";
         }
+
+        if (@$data['other']) {
+            $where .= @$data['other'];
+        }
         $sql = 'SELECT a.*
         FROM list_task AS a 
         WHERE a.id IS NOT NULL ' . $where;

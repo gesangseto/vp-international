@@ -27,15 +27,13 @@ if (isset($response)) {
                     <table class="table table-striped table-condensed" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th>Nama Agent</th>
-                                <th>No Agent </th>
-                                <th>Alamat </th>
-                                <th>Kota</th>
-                                <th>Distrik</th>
-                                <th>Wilayah</th>
-                                <th>Negara</th>
-                                <th>Kode Pos</th>
-                                <th>No Telp </th>
+                                <th>NO ORDER</th>
+                                <th>SHIPPING NAME </th>
+                                <th>CONSIGNEE </th>
+                                <th>VESSEL</th>
+                                <th>SHIPPER</th>
+                                <th>ADDRESS</th>
+                                <th>INVOICE</th>
                                 <th width='15%'>Action</th>
                             </tr>
                         </thead>
@@ -44,15 +42,13 @@ if (isset($response)) {
                             foreach ($data as $row) {
                             ?>
                                 <tr>
-                                    <td><?= $row['agent_name'] ?></td>
-                                    <td><?= $row['agent_id'] ?></td>
-                                    <td><?= substr($row['agent_address'], 0, 20) . '...' ?></td>
-                                    <td><?= $row['agent_city'] ?></td>
-                                    <td><?= $row['agent_district'] ?></td>
-                                    <td><?= $row['agent_region'] ?></td>
-                                    <td><?= $row['agent_country'] ?></td>
-                                    <td><?= $row['agent_postal_code'] ?></td>
-                                    <td><?= $row['agent_phone'] ?></td>
+                                    <td><?= $row['order_number'] ?></td>
+                                    <td><?= $row['shipping_name'] ?></td>
+                                    <td><?= $row['consignee'] ?></td>
+                                    <td><?= $row['vessel'] ?></td>
+                                    <td><?= $row['shipper'] ?></td>
+                                    <td><?= substr($row['address'], 0, 20) . '...' ?></td>
+                                    <td><?= $row['invoice'] ?></td>
                                     <td>
                                         <?= $this->tools->action('read', $row['id']) ?>
                                         <?= $this->tools->action('update', $row['id']) ?>

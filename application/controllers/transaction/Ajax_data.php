@@ -13,7 +13,7 @@ class Ajax_data extends Base_controller
     {
         $this->load->model('Transaction/_Job_order', '_Job_order');
         $order_format = $this->tools->order_format();
-        $query['other'] = ' AND a.order_number LIKE "' . $order_format . '%" ORDER BY order_number DESC LIMIT 1';
+        $query['other'] = ' AND a.order_number LIKE "' . substr($order_format, 0, -3) . '%" ORDER BY order_number DESC LIMIT 1';
         $result = $this->_Job_order->_get_job_order($query);
         $order_number = '001';
         if (@$result[0]) {
@@ -23,6 +23,19 @@ class Ajax_data extends Base_controller
             $order_number = str_pad($order_number, 3, "0", STR_PAD_LEFT);
         }
         $order_number = $order_format . "" . $order_number;
-        echo '<input name="order_number" readonly type="text" class="form-control" value="' . $order_number . '" />';
+        echo $order_number;
+    }
+    public function get_task()
+    {
+        $data = [];
+        $arr = [];
+        if (isset($_POST['text'])) {
+            $value['other'] = ' AND task_name LIKE "%' . $_POST['text'] . '%" LIMIT 10';
+            $this->load->model('Database/_Task', '_Task');
+            $data = $this->_Task->_get_task($value);
+            foreach ($data as $row) {
+            }
+        }
+        echo json_encode($data);
     }
 }

@@ -16,7 +16,7 @@ class Job_order extends Base_controller
         $data = [];
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $value = $_POST;
-            $data['data'] = $this->_Administrator->_get_job_order($value);
+            $data['data'] = $this->_Job_order->_get_job_order($value);
             $data['form'] = $_POST;
         }
         $this->load->view('templates/Filter', $data);
@@ -27,7 +27,7 @@ class Job_order extends Base_controller
     {
         $data = array();
         $order_format = $this->tools->order_format();
-        $query['other'] = ' AND a.order_number LIKE "' . $order_format . '%" ORDER BY order_number DESC LIMIT 1';
+        $query['other'] = ' AND a.order_number LIKE "' . substr($order_format, 0, -3) . '%" ORDER BY order_number DESC LIMIT 1';
         $result = $this->_Job_order->_get_job_order($query);
         $order_number = '001';
         if (@$result[0]) {
@@ -35,6 +35,55 @@ class Job_order extends Base_controller
             $order_number = substr($order_number, -3);
             $order_number = $order_number + 1;
             $order_number = str_pad($order_number, 3, "0", STR_PAD_LEFT);
+        }
+        if (isset($_POST['submit']) && $_POST['task_id']) {
+            $data['form'] = array(
+                "order_number" => @$_POST['order_number'],
+                "shipping_name" => @$_POST['shipping_name'],
+                "consignee" => @$_POST['consignee'],
+                "vessel" => @$_POST['vessel'],
+                "shipper" =>  @$_POST['shipper'],
+                "container_no" => @$_POST['container_no'],
+                "party" => @$_POST['party'],
+                "mbl_no" => @$_POST['mbl_no'],
+                "hbl_no" => @$_POST['hbl_no'],
+                "invoice" => @$_POST['invoice'],
+                "date" => @$_POST['date'],
+                "etd" => @$_POST['etd'],
+                "eta" => @$_POST['eta'],
+                "pol" => @$_POST['pol'],
+                "pod" => @$_POST['pod'],
+                "address" => @$_POST['address'],
+                "freight" => @$_POST['freight']
+            );
+            $data['response'] = $this->_Job_order->_add_job_order($data['form']);
+            if ($data['response']['statusCode'] == 200) {
+                $last_id = $this->_Job_order->_get_job_order(array('order_number' => $_POST['order_number']));
+                $last_id = $last_id[0]['id'];
+
+                $n = 0;
+                $value_inp = array();
+                foreach (@$_POST['task_id'] as $row) {
+                    $value_inp[$n]['job_order_id'] = $last_id;
+                    $value_inp[$n]['task_id'] = $_POST['task_id'][$n];
+                    $value_inp[$n]['buying_idr'] = $_POST['buying_idr'][$n];
+                    $value_inp[$n]['buying_usd'] = $_POST['buying_usd'][$n];
+                    $value_inp[$n]['selling_idr'] = $_POST['selling_idr'][$n];
+                    $value_inp[$n]['selling_usd'] = $_POST['selling_usd'][$n];
+                    $value_inp[$n]['profit_idr'] = $_POST['profit_idr'][$n];
+                    $value_inp[$n]['profit_usd'] = $_POST['profit_usd'][$n];
+
+                    $value_inp[$n]['total_buying_idr'] = $_POST['total_buying_idr'];
+                    $value_inp[$n]['total_buying_usd'] = $_POST['total_buying_usd'];
+                    $value_inp[$n]['total_selling_idr'] = $_POST['total_selling_idr'];
+                    $value_inp[$n]['total_selling_usd'] = $_POST['total_selling_usd'];
+                    $value_inp[$n]['total_profit_idr'] = $_POST['total_profit_idr'];
+                    $value_inp[$n]['total_profit_usd'] = $_POST['total_profit_usd'];
+
+                    $n = $n + 1;
+                }
+                $data['response'] = $this->_Job_order->_add_detail_job_order_batch($value_inp);
+            }
         }
         $data['form']['order_number'] = $order_format . "" . $order_number;
         $this->load->view('transaction/job_order/create', $data);
@@ -44,9 +93,10 @@ class Job_order extends Base_controller
     public function read()
     {
         $temp['id'] = $_GET['id'];
-        $data['form'] =  $this->_Task->_get_task($temp);
+        $data['form']  = $this->_Job_order->_get_job_order($temp);
         $data['form'] = @$data['form'][0];
-        $this->load->view('database/task/read', $data);
+        $data['form_detail']  = $this->_Job_order->_get_detail_job_order(array("job_order_id" => $data['form']['id']));
+        $this->load->view('transaction/job_order/read', $data);
         $this->load->view('templates/Footer');
     }
 
