@@ -81,6 +81,35 @@ class _Job_order extends _Base_Model
         }
         return $response;
     }
+    public function _update_job_order($data)
+    {
+        $response['statusCode'] = 500;
+        $response['messages'] = 'Internal server error';
+        $response['data'] = '';
+        $where = ' ';
+        if (@$data['order_number']) {
+            $where .= " AND a.order_number = '" . $data['order_number'] . "'";
+        }
+        $where .= " LIMIT 2";
+        $sql = "SELECT * FROM job_order AS a WHERE a.id IS NOT NULL " . $where;
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 1) {
+            $response['statusCode'] = 400;
+            $response['messages'] = 'Duplikat Nomor Order';
+            $response['data'] = '';
+        } else {
+            $this->db->where('id', $data['id']);
+            $query = $this->db->update('job_order', $data);
+            if ($query) {
+                $response['statusCode'] = 200;
+                $response['messages'] = 'Sukses ubah Job Order';
+                $response['data'] = '';
+            }
+        }
+        return $response;
+    }
+
+
     public function _add_detail_job_order_batch($data)
     {
         $response['statusCode'] = 500;
@@ -94,6 +123,62 @@ class _Job_order extends _Base_Model
         }
         return $response;
     }
+    public function _delete_job_order($data)
+    {
+        $response['statusCode'] = 500;
+        $response['messages'] = 'Internal server error';
+        $response['data'] = '';
+        $where = '';
+        if (@$data['id']) {
+            $where .= "AND id = '" . $data['id'] . "'";
+        }
+        if (@$data['other']) {
+            $where .= $data['other'];
+        }
+        if (!$where) {
+            $response['statusCode'] = 400;
+            $response['messages'] = 'Id cannot be null';
+            $response['data'] = '';
+            return $response;
+        }
+        $sql = 'DELETE FROM job_order WHERE id IS NOT NULL ' . $where;
+        $execute = $this->db->query($sql);
+        if ($execute) {
+            $response['statusCode'] = 200;
+            $response['messages'] = 'Sukses hapus job order';
+            $response['data'] = '';
+        }
+        return $response;
+    }
+    public function _delete_detail_job_order($data)
+    {
+        $response['statusCode'] = 500;
+        $response['messages'] = 'Internal server error';
+        $response['data'] = '';
+        $where = '';
+        if (@$data['id']) {
+            $where .= "AND id = '" . $data['id'] . "'";
+        }
+        if (@$data['other']) {
+            $where .= $data['other'];
+        }
+        if (!$where) {
+            $response['statusCode'] = 400;
+            $response['messages'] = 'Id cannot be null';
+            $response['data'] = '';
+            return $response;
+        }
+        $sql = 'DELETE FROM detail_job_order WHERE id IS NOT NULL ' . $where;
+        $execute = $this->db->query($sql);
+        if ($execute) {
+            $response['statusCode'] = 200;
+            $response['messages'] = 'Sukses hapus job order';
+            $response['data'] = '';
+        }
+        return $response;
+    }
+
+
 
     public function _get_detail_job_order($data = null)
     {

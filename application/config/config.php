@@ -5,7 +5,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 DEFINE('SERVER_ADDR', getHostByName(php_uname('n')));
 $site_root = explode(DIRECTORY_SEPARATOR, __DIR__);
 $site_dir = $site_root[count($site_root) - 3];
-$config['base_url'] = 'http://' . $_SERVER['HTTP_HOST'] . '/' . $site_dir;
+$config['base_url'] = 'http://' . $_SERVER['HTTP_HOST'] . '/' . $site_dir; //untuk localhost
+// $config['base_url'] = 'http://' . $_SERVER['HTTP_HOST'] . '/' . $site_dir; //untuk server(tanpa direktori)
 
 
 $config['index_page'] = '';

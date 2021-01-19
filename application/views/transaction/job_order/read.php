@@ -145,49 +145,49 @@ if (isset($response)) {
                                     <tr>
                                         <td>SHIPPING NAME</td>
                                         <td>
-                                            <input name="shipping_name" type="text" class="form-control" required value="<?= @$form['shipping_name'] ?>" />
+                                            <input name="shipping_name" readonly type="text" class="form-control" required value="<?= @$form['shipping_name'] ?>" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>CONSIGNEE</td>
                                         <td>
-                                            <input name="consignee" class="form-control" type="text" required value="<?= @$form['consignee'] ?>" />
+                                            <input name="consignee" class="form-control" readonly type="text" required value="<?= @$form['consignee'] ?>" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>VESSEL</td>
                                         <td>
-                                            <input name="vessel" class="form-control" type="text" required value="<?= @$form['vessel'] ?>" />
+                                            <input name="vessel" class="form-control" readonly type="text" required value="<?= @$form['vessel'] ?>" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>SHIPPER</td>
                                         <td>
-                                            <input name="shipper" class="form-control" type="text" required value="<?= @$form['shipper'] ?>" />
+                                            <input name="shipper" class="form-control" readonly type="text" required value="<?= @$form['shipper'] ?>" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>CONTAINER NO</td>
                                         <td>
-                                            <textarea name="container_no" class="form-control"><?= @$form['container_no'] ?></textarea>
+                                            <textarea name="container_no" readonly class="form-control"><?= @$form['container_no'] ?></textarea>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>PARTY</td>
                                         <td>
-                                            <input name="party" class="form-control" type="text" required value="<?= @$form['party'] ?>" />
+                                            <input name="party" class="form-control" readonly type="text" required value="<?= @$form['party'] ?>" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>MBL NO</td>
                                         <td>
-                                            <input name="mbl_no" class="form-control" type="text" required value="<?= @$form['mbl_no'] ?>" />
+                                            <input name="mbl_no" class="form-control" readonly type="text" required value="<?= @$form['mbl_no'] ?>" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>HBL NO</td>
                                         <td>
-                                            <input name="hbl_no" class="form-control" type="text" required value="<?= @$form['hbl_no'] ?>" />
+                                            <input name="hbl_no" class="form-control" readonly type="text" required value="<?= @$form['hbl_no'] ?>" />
                                         </td>
                                     </tr>
                                 </tbody>
@@ -204,50 +204,50 @@ if (isset($response)) {
                                         <td>INVOICE</td>
                                         <td>
                                             <div id="invoice">
-                                                <input name="invoice" class="form-control" readonly type="text" required value="<?= @$form['invoice'] . 'A/' . $invoice . 'B/' . $invoice . 'C' ?>" />
+                                                <input name="invoice" class="form-control" readonly type="text" required value="<?= @$form['invoice']  ?>" />
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>DATE</td>
                                         <td>
-                                            <input name="date" type="date" class="form-control" required value="<?= @$form['date'] ? @$form['date'] : $date ?>" />
+                                            <input name="date" readonly readonly type="date" class="form-control" required value="<?= @$form['date'] ? @$form['date'] : $date ?>" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>ETD</td>
                                         <td>
-                                            <input name="etd" class="form-control" type="month" required value="<?= @$form['etd'] ?>" />
+                                            <input name="etd" class="form-control" readonly type="month" required value="<?= @$form['etd'] ?>" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>ETA</td>
                                         <td>
-                                            <input name="eta" class="form-control" type="month" required value="<?= @$form['eta'] ?>" />
+                                            <input name="eta" class="form-control" readonly type="month" required value="<?= @$form['eta'] ?>" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>POL</td>
                                         <td>
-                                            <input name="pol" class="form-control" type="text" required value="<?= @$form['pol'] ?>" />
+                                            <input name="pol" class="form-control" readonly type="text" required value="<?= @$form['pol'] ?>" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>POD</td>
                                         <td>
-                                            <input name="pod" class="form-control" type="text" required value="<?= @$form['pod'] ?>" />
+                                            <input name="pod" class="form-control" readonly type="text" required value="<?= @$form['pod'] ?>" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>Address</td>
                                         <td>
-                                            <textarea name="address" class="form-control"><?= @$form['address'] ?></textarea>
+                                            <textarea name="address" readonly class="form-control"><?= @$form['address'] ?></textarea>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>FREIGHT</td>
                                         <td>
-                                            <input name="freight" class="form-control" type="text" required value="<?= @$form['freight'] ?>" />
+                                            <input name="freight" class="form-control" readonly type="text" required value="<?= @$form['freight'] ?>" />
                                         </td>
                                     </tr>
                                 </tbody>
@@ -276,7 +276,6 @@ if (isset($response)) {
                                             <td colspan="2">BUYING</td>
                                             <td colspan="2">SELLING</td>
                                             <td colspan="2">PROFIT</td>
-                                            <td></td>
                                         </tr>
                                         <tr style="text-align: center;">
                                             <td>IDR</td>
@@ -285,7 +284,6 @@ if (isset($response)) {
                                             <td>USD</td>
                                             <td>IDR</td>
                                             <td>USD</td>
-                                            <td><button type="button" for="customControlInline" onclick="add_more()" class="btn btn-success"><i class="fas fa-plus"></i></button></td>
                                         </tr>
                                         <?php
                                         foreach ($form_detail as $row) {
@@ -315,8 +313,6 @@ if (isset($response)) {
                                                 <td width=" 10%">
                                                     <input type="text" readonlyi class=" form-control inp" value="<?= $row['profit_usd'] ?>">
                                                 </td>
-                                                <td width=" 5%">
-                                                </td>
                                             </tr>
                                         <?php
                                         }
@@ -332,7 +328,6 @@ if (isset($response)) {
                                             <td width="10%"><input type="text" name="total_selling_usd" readonly class="form-control inp" value="<?= @$form_detail[0]['total_selling_usd'] ?>"></td>
                                             <td width="15%"><input type="text" name="total_profit_idr" readonly class="form-control inp" value="<?= @$form_detail[0]['total_profit_idr'] ?>"></td>
                                             <td width="10%"><input type="text" name="total_profit_usd" readonly class="form-control inp" value="<?= @$form_detail[0]['total_profit_usd'] ?>"></td>
-                                            <td width="5%"><button type="button" onclick="add_allowance()" class="btn btn-info"><i class="fa fa-calculator" /> </button></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -345,7 +340,7 @@ if (isset($response)) {
                     <!--./col-md-4-->
                     <div class="col-md-12 col-sm-12">
                         <br />
-                        <button type="submit" name="submit" id="contact_submit" class="btn btn-info pull-right"> Simpan</button>
+                        <a href="#" onclick="window.location.replace(' <?= site_url() . $temp_url  ?>');" class="btn btn-default pull-right"> Kembali</a>
                     </div>
                     <!--./col-md-12-->
                 </div>

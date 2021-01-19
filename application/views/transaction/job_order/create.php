@@ -204,7 +204,7 @@ if (isset($response)) {
                                         <td>INVOICE</td>
                                         <td>
                                             <div id="invoice">
-                                                <input name="invoice" class="form-control" readonly type="text" required value="<?= @$form['invoice'] . 'A/' . $invoice . 'B/' . $invoice . 'C' ?>" />
+                                                <input name="invoice" class="form-control" readonly type="text" required value="<?= @$form['order_number'] . 'A/' . $invoice . 'B/' . $invoice . 'C' ?>" />
                                             </div>
                                         </td>
                                     </tr>
@@ -391,12 +391,12 @@ if (isset($response)) {
             var inp_profit_idr = profit_idr[i].value ? profit_idr[i].value : 0;
             var inp_profit_usd = profit_usd[i].value ? profit_usd[i].value : 0;
 
-            total_buying_idr += parseInt(inp_buying_idr);
-            total_buying_usd += parseInt(inp_buying_usd);
-            total_selling_idr += parseInt(inp_selling_idr);
-            total_selling_usd += parseInt(inp_selling_usd);
-            total_profit_idr += parseInt(inp_profit_idr);
-            total_profit_usd += parseInt(inp_profit_usd);
+            total_buying_idr += +parseFloat(inp_buying_idr).toFixed(3);
+            total_buying_usd += +parseFloat(inp_buying_usd).toFixed(3);
+            total_selling_idr += +parseFloat(inp_selling_idr).toFixed(3);
+            total_selling_usd += +parseFloat(inp_selling_usd).toFixed(3);
+            total_profit_idr += +parseFloat(inp_profit_idr).toFixed(3);
+            total_profit_usd += +parseFloat(inp_profit_usd).toFixed(3);
         }
         $("#total_buying_idr").val(total_buying_idr);
         $("#total_buying_usd").val(total_buying_usd);
