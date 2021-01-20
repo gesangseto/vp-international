@@ -38,4 +38,17 @@ class Ajax_data extends Base_controller
         }
         echo json_encode($data);
     }
+    public function get_order_number()
+    {
+        $data = [];
+        $arr = [];
+        if (isset($_POST['text'])) {
+            $value['other'] = ' AND order_number LIKE "%' . $_POST['text'] . '%" LIMIT 15';
+            $this->load->model('transaction/_Job_order', '_Job_order');
+            $data = $this->_Job_order->_get_job_order($value);
+            foreach ($data as $row) {
+            }
+        }
+        echo json_encode($data);
+    }
 }
