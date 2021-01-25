@@ -28,24 +28,32 @@ class Ajax_data extends Base_controller
     public function get_task()
     {
         $data = [];
-        $arr = [];
         if (isset($_POST['text'])) {
             $value['other'] = ' AND task_name LIKE "%' . $_POST['text'] . '%" LIMIT 10';
             $this->load->model('Database/_Task', '_Task');
             $data = $this->_Task->_get_task($value);
-            foreach ($data as $row) {
-            }
         }
         echo json_encode($data);
     }
-    public function get_order_number()
+    public function get_task_by_order_no_for_rca()
+    {
+        $data = [];
+
+        if (isset($_POST['order_number'])) {
+            $data['order_number'] = $_POST['order_number'];
+            $this->load->model('transaction/_Cash_advance', '_Cash_advance');
+            $data = $this->_Cash_advance->_get_task_by_order_no_for_rca($data);
+            echo json_encode($data);
+        }
+    }
+    public function get_available_order_number()
     {
         $data = [];
         $arr = [];
         if (isset($_POST['text'])) {
-            $value['other'] = ' AND order_number LIKE "%' . $_POST['text'] . '%" LIMIT 15';
-            $this->load->model('transaction/_Job_order', '_Job_order');
-            $data = $this->_Job_order->_get_job_order($value);
+            $value['order_number'] =  $_POST['text'];
+            $this->load->model('Transaction/_Cash_advance', '_Cash_advance');
+            $data = $this->_Cash_advance->_get_job_order_for_rca($value);
             foreach ($data as $row) {
             }
         }

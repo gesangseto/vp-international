@@ -292,14 +292,13 @@ if ($this->session->flashdata('response')) {
                                     ?>
                                         <tr id="row0">
                                             <td width="20%">
-                                                <div class="autocomplete" style="width:auto;">
+                                                <div class="autocomplete" style="width:100%;">
                                                     <input id="inp0" required type="text" class="back-of-everything" name="task_id[]" value="<?= $row['task_id'] ?>">
-                                                    <input id="view0" required onclick="get_task('view0','inp0')" value="<?= $row['task_name'] ?>" type="text" name="task_name[]" autocomplete="off" placeholder="Task">
+                                                    <input id="view0" required onclick="get_task('view0','inp0')" value="<?= $row['task_name'] ?>" type="text" name="task_name[]">
                                                 </div>
                                             </td>
-
                                             <td width="15%">
-                                                <input type="text" id="buying_idr_amount" name="buying_idr[]" class=" form-control inp" value="<?= $row['buying_idr'] ?>">
+                                                <input type="text" id="buying_idr_amount" name="buying_idr[]" class=" form-control" value="<?= $row['buying_idr'] ?>">
                                             </td>
                                             <td width="10%">
                                                 <input type="text" id="buying_usd_amount" name="buying_usd[]" class=" form-control inp" value="<?= $row['buying_usd'] ?>">

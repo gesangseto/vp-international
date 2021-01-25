@@ -71,6 +71,47 @@ class _Cash_advance extends _Base_Model
         $result = $query->result_array();
         return $result;
     }
+    public function _get_detail_ca($data = null)
+    {
+        $where = ' ';
+        if (@$data['id']) {
+            $where .= "AND a.id = '" . $data['id'] . "'";
+        }
+        if (@$data['cash_advance_id']) {
+            $where .= "AND a.cash_advance_id = '" . $data['cash_advance_id'] . "'";
+        }
+        if (@$data['task_id']) {
+            $where .= "AND a.task_id = '" . $data['task_id'] . "'";
+        }
+        if (@$data['created_by']) {
+            $where .= "AND a.created_by = '" . $data['created_by'] . "'";
+        }
+        if (@$data['updated_by']) {
+            $where .= "AND a.updated_by = '" . $data['updated_by'] . "'";
+        }
+        if (@$data['other']) {
+            $where .= $data['other'];
+        }
+        $sql = 'SELECT a.*,b.task_name
+        FROM detail_cash_advanced AS a 
+        LEFT JOIN list_task AS b ON a.task_id = b.id
+        WHERE a.id IS NOT NULL ' . $where;
+        $query = $this->db->query($sql);
+        $result = $query->result_array();
+        return $result;
+    }
+    public function _update_detail_ca_batch($data = null)
+    {
+        $response['statusCode'] = 500;
+        $response['messages'] = 'Tidak ada perubahan';
+        $response['data'] = '';
+        if ($this->db->update_batch('detail_cash_advanced', $data, 'id')) {
+            $response['statusCode'] = 200;
+            $response['messages'] = 'Sukses ubah Cash Advance';
+            $response['data'] = '';
+        }
+        return $response;
+    }
     public function _add_list_ca($data)
     {
         $response['statusCode'] = 500;
@@ -97,33 +138,72 @@ class _Cash_advance extends _Base_Model
         }
         return $response;
     }
-    // public function _update_job_order($data)
-    // {
-    //     $response['statusCode'] = 500;
-    //     $response['messages'] = 'Internal server error';
-    //     $response['data'] = '';
-    //     $where = ' ';
-    //     if (@$data['order_number']) {
-    //         $where .= " AND a.order_number = '" . $data['order_number'] . "'";
-    //     }
-    //     $where .= " LIMIT 2";
-    //     $sql = "SELECT * FROM job_order AS a WHERE a.id IS NOT NULL " . $where;
-    //     $query = $this->db->query($sql);
-    //     if ($query->num_rows() > 1) {
-    //         $response['statusCode'] = 400;
-    //         $response['messages'] = 'Duplikat Nomor Order';
-    //         $response['data'] = '';
-    //     } else {
-    //         $this->db->where('id', $data['id']);
-    //         $query = $this->db->update('job_order', $data);
-    //         if ($query) {
-    //             $response['statusCode'] = 200;
-    //             $response['messages'] = 'Sukses ubah Job Order';
-    //             $response['data'] = '';
-    //         }
-    //     }
-    //     return $response;
-    // }
+
+
+    public function _get_task_by_order_no_for_rca($data = null)
+    {
+        $where = ' ';
+        if (@$data['id']) {
+            $where .= " AND a.id = " . $data['id'];
+        }
+        if (@$data['search']) {
+            $where .= " AND (a.task_name LIKE '%" . $data['search'] . "%' )";
+        }
+        $sql = 'SELECT a.* FROM list_task AS a
+        LEFT JOIN detail_job_order AS b ON a.id = b.task_id
+        LEFT JOIN job_order AS c ON b.job_order_id = c.id
+        WHERE c.order_number = "' . $data['order_number'] . '" AND a.id NOT IN
+        (
+            SELECT z.task_id FROM detail_cash_advanced AS z 
+            LEFT JOIN list_cash_advanced AS y ON z.cash_advance_id = y.id
+            WHERE y.order_number = "' . $data['order_number'] . '"
+        ) ' . $where;
+
+        // echo $sql;
+        // die;
+        $execute = $this->db->query($sql);
+        $result = $execute->result_array();
+        return $result;
+    }
+
+    public function _get_job_order_for_rca($data = null)
+    {
+        $where = ' ';
+        if (@$data['id']) {
+            $where .= " AND a.id = " . $data['id'];
+        }
+        if (@$data['search']) {
+            $where .= " AND (a.task_name LIKE '%" . $data['search'] . "%' )";
+        }
+        if (@$data['other']) {
+            $where .=  $data['other'];
+        }
+        $sql = 'SELECT * FROM job_order AS a 
+        LEFT JOIN detail_job_order AS b ON a.id = b.job_order_id
+        WHERE a.order_number LIKE "' . @$data['order_number'] . '%"
+        AND  CONCAT(b.task_id,a.order_number) NOT IN 
+        (SELECT  CONCAT(b.task_id,a.order_number) FROM list_cash_advanced AS a
+        LEFT JOIN detail_cash_advanced AS b ON a.id = b.cash_advance_id
+         WHERE a.order_number LIKE "' . @$data['order_number'] . '%") GROUP BY a.id';
+        $execute = $this->db->query($sql);
+        $result = $execute->result_array();
+        return $result;
+    }
+
+    public function _update_cash_advance($data)
+    {
+        $response['statusCode'] = 500;
+        $response['messages'] = 'Internal server error';
+        $response['data'] = '';
+        $this->db->where('id', $data['id']);
+        $query = $this->db->update('list_cash_advanced', $data);
+        if ($query) {
+            $response['statusCode'] = 200;
+            $response['messages'] = 'Sukses ubah request Cash Advanced';
+            $response['data'] = '';
+        }
+        return $response;
+    }
 
 
     public function _add_detail_ca_batch($data)
@@ -139,34 +219,9 @@ class _Cash_advance extends _Base_Model
         }
         return $response;
     }
-    // public function _delete_job_order($data)
-    // {
-    //     $response['statusCode'] = 500;
-    //     $response['messages'] = 'Internal server error';
-    //     $response['data'] = '';
-    //     $where = '';
-    //     if (@$data['id']) {
-    //         $where .= "AND id = '" . $data['id'] . "'";
-    //     }
-    //     if (@$data['other']) {
-    //         $where .= $data['other'];
-    //     }
-    //     if (!$where) {
-    //         $response['statusCode'] = 400;
-    //         $response['messages'] = 'Id cannot be null';
-    //         $response['data'] = '';
-    //         return $response;
-    //     }
-    //     $sql = 'DELETE FROM job_order WHERE id IS NOT NULL ' . $where;
-    //     $execute = $this->db->query($sql);
-    //     if ($execute) {
-    //         $response['statusCode'] = 200;
-    //         $response['messages'] = 'Sukses hapus job order';
-    //         $response['data'] = '';
-    //     }
-    //     return $response;
-    // }
-    public function _delete_detail_job_order($data)
+
+
+    public function _delete_cash_advance($data)
     {
         $response['statusCode'] = 500;
         $response['messages'] = 'Internal server error';
@@ -184,96 +239,45 @@ class _Cash_advance extends _Base_Model
             $response['data'] = '';
             return $response;
         }
-        $sql = 'DELETE FROM detail_job_order WHERE id IS NOT NULL ' . $where;
+        $sql = 'DELETE FROM list_cash_advanced WHERE id IS NOT NULL ' . $where;
         $execute = $this->db->query($sql);
         if ($execute) {
             $response['statusCode'] = 200;
-            $response['messages'] = 'Sukses hapus job order';
+            $response['messages'] = 'Sukses hapus request cash advanced';
             $response['data'] = '';
         }
         return $response;
     }
 
 
-
-    public function _get_detail_job_order($data = null)
+    public function _delete_detail_cash_advance($data)
     {
-        $where = ' ';
+        $response['statusCode'] = 500;
+        $response['messages'] = 'Internal server error';
+        $response['data'] = '';
+        $where = '';
         if (@$data['id']) {
-            $where .= "AND a.id = '" . $data['id'] . "'";
+            $where .= "AND id = '" . $data['id'] . "'";
         }
-        if (@$data['job_order_id']) {
-            $where .= "AND a.job_order_id = '" . $data['job_order_id'] . "'";
-        }
-        if (@$data['task_id']) {
-            $where .= "AND a.task_id = '" . $data['task_id'] . "'";
-        }
-        if (@$data['search']) {
-            $where .= "AND (a.job_order_id LIKE '%" . $data['search'] . "%'  
-            )";
+        if (@$data['cash_advance_id']) {
+            $where .= "AND cash_advance_id = '" . $data['cash_advance_id'] . "'";
         }
         if (@$data['other']) {
             $where .= $data['other'];
         }
-        $sql = 'SELECT a.*,b.task_name
-        FROM detail_job_order AS a 
-        LEFT JOIN list_task AS b ON a.task_id = b.id
-        WHERE a.id IS NOT NULL ' . $where;
-        $query = $this->db->query($sql);
-        $result = $query->result_array();
-        return $result;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-    public function _delete_customer($data)
-    {
-        $query = $this->db->query("DELETE FROM list_customer WHERE id='" . $data['id'] . "'");
-        $response['statusCode'] = 500;
-        $response['messages'] = 'Internal server error';
-        $response['data'] = '';
-        if ($query) {
-            $response['statusCode'] = 200;
-            $response['messages'] = 'sukses';
-            $response['data'] = '';
-        }
-        return $response;
-    }
-    public function _update_customer($data)
-    {
-        $response['statusCode'] = 500;
-        $response['messages'] = 'Internal server error';
-        $response['data'] = '';
-        $where = ' ';
-        if (@$data['customer_id']) {
-            $where .= " AND a.customer_id = '" . $data['customer_id'] . "'";
-        }
-        $where .= " LIMIT 2";
-        $sql = "SELECT * FROM list_customer AS a WHERE a.id IS NOT NULL " . $where;
-        $query = $this->db->query($sql);
-        if ($query->num_rows() > 0) {
+        if (!$where) {
             $response['statusCode'] = 400;
-            $response['messages'] = 'Duplikat Nomor customer';
+            $response['messages'] = 'Id cannot be null';
             $response['data'] = '';
-        } else {
-            $this->db->where('id', $data['id']);
-            $query = $this->db->update('list_customer', $data);
-            if ($query) {
-                $response['statusCode'] = 200;
-                $response['messages'] = 'Sukses update customer';
-                $response['data'] = '';
-            }
+            return $response;
         }
-
+        $sql = 'DELETE FROM detail_cash_advanced WHERE id IS NOT NULL ' . $where;
+        $execute = $this->db->query($sql);
+        if ($execute) {
+            $response['statusCode'] = 200;
+            $response['messages'] = 'Sukses hapus request cash advanced';
+            $response['data'] = '';
+        }
         return $response;
     }
 }

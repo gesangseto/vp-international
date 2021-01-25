@@ -148,37 +148,37 @@ if (isset($response)) {
                                         </td>
                                         <td>EX VESSEL</td>
                                         <td>
-                                            <input name="ex_vessel" id="ex_vessel" type="text" class="form-control" required value="<?= @$form['ex_vessel'] ?>" />
+                                            <input readonly name="ex_vessel" id="ex_vessel" type="text" class="form-control" required value="<?= @$form['ex_vessel'] ?>" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>CONTAINER NO</td>
                                         <td>
-                                            <input id="container_no" type="text" name="container_no" value="<?= @$form['container_no'] ?>" class=" form-control">
+                                            <input id="container_no" type="text" readonly name="container_no" value="<?= @$form['container_no'] ?>" class=" form-control">
                                         </td>
                                         <td>MBL NO</td>
                                         <td>
-                                            <input id="mbl_no" name="mbl_no" class="form-control" type="text" required value="<?= @$form['mbl_no'] ?>" />
+                                            <input id="mbl_no" readonly name="mbl_no" class="form-control" type="text" required value="<?= @$form['mbl_no'] ?>" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>HBL NO</td>
                                         <td>
-                                            <input name="hbl_no" id="hbl_no" class="form-control" type="text" required value="<?= @$form['hbl_no'] ?>" />
+                                            <input readonly name="hbl_no" id="hbl_no" class="form-control" type="text" required value="<?= @$form['hbl_no'] ?>" />
                                         </td>
                                         <td>SHIPPING</td>
                                         <td>
-                                            <input name="shipping" id="shipping" class="form-control" type="text" required value="<?= @$form['shipping'] ?>" />
+                                            <input readonly name="shipping" id="shipping" class="form-control" type="text" required value="<?= @$form['shipping'] ?>" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>ETA</td>
                                         <td>
-                                            <input name="eta" id="eta" class="form-control" type="text" required value="<?= @$form['eta'] ?>" />
+                                            <input readonly name="eta" id="eta" class="form-control" type="text" required value="<?= @$form['eta'] ?>" />
                                         </td>
                                         <td>CONSIGNE</td>
                                         <td>
-                                            <input name="consignee" id="consignee" class="form-control" type="text" required value="<?= @$form['consignee'] ?>" />
+                                            <input readonly name="consignee" id="consignee" class="form-control" type="text" required value="<?= @$form['consignee'] ?>" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -210,38 +210,24 @@ if (isset($response)) {
                                     <tr style="text-align: center;">
                                         <td rowspan="2">DESCRIPTION</td>
                                         <td colspan="2">CASH ADVANCE</td>
-                                        <td colspan="2">ACTUAL EXPENSES</td>
-                                        <td rowspan="2">REMARK</td>
                                         <td rowspan="2"><button type="button" for="customControlInline" onclick="add_more()" class="btn btn-success"><i class="fas fa-plus"></i></button></td>
                                     </tr>
                                     <tr style="text-align: center;">
                                         <td>IDR</td>
                                         <td>USD</td>
-                                        <td>IDR</td>
-                                        <td>USD</td>
                                     </tr>
                                     <tr id="row0">
                                         <td width="20%">
-                                            <div class="autocomplete" style="width:auto;">
+                                            <div class="autocomplete" style="width:100%;">
                                                 <input id="inp0" required type="text" class="back-of-everything" name="task_id[]">
-                                                <input id="view0" required onclick="get_task('view0','inp0')" type="text" name="task_name[]" autocomplete="off" placeholder="Task">
+                                                <input id="view0" required onclick="get_task('view0','inp0')" type="text" name="task_name[]" autocomplete="off" placeholder="Task" class="form-control inp">
                                             </div>
                                         </td>
-
                                         <td width="15%">
                                             <input type="text" id="ca_idr_amount" name="ca_idr[]" class=" form-control inp" value="0">
                                         </td>
                                         <td width="10%">
                                             <input type="text" id="ca_usd_amount" name="ca_usd[]" class=" form-control inp" value="0">
-                                        </td>
-                                        <td width="15%">
-                                            <input type="text" id="actual_idr_amount" name="actual_idr[]" class=" form-control inp" value="0">
-                                        </td>
-                                        <td width="10%">
-                                            <input type="text" id="actual_usd_amount" name="actual_usd[]" class=" form-control inp" value="0">
-                                        </td>
-                                        <td width="15%">
-                                            <input type="text" id="remark" name="remark[]" class=" form-control inp" value="">
                                         </td>
                                         <td width="5%"></td>
                                     </tr>
@@ -252,10 +238,7 @@ if (isset($response)) {
                                         <td width="20%"><strong>TOTAL</strong></td>
                                         <td width="15%"><input type="text" id="total_ca_idr" name="total_ca_idr" readonly class="form-control inp" value="0"></td>
                                         <td width="10%"><input type="text" id="total_ca_usd" name="total_ca_usd" readonly class="form-control inp" value="0"></td>
-                                        <td width="15%"><input type="text" id="total_actual_idr" name="total_actual_idr" readonly class="form-control inp" value="0"></td>
-                                        <td width="10%"><input type="text" id="total_actual_usd" name="total_actual_usd" readonly class="form-control inp" value="0"></td>
-                                        <td width="15%"></td>
-                                        <td width="5%"><button type="button" onclick="add_allowance()" class="btn btn-info"><i class="fa fa-calculator" /> </button></td>
+                                        <td width="5%"><button type="button" onclick="add_allowance()" class="btn btn-info"><i class="fa fa-calculator"> </button></td>
                                     </tr>
                                 </table>
                             </div>
@@ -266,6 +249,8 @@ if (isset($response)) {
                     <div class="col-md-12 col-sm-12">
                         <br />
                         <button type="submit" name="submit" id="contact_submit" class="btn btn-info pull-right"> Simpan</button>
+                        <a href="#" onclick="window.location.replace(' <?= site_url() . $temp_url  ?>');" class="btn btn-default pull-right"> Kembali</a>
+
                     </div>
                     <!--./col-md-12-->
                 </div>
@@ -273,6 +258,7 @@ if (isset($response)) {
         </form>
     </div>
 </div>
+<div id="content_list_task"></div>
 
 <script src="<?= base_url() ?>assets/ajax/3.4.1/jquery.min.js"></script>
 
@@ -281,29 +267,19 @@ if (isset($response)) {
     function add_allowance() {
         var ca_idr = document.getElementsByName('ca_idr[]');
         var ca_usd = document.getElementsByName('ca_usd[]');
-        var actual_idr = document.getElementsByName('actual_idr[]');
-        var actual_usd = document.getElementsByName('actual_usd[]');
 
         var total_ca_idr = 0;
         var total_ca_usd = 0;
-        var total_actual_idr = 0;
-        var total_actual_usd = 0;
 
         for (var i = 0; i < ca_idr.length; i++) {
             var inp_ca_idr = ca_idr[i].value ? ca_idr[i].value : 0;
             var inp_ca_usd = ca_usd[i].value ? ca_usd[i].value : 0;
-            var inp_actual_idr = actual_idr[i].value ? actual_idr[i].value : 0;
-            var inp_actual_usd = actual_usd[i].value ? actual_usd[i].value : 0;
 
             total_ca_idr += +parseFloat(inp_ca_idr).toFixed(3);
             total_ca_usd += +parseFloat(inp_ca_usd).toFixed(3);
-            total_actual_idr += +parseFloat(inp_actual_idr).toFixed(3);
-            total_actual_usd += +parseFloat(inp_actual_usd).toFixed(3);
         }
         $("#total_ca_idr").val(total_ca_idr);
         $("#total_ca_usd").val(total_ca_usd);
-        $("#total_actual_idr").val(total_actual_idr);
-        $("#total_actual_usd").val(total_actual_usd);
 
     }
 
@@ -315,16 +291,13 @@ if (isset($response)) {
 
         <tr id='row` + id + `'>
             <td>
-                <div class="autocomplete" style="width:auto;">
+                <div class="autocomplete" style="width:100%;">
                     <input type='text' id="inp` + id + `" required type="text" class="back-of-everything" name="task_id[]">
                     <input id="view` + id + `" required onclick="get_task('view` + id + `','inp` + id + `')" type="text" name="task_name[]" autocomplete="off" placeholder="Task">
                 </div>    
             </td> 
             <td width="15%"><input type="text" id="ca_idr_amount" name="ca_idr[]" class=" form-control inp" value="0"></td>
             <td width="10%"><input type="text" id="ca_usd_amount" name="ca_usd[]" class=" form-control inp" value="0"></td>
-            <td width="15%"><input type="text" id="actual_idr_amount" name="actual_idr[]" class=" form-control inp" value="0"></td>
-            <td width="10%"><input type="text" id="actual_usd_amount" name="actual_usd[]" class=" form-control inp" value="0"></td>
-            <td width="15%"><input type="text" id="remark" name="remark[]" class=" form-control inp" value=""></td>
             <td style="text-align:center;">
                 <a type='button' onclick='delete_row(` + id + `)' class='closebtn btn btn-warning'><i class='fas fa-times'></i></a>
             </td>
@@ -348,9 +321,17 @@ MULAI AUTO COMPLETE
 -->
 <script>
     function get_task(view, inp) {
+        var isi = [],
+            _child = {};
+        $('input[name^="list-task"]').each(function() {
+            _child['task_name'] = $(this).attr('data-name');
+            _child['id'] = $(this).attr('data-id');
+            isi.push(_child);
+            _child = {};
+        });
         var view = document.getElementById(view)
         var inp = document.getElementById(inp)
-        console.log(view);
+        // console.log(view);
         /*the autocomplete function takes two arguments,
         the text field element and an array of possible autocompleted values:*/
         var currentFocus;
@@ -362,60 +343,52 @@ MULAI AUTO COMPLETE
 
             /*close any already open lists of autocompleted values*/
             closeAllLists();
-            if (!val) {
-                return false;
-            }
-            $.ajax({
-                type: "POST", // Method pengiriman data bisa dengan GET atau POST
-                url: "<?= site_url() ?>transaction/Ajax_data/get_task", // Isi dengan url/path file php yang dituju
-                data: {
-                    text: val
-                },
-                success: function(isi) {
-                    isi = JSON.parse(isi);
-                    var sudah_terpakai = document.getElementsByName('task_id[]');
-                    for (i = 0; i < isi.length; i++) {
-                        /*check if the item starts with the same letters as the text field value:*/
-                        if (isi[i].task_name.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+            // if (!val) {
+            //     return false;
+            // }
 
-                            // jika sudah dipilih akan dihilangkan dari list
-                            for (const row of sudah_terpakai) {
-                                if (row.value == isi[i].id) {
-                                    return false
-                                }
-                            }
-                            /*create a DIV element for each matching element:*/
-                            b = document.createElement("DIV");
-                            /*make the matching letters bold:*/
-                            b.innerHTML = "<strong>" + isi[i].task_name.substr(0, val.length) + "</strong>";
-                            b.innerHTML += isi[i].task_name.substr(val.length);
-                            /*insert a input field that will hold the current array item's value:*/
-                            b.innerHTML += "<input type='hidden' name='task_js[]' value='" + isi[i].id + "' placeholder='" + isi[i].task_name + "'>";
-                            /*execute a function when someone clicks on the item value (DIV element):*/
-                            b.addEventListener("click", function(e) {
-                                /*insert the value for the autocomplete text field:*/
-                                view.value = this.getElementsByTagName("input")[0].placeholder;
-                                inp.value = this.getElementsByTagName("input")[0].value;
-                                /*close the list of autocompleted values,
-                                (or any other open lists of autocompleted values:*/
-                                closeAllLists();
-                            });
-                            a.appendChild(b);
-                        }
-                    }
-                },
-                error: function(xhr, ajaxOptions, thrownError) { // Ketika ada error
-                    return false;
-                    // alert(thrownError); // Munculkan alert error
-                }
-            });
-            currentFocus = -1;
-            /*create a DIV element that will contain the items (values):*/
             a = document.createElement("DIV");
             a.setAttribute("id", this.id + "autocomplete-list");
             a.setAttribute("class", "autocomplete-items");
             /*append the DIV element as a child of the autocomplete container:*/
             this.parentNode.appendChild(a);
+            var sudah_terpakai = document.getElementsByName('task_id[]');
+            for (i = 0; i < isi.length; i++) {
+                console.log(isi);
+                /*check if the item starts with the same letters as the text field value:*/
+                if (isi[i].task_name.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                    var echo = true;
+                    // jika sudah dipilih akan dihilangkan dari list
+                    for (const row of sudah_terpakai) {
+                        if (row.value == isi[i].id) {
+                            echo = false
+                        }
+                    }
+                    if (echo == true) {
+                        b = document.createElement("DIV");
+                        /*make the matching letters bold:*/
+                        b.innerHTML = "<strong>" + isi[i].task_name.substr(0, val.length) + "</strong>";
+                        b.innerHTML += isi[i].task_name.substr(val.length);
+                        /*insert a input field that will hold the current array item's value:*/
+                        b.innerHTML += "<input type='hidden' name='task_js[]' value='" + isi[i].id + "' placeholder='" + isi[i].task_name + "'>";
+                        /*execute a function when someone clicks on the item value (DIV element):*/
+                        b.addEventListener("click", function(e) {
+                            /*insert the value for the autocomplete text field:*/
+                            view.value = this.getElementsByTagName("input")[0].placeholder;
+                            inp.value = this.getElementsByTagName("input")[0].value;
+                            /*close the list of autocompleted values,
+                            (or any other open lists of autocompleted values:*/
+                            closeAllLists();
+                        });
+                        a.appendChild(b);
+
+                    }
+                    /*create a DIV element for each matching element:*/
+
+                }
+            }
+            currentFocus = -1;
+            /*create a DIV element that will contain the items (values):*/
             /*for each item in the array...*/
 
         });
@@ -500,17 +473,17 @@ MULAI AUTO COMPLETE
             }
             $.ajax({
                 type: "POST", // Method pengiriman data bisa dengan GET atau POST
-                url: "<?= site_url() ?>transaction/Ajax_data/get_order_number", // Isi dengan url/path file php yang dituju
+                url: "<?= site_url() ?>transaction/Ajax_data/get_available_order_number", // Isi dengan url/path file php yang dituju
                 data: {
                     text: val
                 },
                 success: function(isi) {
-                    isi = JSON.parse(isi);
-                    console.log(isi);
+                    if (isi)
+                        isi = JSON.parse(isi);
                     for (i = 0; i < isi.length; i++) {
                         /*check if the item starts with the same letters as the text field value:*/
                         if (isi[i].order_number.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-                            console.log(isi[i].vessel)
+                            // console.log(isi[i].vessel)
                             // ex_vessel.value = isi[i].vessel
                             /*create a DIV element for each matching element:*/
                             b = document.createElement("DIV");
@@ -523,6 +496,22 @@ MULAI AUTO COMPLETE
                             /*execute a function when someone clicks on the item value (DIV element):*/
                             b.addEventListener("click", function(e) {
                                 var selected_val = JSON.parse(this.getAttribute('all-data'));
+                                $.ajax({
+                                    type: "POST", // Method pengiriman data bisa dengan GET atau POST
+                                    url: "<?= site_url() ?>transaction/Ajax_data/get_task_by_order_no_for_rca", // Isi dengan url/path file php yang dituju
+                                    data: {
+                                        order_number: selected_val.order_number
+                                    },
+                                    success: function(isi) {
+                                        if (isi)
+                                            isi = JSON.parse(isi);
+                                        var html = '';
+                                        for (const row of isi) {
+                                            html += `<input name="list-task[]" data-id="` + row.id + `"  data-name="` + row.task_name + `" type="hidden"/>`;
+                                        }
+                                        $('#content_list_task').html(html)
+                                    }
+                                });
                                 /*insert the value for the autocomplete text field:*/
                                 // inp_id.value = this.getElementsByTagName("input")[0].value;
                                 $('#inp_order_number').val(selected_val.order_number);
