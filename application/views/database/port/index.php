@@ -18,49 +18,33 @@ if (isset($response)) {
 }
 ?>
 <div class="container-fluid">
-    <?php
-    if (@$data) {
-    ?>
-        <div class="card shadow mb-4">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-striped table-condensed" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>Kode</th>
-                                <th>Nama Port</th>
-                                <th>Negara Port</th>
-                                <th>Kode Negara</th>
-                                <th width='15%'>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            foreach ($data as $row) {
-                            ?>
-                                <tr>
-                                    <td><?= $row['port_code'] ?></td>
-                                    <td><?= $row['port_name'] ?></td>
-                                    <td><?= $row['port_country'] ?></td>
-                                    <td><?= $row['port_country_code'] ?></td>
-                                    <td>
-                                        <?= $this->tools->action('read', $row['id']) ?>
-                                        <?= $this->tools->action('update', $row['id']) ?>
-                                        <?= $this->tools->action('delete', $row['id']) ?>
-                                    </td>
-                                </tr>
-                            <?php } ?>
-
-                        </tbody>
-                    </table>
-                </div>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div class="float-left">
+                <h1 class="h3 mb-0 text-gray-800">List Port</h1>
             </div>
-
+            <div class="float-right"><?= $this->tools->action('create') ?></div>
         </div>
-    <?php
+        <div class="card-body">
+            <div class="table-responsive">
 
-    }
-    ?>
+                <table id="table" class="display table table-hover" style="font-size: 12px;" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Code</th>
+                            <th>Name </th>
+                            <th>Country</th>
+                            <th>Country Code</th>
+                            <th width='15%'>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 </div>
 
@@ -81,52 +65,29 @@ if (isset($response)) {
                 }
             });
     }
+</script>
 
+<script type="text/javascript">
+    var table;
+    var url = window.location.href
     $(document).ready(function() {
-        $("#province").change(function() {
-            $.ajax({
-                type: "POST", // Method pengiriman data bisa dengan GET atau POST
-                url: "<?= site_url() ?>administrator/ajax_data/get_regency", // Isi dengan url/path file php yang dituju
-                data: {
-                    province_id: $("#province").val()
+        table = $('#table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "order": [],
+            "ajax": {
+                "url": "<?= site_url('Datatables/get_port') ?>",
+                "type": "POST",
+                "data": {
+                    "url": url
                 },
-                success: function(isi) {
-                    $('#regency').html(isi);
-                },
-                error: function(xhr, ajaxOptions, thrownError) { // Ketika ada error
-                    alert(thrownError); // Munculkan alert error
-                }
-            });
+            },
+            "columnDefs": [{
+                "targets": [0],
+                "orderable": false,
+            }, ],
+
         });
-        $("#regency").change(function() {
-            $.ajax({
-                type: "POST", // Method pengiriman data bisa dengan GET atau POST
-                url: "<?= site_url() ?>administrator/ajax_data/get_district", // Isi dengan url/path file php yang dituju
-                data: {
-                    regency_id: $("#regency").val()
-                },
-                success: function(isi) {
-                    $('#district').html(isi);
-                },
-                error: function(xhr, ajaxOptions, thrownError) { // Ketika ada error
-                    alert(thrownError); // Munculkan alert error
-                }
-            });
-        });
-        $("#district").change(function() {
-            $.ajax({
-                type: "POST", // Method pengiriman data bisa dengan GET atau POST
-                url: "<?= site_url() ?>administrator/ajax_data/get_village", // Isi dengan url/path file php yang dituju
-                data: {
-                    district_id: $("#district").val()
-                },
-                success: function(isi) {
-                    $('#village').html(isi);
-                },
-                error: function(xhr, ajaxOptions, thrownError) { // Ketika ada error
-                    alert(thrownError); // Munculkan alert error
-                }
-            });
-        });
+
     });
 </script>

@@ -13,8 +13,7 @@ class Agent extends Base_controller
     }
     public function index()
     {
-        $data =  $this->_agentFilter();
-        $this->load->view('database/agent/index', $data);
+        $this->load->view('database/agent/index');
         $this->load->view('templates/Footer');
     }
     public function create()

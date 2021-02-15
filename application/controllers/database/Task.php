@@ -13,8 +13,7 @@ class Task extends Base_controller
     }
     public function index()
     {
-        $data =  $this->_taskFilter();
-        $this->load->view('database/task/index', $data);
+        $this->load->view('database/task/index');
         $this->load->view('templates/Footer');
     }
     public function create()

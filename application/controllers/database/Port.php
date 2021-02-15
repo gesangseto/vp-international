@@ -13,8 +13,7 @@ class Port extends Base_controller
     }
     public function index()
     {
-        $data =  $this->_portFilter();
-        $this->load->view('database/port/index', $data);
+        $this->load->view('database/port/index');
         $this->load->view('templates/Footer');
     }
     public function create()

@@ -13,8 +13,7 @@ class Customer extends Base_controller
     }
     public function index()
     {
-        $data =  $this->_customerFilter();
-        $this->load->view('database/customer/index', $data);
+        $this->load->view('database/customer/index');
         $this->load->view('templates/Footer');
     }
     public function create()
