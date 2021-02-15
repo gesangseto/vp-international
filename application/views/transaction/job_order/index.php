@@ -18,55 +18,37 @@ if (isset($response)) {
 }
 ?>
 <div class="container-fluid">
-    <?php
-    if (@$data) {
-    ?>
-        <div class="card shadow mb-4">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-striped table-condensed" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>NO ORDER</th>
-                                <th>SHIPPING NAME </th>
-                                <th>CONSIGNEE </th>
-                                <th>VESSEL</th>
-                                <th>SHIPPER</th>
-                                <th>ADDRESS</th>
-                                <th>INVOICE</th>
-                                <th width='15%'>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            foreach ($data as $row) {
-                            ?>
-                                <tr>
-                                    <td><?= $row['order_number'] ?></td>
-                                    <td><?= $row['shipping_name'] ?></td>
-                                    <td><?= $row['consignee'] ?></td>
-                                    <td><?= $row['vessel'] ?></td>
-                                    <td><?= $row['shipper'] ?></td>
-                                    <td><?= substr($row['address'], 0, 20) . '...' ?></td>
-                                    <td><?= $row['invoice'] ?></td>
-                                    <td>
-                                        <?= $this->tools->action('read', $row['id']) ?>
-                                        <?= $this->tools->action('update', $row['id']) ?>
-                                        <?= $this->tools->action('delete', $row['id']) ?>
-                                    </td>
-                                </tr>
-                            <?php } ?>
-
-                        </tbody>
-                    </table>
-                </div>
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div class="float-left">
+                <h1 class="h3 mb-0 text-gray-800">Job Order</h1>
             </div>
-
+            <div class="float-right"><?= $this->tools->action('create') ?></div>
         </div>
-    <?php
 
-    }
-    ?>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="table" class="display table table-hover" style="font-size: 12px;" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>NO</th>
+                            <th>NO ORDER</th>
+                            <th>SHIPPING NAME</th>
+                            <th>CONSIGNEE</th>
+                            <th>VESSEL</th>
+                            <th>SHIPPER</th>
+                            <th>ADDRESS</th>
+                            <th>INVOICE</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
 </div>
 </div>
 
@@ -87,4 +69,31 @@ if (isset($response)) {
                 }
             });
     }
+</script>
+
+
+
+<script type="text/javascript">
+    var table;
+    var url = window.location.href
+    $(document).ready(function() {
+        table = $('#table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "order": [],
+            "ajax": {
+                "url": "<?= site_url('Datatables/get_job_order') ?>",
+                "type": "POST",
+                "data": {
+                    "url": url
+                },
+            },
+            "columnDefs": [{
+                "targets": [0],
+                "orderable": false,
+            }, ],
+
+        });
+
+    });
 </script>

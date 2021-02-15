@@ -13,14 +13,7 @@ class Request_cash_advanced extends Base_controller
     }
     public function index()
     {
-        $data = [];
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $value = $_POST;
-            $data['data'] = $this->_Cash_advance->_get_list_ca($value);
-            $data['form'] = $_POST;
-        }
-        $this->load->view('templates/Filter', $data);
-        $this->load->view('transaction/request_cash_advanced/index', $data);
+        $this->load->view('transaction/request_cash_advanced/index');
         $this->load->view('templates/Footer');
     }
     public function create()

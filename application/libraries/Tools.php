@@ -20,9 +20,7 @@ class Tools
 
     public function action($value = null, $id = null)
     {
-        $path = '/vp_international/';
-        // change path if error with button
-        $url = str_replace($path, "", $_SERVER['REQUEST_URI']);
+        $url = str_replace(base_url(), "", current_url());
         $data['menu'] = $_SESSION["menu"];
         $button = '';
         foreach ($data['menu'] as $row) {
@@ -44,7 +42,37 @@ class Tools
                 }
             }
         }
-        return  $button;
+        return $button;
+    }
+
+    public function action_for_ajax($data = null)
+    {
+        // var_dump($data);
+        $url = str_replace(base_url(), "", current_url());
+        if (@$data['url']) {
+            $url = str_replace(base_url(), "",  @$data['url']);
+        }
+        $data['menu'] = $_SESSION["menu"];
+        $button = '';
+        if (@$data['action']) {
+            foreach ($data['menu'] as $row) {
+                foreach ($row['children'] as $row_children) {
+                    if ($row['menu_url'] . '/' . $row_children['child_url'] ==  $url) { //ini untuk localhost
+                        // if ('/' . $row['menu_url'] . '/' . $row_children['child_url'] ==  $url) { // ini untuk server
+                        if (@$data['action'] == 'create' && $row_children['create'] == '1') {
+                            $button = '<a  href="' . site_url($url . '/create') . '" class="btn btn-primary"><i class="fas fa-plus fa-sm text-white-50"></i> Tambah</a>';
+                        } elseif (@$data['action'] == 'read'  && $row_children['read'] == '1') {
+                            $button = '<a href="' . site_url($url . '/read?id=' . @$data['id']) . '" class="btn btn-info btn-sm"><i class="fas fa-search"></i></a>';
+                        } elseif (@$data['action'] == 'update'  && $row_children['update'] == '1') {
+                            $button = '<a  href="' . site_url($url . '/update?id=' . @$data['id']) . '" class="btn btn-warning btn-sm"><i class="fas fa-pen"></i></a>';
+                        } elseif (@$data['action'] == 'delete'  && $row_children['delete'] == '1') {
+                            $button = '<button onclick="hapus(' . @$data['id'] . ')" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>';
+                        }
+                    }
+                }
+            }
+        }
+        return $button;
     }
 
 

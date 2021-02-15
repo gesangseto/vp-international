@@ -321,17 +321,9 @@ MULAI AUTO COMPLETE
 -->
 <script>
     function get_task(view, inp) {
-        var isi = [],
-            _child = {};
-        $('input[name^="list-task"]').each(function() {
-            _child['task_name'] = $(this).attr('data-name');
-            _child['id'] = $(this).attr('data-id');
-            isi.push(_child);
-            _child = {};
-        });
         var view = document.getElementById(view)
         var inp = document.getElementById(inp)
-        // console.log(view);
+        console.log(view);
         /*the autocomplete function takes two arguments,
         the text field element and an array of possible autocompleted values:*/
         var currentFocus;
@@ -343,52 +335,60 @@ MULAI AUTO COMPLETE
 
             /*close any already open lists of autocompleted values*/
             closeAllLists();
-            // if (!val) {
-            //     return false;
-            // }
+            if (!val) {
+                return false;
+            }
+            $.ajax({
+                type: "POST", // Method pengiriman data bisa dengan GET atau POST
+                url: "<?= site_url() ?>transaction/Ajax_data/get_task", // Isi dengan url/path file php yang dituju
+                data: {
+                    text: val
+                },
+                success: function(isi) {
+                    isi = JSON.parse(isi);
+                    var sudah_terpakai = document.getElementsByName('task_id[]');
+                    for (i = 0; i < isi.length; i++) {
+                        /*check if the item starts with the same letters as the text field value:*/
+                        if (isi[i].task_name.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
 
+                            // jika sudah dipilih akan dihilangkan dari list
+                            for (const row of sudah_terpakai) {
+                                if (row.value == isi[i].id) {
+                                    return false
+                                }
+                            }
+                            /*create a DIV element for each matching element:*/
+                            b = document.createElement("DIV");
+                            /*make the matching letters bold:*/
+                            b.innerHTML = "<strong>" + isi[i].task_name.substr(0, val.length) + "</strong>";
+                            b.innerHTML += isi[i].task_name.substr(val.length);
+                            /*insert a input field that will hold the current array item's value:*/
+                            b.innerHTML += "<input type='hidden' name='task_js[]' value='" + isi[i].id + "' placeholder='" + isi[i].task_name + "'>";
+                            /*execute a function when someone clicks on the item value (DIV element):*/
+                            b.addEventListener("click", function(e) {
+                                /*insert the value for the autocomplete text field:*/
+                                view.value = this.getElementsByTagName("input")[0].placeholder;
+                                inp.value = this.getElementsByTagName("input")[0].value;
+                                /*close the list of autocompleted values,
+                                (or any other open lists of autocompleted values:*/
+                                closeAllLists();
+                            });
+                            a.appendChild(b);
+                        }
+                    }
+                },
+                error: function(xhr, ajaxOptions, thrownError) { // Ketika ada error
+                    return false;
+                    // alert(thrownError); // Munculkan alert error
+                }
+            });
+            currentFocus = -1;
+            /*create a DIV element that will contain the items (values):*/
             a = document.createElement("DIV");
             a.setAttribute("id", this.id + "autocomplete-list");
             a.setAttribute("class", "autocomplete-items");
             /*append the DIV element as a child of the autocomplete container:*/
             this.parentNode.appendChild(a);
-            var sudah_terpakai = document.getElementsByName('task_id[]');
-            for (i = 0; i < isi.length; i++) {
-                console.log(isi);
-                /*check if the item starts with the same letters as the text field value:*/
-                if (isi[i].task_name.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-                    var echo = true;
-                    // jika sudah dipilih akan dihilangkan dari list
-                    for (const row of sudah_terpakai) {
-                        if (row.value == isi[i].id) {
-                            echo = false
-                        }
-                    }
-                    if (echo == true) {
-                        b = document.createElement("DIV");
-                        /*make the matching letters bold:*/
-                        b.innerHTML = "<strong>" + isi[i].task_name.substr(0, val.length) + "</strong>";
-                        b.innerHTML += isi[i].task_name.substr(val.length);
-                        /*insert a input field that will hold the current array item's value:*/
-                        b.innerHTML += "<input type='hidden' name='task_js[]' value='" + isi[i].id + "' placeholder='" + isi[i].task_name + "'>";
-                        /*execute a function when someone clicks on the item value (DIV element):*/
-                        b.addEventListener("click", function(e) {
-                            /*insert the value for the autocomplete text field:*/
-                            view.value = this.getElementsByTagName("input")[0].placeholder;
-                            inp.value = this.getElementsByTagName("input")[0].value;
-                            /*close the list of autocompleted values,
-                            (or any other open lists of autocompleted values:*/
-                            closeAllLists();
-                        });
-                        a.appendChild(b);
-
-                    }
-                    /*create a DIV element for each matching element:*/
-
-                }
-            }
-            currentFocus = -1;
-            /*create a DIV element that will contain the items (values):*/
             /*for each item in the array...*/
 
         });
@@ -496,22 +496,6 @@ MULAI AUTO COMPLETE
                             /*execute a function when someone clicks on the item value (DIV element):*/
                             b.addEventListener("click", function(e) {
                                 var selected_val = JSON.parse(this.getAttribute('all-data'));
-                                $.ajax({
-                                    type: "POST", // Method pengiriman data bisa dengan GET atau POST
-                                    url: "<?= site_url() ?>transaction/Ajax_data/get_task_by_order_no_for_rca", // Isi dengan url/path file php yang dituju
-                                    data: {
-                                        order_number: selected_val.order_number
-                                    },
-                                    success: function(isi) {
-                                        if (isi)
-                                            isi = JSON.parse(isi);
-                                        var html = '';
-                                        for (const row of isi) {
-                                            html += `<input name="list-task[]" data-id="` + row.id + `"  data-name="` + row.task_name + `" type="hidden"/>`;
-                                        }
-                                        $('#content_list_task').html(html)
-                                    }
-                                });
                                 /*insert the value for the autocomplete text field:*/
                                 // inp_id.value = this.getElementsByTagName("input")[0].value;
                                 $('#inp_order_number').val(selected_val.order_number);

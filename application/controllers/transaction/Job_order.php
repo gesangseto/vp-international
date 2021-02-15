@@ -13,14 +13,7 @@ class Job_order extends Base_controller
     }
     public function index()
     {
-        $data = [];
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $value = $_POST;
-            $data['data'] = $this->_Job_order->_get_job_order($value);
-            $data['form'] = $_POST;
-        }
-        $this->load->view('templates/Filter', $data);
-        $this->load->view('transaction/job_order/index', $data);
+        $this->load->view('transaction/job_order/index');
         $this->load->view('templates/Footer');
     }
     public function create()
