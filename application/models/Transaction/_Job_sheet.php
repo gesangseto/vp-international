@@ -8,4 +8,15 @@ class _Job_sheet extends _Base_Model
     {
         return $this->db->query($sql)->result_array();
     }
+    public function _add_batch_job_sheets($data)
+    {
+        try {
+            $this->db->insert_batch('detail_job_sheets', $data);
+        } catch (\Exception $e) {
+            $response['statusCode'] = 500;
+            $response['messages'] = $e->getMessage();
+            $response['data'] = '';
+        }
+        return $response;
+    }
 }

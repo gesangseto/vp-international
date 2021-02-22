@@ -31,14 +31,14 @@ if (isset($response)) {
                 <table id="table" class="display table table-hover" style="font-size: 12px;" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th>NO</th>
-                            <th>NO ORDER</th>
-                            <th>SHIPPING NAME</th>
-                            <th>CONSIGNEE</th>
+                            <th>ORDER NUMBER</th>
+                            <th>TOTAL TASK</th>
+                            <th>JOB SHEETS NUMBER</th>
+                            <!-- <th>CONSIGNEE</th>
                             <th>VESSEL</th>
                             <th>SHIPPER</th>
                             <th>ADDRESS</th>
-                            <th>INVOICE</th>
+                            <th>INVOICE</th> -->
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -82,7 +82,7 @@ if (isset($response)) {
             "serverSide": true,
             "order": [],
             "ajax": {
-                "url": "<?= site_url('Datatables/get_job_order') ?>",
+                "url": "<?= site_url('Datatables/get_job_sheets') ?>",
                 "type": "POST",
                 "data": {
                     "url": url

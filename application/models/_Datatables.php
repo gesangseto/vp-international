@@ -3,8 +3,28 @@ class _Datatables extends CI_Model
 {
     private function _get_datatables_query($BaseData)
     {
-        $this->db->from($BaseData['table']);
         $i = 0;
+        $this->db->from($BaseData['table']);
+        if (@$BaseData['select']) {
+            $this->db->select(@$BaseData['select']);
+        }
+        if (@$BaseData['where']) {
+            $this->db->where(@$BaseData['where']);
+        }
+        if (@$BaseData['join']) {
+            $this->db->join($BaseData['join']['table'], $BaseData['join']['on']);
+        }
+        if (@$BaseData['left_join']) {
+            $this->db->join($BaseData['left_join']['table'], $BaseData['left_join']['on'], 'left');
+        }
+
+        if (@$BaseData['rigth_join']) {
+            $this->db->join($BaseData['rigth_join']['table'], $BaseData['rigth_join']['on'], 'rigth');
+        }
+        if (@$BaseData['group_by']) {
+            $this->db->group_by($BaseData['group_by']);
+        }
+
         foreach ($BaseData['column_search'] as $item) // loop column
         {
             if ($_POST['search']['value']) // if datatable send POST for search
@@ -16,8 +36,9 @@ class _Datatables extends CI_Model
                 } else {
                     $this->db->or_like($item, $_POST['search']['value']);
                 }
-                if (count($BaseData['column_search']) - 1 == $i) //last loop
+                if (count($BaseData['column_search']) - 1 == $i) { //last loop
                     $this->db->group_end(); //close bracket
+                }
             }
             $i++;
         }

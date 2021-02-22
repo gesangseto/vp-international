@@ -128,11 +128,20 @@ if (isset($response)) {
                             <table class="table">
                                 <tbody>
                                     <tr>
+                                        <td>JOB SHEETS NO</td>
+                                        <td>
+                                            <input name="job_sheets_id" readonly type="text" value="<?= $form['job_sheets_id'] ?>">
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
                                         <td>ORDER NO</td>
                                         <td>
                                             <div class="input-group">
                                                 <div id="order_number">
                                                     <input id="inp_order_number" name="order_number" required onclick="get_order_number('inp_order_number')" type="text" autocomplete="off" placeholder="Seach Order No">
+                                                    <input id="job_order_id" name="job_order_id" required type="hidden">
                                                 </div>
                                             </div>
                                         </td>
@@ -170,14 +179,6 @@ if (isset($response)) {
                                         <td>
                                             <input readonly name="consignee" id="consignee" class="form-control" type="text" required value="<?= @$form['consignee'] ?>" />
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td>STATUS</td>
-                                        <td>
-                                            <input name="status" readonly id="status" class="form-control" type="text" required value="<?= @$form['status'] ? $form['status'] : 'Pending' ?>" />
-                                        </td>
-                                        <td></td>
-                                        <td></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -327,49 +328,49 @@ if (isset($response)) {
                 success: function(isi) {
                     if (isi)
                         isi = JSON.parse(isi);
-                    for (i = 0; i < isi.length; i++) {
-                        /*check if the item starts with the same letters as the text field value:*/
-                        if (isi[i].order_number.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-                            // console.log(isi[i].vessel)
-                            // ex_vessel.value = isi[i].vessel
-                            /*create a DIV element for each matching element:*/
-                            b = document.createElement("DIV");
-                            /*make the matching letters bold:*/
-                            b.setAttribute('all-data', JSON.stringify(isi[i]));
-                            b.innerHTML = "<strong>" + isi[i].order_number.substr(0, val.length) + "</strong>";
-                            b.innerHTML += isi[i].order_number.substr(val.length);
-                            /*insert a input field that will hold the current array item's value:*/
-                            b.innerHTML += "<input type='hidden'>";
-                            /*execute a function when someone clicks on the item value (DIV element):*/
-                            b.addEventListener("click", function(e) {
-                                var selected_val = JSON.parse(this.getAttribute('all-data'));
-                                var order_number = selected_val.order_number;
-                                /*insert the value for the autocomplete text field:*/
-                                // inp_id.value = this.getElementsByTagName("input")[0].value;
-                                $('#inp_order_number').val(selected_val.order_number);
-                                $('#ex_vessel').val(selected_val.vessel);
-                                $('#container_no').val(selected_val.container_no);
-                                $('#mbl_no').val(selected_val.mbl_no);
-                                $('#hbl_no').val(selected_val.hbl_no);
-                                $('#shipping').val(selected_val.shipping_name);
-                                $('#eta').val(selected_val.eta);
-                                $('#consignee').val(selected_val.consignee);
+                    if (isi.length == 0) {
+                        b = document.createElement("DIV");
+                        b.innerHTML = "...data not found";
+                        a.appendChild(b);
+                    } else {
+                        for (i = 0; i < isi.length; i++) {
+                            if (isi[i].order_number.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                                b = document.createElement("DIV");
+                                /*make the matching letters bold:*/
+                                b.setAttribute('all-data', JSON.stringify(isi[i]));
+                                b.innerHTML = "<strong>" + isi[i].order_number.substr(0, val.length) + "</strong>";
+                                b.innerHTML += isi[i].order_number.substr(val.length);
+                                /*insert a input field that will hold the current array item's value:*/
+                                b.innerHTML += "<input type='hidden'>";
+                                /*execute a function when someone clicks on the item value (DIV element):*/
+                                b.addEventListener("click", function(e) {
+                                    var selected_val = JSON.parse(this.getAttribute('all-data'));
+                                    var order_number = selected_val.order_number;
+                                    $('#inp_order_number').val(selected_val.order_number);
+                                    $('#job_order_id').val(selected_val.job_order_id);
+                                    $('#ex_vessel').val(selected_val.vessel);
+                                    $('#container_no').val(selected_val.container_no);
+                                    $('#mbl_no').val(selected_val.mbl_no);
+                                    $('#hbl_no').val(selected_val.hbl_no);
+                                    $('#shipping').val(selected_val.shipping_name);
+                                    $('#eta').val(selected_val.eta);
+                                    $('#consignee').val(selected_val.consignee);
 
-                                var table = document.getElementById("tableID");
-                                var table_len = (table.rows.length);
-                                var id = parseInt(table_len);
+                                    var table = document.getElementById("tableID");
+                                    var table_len = (table.rows.length);
+                                    var id = parseInt(table_len);
 
-                                $.ajax({
-                                    type: "POST", // Method pengiriman data bisa dengan GET atau POST
-                                    url: "<?= site_url() ?>transaction/Ajax_data/get_all_task_by_order_number", // Isi dengan url/path file php yang dituju
-                                    data: {
-                                        order_number: order_number
-                                    },
-                                    success: function(res) {
-                                        res = JSON.parse(res);
-                                        console.log(res)
-                                        for (i = 0; i < res.length; i++) {
-                                            var _row = `
+                                    $.ajax({
+                                        type: "POST", // Method pengiriman data bisa dengan GET atau POST
+                                        url: "<?= site_url() ?>transaction/Ajax_data/get_all_task_by_order_number", // Isi dengan url/path file php yang dituju
+                                        data: {
+                                            order_number: order_number
+                                        },
+                                        success: function(res) {
+                                            res = JSON.parse(res);
+                                            console.log(res)
+                                            for (i = 0; i < res.length; i++) {
+                                                var _row = `
                                                 <tr id='row` + id + i + `'>
                                                     <td>
                                                         <div class="autocomplete" style="width:100%;">
@@ -387,13 +388,14 @@ if (isset($response)) {
                                                         <a type='button' onclick='delete_row(` + id + i + `)' class='closebtn btn btn-warning'><i class='fas fa-times'></i></a>
                                                     </td>
                                                 </tr>`;
-                                            var row = table.insertRow(table_len).outerHTML = _row;
+                                                var row = table.insertRow(table_len).outerHTML = _row;
+                                            }
                                         }
-                                    }
+                                    });
+                                    closeAllLists();
                                 });
-                                closeAllLists();
-                            });
-                            a.appendChild(b);
+                                a.appendChild(b);
+                            }
                         }
                     }
                 },

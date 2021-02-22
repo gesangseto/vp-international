@@ -22,61 +22,36 @@ class Job_sheet extends Base_controller
         $order_format = $this->tools->order_format();
         $query['other'] = ' AND a.order_number LIKE "' . substr($order_format, 0, -3) . '%" ORDER BY order_number DESC LIMIT 1';
         $result = $this->_Job_order->_get_job_order($query);
-        $order_number = '001';
-        if (@$result[0]) {
-            $order_number = $result[0]['order_number'];
-            $order_number = substr($order_number, -3);
-            $order_number = $order_number + 1;
-            $order_number = str_pad($order_number, 3, "0", STR_PAD_LEFT);
+        $job_sheets_id = $this->_Job_order->_custome_query('SELECT MAX(job_sheets_id ) AS last_id FROM detail_job_sheets');
+        if ($job_sheets_id[0]['last_id'] == NULL) {
+            $job_sheets_id = 1;
+        } else {
+            $job_sheets_id = $job_sheets_id[0]['last_id'] + 1;
         }
-        if (isset($_POST['submit']) && $_POST['task_id']) {
-            $data['form'] = array(
-                "order_number" => @$_POST['order_number'],
-                "shipping_name" => @$_POST['shipping_name'],
-                "consignee" => @$_POST['consignee'],
-                "vessel" => @$_POST['vessel'],
-                "shipper" =>  @$_POST['shipper'],
-                "container_no" => @$_POST['container_no'],
-                "party" => @$_POST['party'],
-                "mbl_no" => @$_POST['mbl_no'],
-                "hbl_no" => @$_POST['hbl_no'],
-                "invoice" => @$_POST['invoice'],
-                "date" => @$_POST['date'],
-                "etd" => @$_POST['etd'],
-                "eta" => @$_POST['eta'],
-                "pol" => @$_POST['pol'],
-                "pod" => @$_POST['pod'],
-                "address" => @$_POST['address'],
-                "freight" => @$_POST['freight'],
-                'total_buying_idr' => @$_POST['total_buying_idr'],
-                'total_buying_usd' => @$_POST['total_buying_usd'],
-                'total_selling_idr' => @$_POST['total_selling_idr'],
-                'total_selling_usd' => @$_POST['total_selling_usd'],
-                'total_profit_idr' => @$_POST['total_profit_idr'],
-                'total_profit_usd' => @$_POST['total_profit_usd']
-            );
-            $data['response'] = $this->_Job_sheet->_add_job_order($data['form']);
-            if ($data['response']['statusCode'] == 200) {
-                $last_id = $this->_Job_sheet->_get_job_order(array('order_number' => $_POST['order_number']));
-                $last_id = $last_id[0]['id'];
-
-                $n = 0;
-                $value_inp = array();
-                foreach (@$_POST['task_id'] as $row) {
-                    $value_inp[$n]['job_order_id'] = $last_id;
-                    $value_inp[$n]['task_id'] = $_POST['task_id'][$n];
-                    $value_inp[$n]['buying_idr'] = $_POST['buying_idr'][$n];
-                    $value_inp[$n]['buying_usd'] = $_POST['buying_usd'][$n];
-                    $value_inp[$n]['selling_idr'] = $_POST['selling_idr'][$n];
-                    $value_inp[$n]['selling_usd'] = $_POST['selling_usd'][$n];
-                    $value_inp[$n]['profit_idr'] = $_POST['profit_idr'][$n];
-                    $value_inp[$n]['profit_usd'] = $_POST['profit_usd'][$n];
-                    $n = $n + 1;
-                }
-                $data['response'] = $this->_Job_sheet->_add_detail_job_order_batch($value_inp);
+        $data['form']['job_sheets_id'] = $job_sheets_id;
+        if (isset($_POST['job_sheets_id']) && isset($_POST['job_order_id'])) {
+            for ($i = 0; $i < count($_POST['task_id']); $i++) {
+                $form[] = array(
+                    "job_sheets_id" => @$_POST['job_sheets_id'],
+                    "job_order_id" => @$_POST['job_order_id'],
+                    "task_id" => @$_POST['task_id'][$i],
+                    "buying_idr" => @$_POST['buying_idr'][$i],
+                    "buying_usd" => @$_POST['buying_usd'][$i],
+                    "total_buying_idr" => @$_POST['total_buying_idr'],
+                    "total_buying_usd" => @$_POST['total_buying_usd'],
+                    "selling_idr" => @$_POST['selling_idr'][$i],
+                    "selling_usd" => @$_POST['selling_usd'][$i],
+                    "total_selling_idr" => @$_POST['total_selling_idr'],
+                    "total_selling_usd" => @$_POST['total_selling_usd'],
+                    "profit_idr" => @$_POST['profit_idr'][$i],
+                    "profit_usd" => @$_POST['profit_usd'][$i],
+                    "total_profit_idr" => @$_POST['total_profit_idr'],
+                    "total_profit_usd" => @$_POST['total_profit_usd'],
+                );
             }
+            $this->load->model('Transaction/_Job_sheet', '_Job_sheet');
+            $data['response'] = $this->_Job_sheet->_add_batch_job_sheets($form);
         }
-        $data['form']['order_number'] = $order_format . "" . $order_number;
         $this->load->view('transaction/job_sheet/create', $data);
         $this->load->view('templates/Footer');
     }

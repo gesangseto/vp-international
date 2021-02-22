@@ -23,7 +23,7 @@ if (isset($response)) {
             <div class="float-left">
                 <h1 class="h3 mb-0 text-gray-800">Actual Cash Advanced</h1>
             </div>
-            <div class="float-right"><?= $this->tools->action('create') ?></div>
+            <!-- <div class="float-right"><?= $this->tools->action('create') ?></div> -->
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -83,7 +83,7 @@ if (isset($response)) {
             "serverSide": true,
             "order": [],
             "ajax": {
-                "url": "<?= site_url('Datatables/get_request_ca') ?>",
+                "url": "<?= site_url('Datatables/get_actual_ca') ?>",
                 "type": "POST",
                 "data": {
                     "url": url

@@ -232,6 +232,50 @@ class Datatables extends Base_controller
             $row[] = $field->request_location;
             $row[] = $field->status;
             $row[] = $this->tools->action_for_ajax($btn_read) . '
+            ' . ($field->status == 'Pending' ? $this->tools->action_for_ajax($btn_update) : '') . '
+            ' . $this->tools->action_for_ajax($btn_delete);
+            $data[] = $row;
+        }
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->_Datatables->count_all($BaseData),
+            "recordsFiltered" => $this->_Datatables->count_filtered($BaseData),
+            "data" => $data,
+        );
+        //output dalam format JSON
+        echo json_encode($output);
+    }
+    function get_actual_ca()
+    {
+        $BaseData = array(
+            // 'join' => array("table" => "job_order", "on" => "job_order.order_number=list_cash_advanced.order_number"),
+            'table' => 'list_cash_advanced',
+            'column_order' => array(null, 'advance_from', 'receipt_no', 'order_number', 'ex_vessel', 'container_no', 'mbl_no', 'hbl_no', 'shipping', 'eta', 'consignee', 'request_location', 'status'),
+            'column_search' => array('advance_from', 'receipt_no', 'order_number', 'ex_vessel', 'container_no', 'mbl_no', 'hbl_no', 'shipping', 'eta', 'consignee', 'request_location', 'status'),
+            'order' => array('id' => 'asc')
+        );
+        $list = $this->_Datatables->get_datatables($BaseData);
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $field) {
+            $btn_read = array("url" => $_POST['url'], "action" => "read", "id" => $field->id);
+            $btn_update = array("url" => $_POST['url'], "action" => "update", "id" => $field->id);
+            $btn_delete = array("url" => $_POST['url'], "action" => "delete", "id" => $field->id);
+            $no++;
+            $row = array();
+            $row[] = $field->advance_from;
+            $row[] = $field->receipt_no;
+            $row[] = $field->order_number;
+            $row[] = $field->ex_vessel;
+            $row[] = $field->container_no;
+            $row[] = $field->mbl_no;
+            $row[] = $field->hbl_no;
+            $row[] = $field->shipping;
+            $row[] = $field->eta;
+            $row[] = $field->consignee;
+            $row[] = $field->request_location;
+            $row[] = $field->status;
+            $row[] = $this->tools->action_for_ajax($btn_read) . '
             ' . $this->tools->action_for_ajax($btn_update) . '
             ' . $this->tools->action_for_ajax($btn_delete);
             $data[] = $row;
@@ -243,6 +287,45 @@ class Datatables extends Base_controller
             "data" => $data,
         );
         //output dalam format JSON
+        echo json_encode($output);
+    }
+    function get_job_sheets()
+    {
+        $BaseData = array(
+            'select' => 'detail_job_sheets.*,job_order.order_number,COUNT(task_id) AS total_task',
+            'table' => 'detail_job_sheets',
+            'group_by' => 'order_number',
+            'left_join' => array("table" => "job_order", "on" => "job_order.id=detail_job_sheets.job_order_id"),
+            'column_order' => array(null, 'order_number', 'job_order_id'),
+            'column_search' => array('order_number', 'job_order_id'),
+            'order' => array('id' => 'asc')
+        );
+        $list = $this->_Datatables->get_datatables($BaseData);
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $field) {
+            $btn_read = array("url" => $_POST['url'], "action" => "read", "id" => $field->job_sheets_id);
+            $btn_update = array("url" => $_POST['url'], "action" => "update", "id" => $field->job_sheets_id);
+            $btn_delete = array("url" => $_POST['url'], "action" => "delete", "id" => $field->job_sheets_id);
+            $no++;
+            $row = array();
+            $row[] = $field->order_number;
+            $row[] = $field->total_task;
+            $row[] = $field->job_sheets_id;
+            $row[] = $this->tools->action_for_ajax($btn_read) . '
+            ' . $this->tools->action_for_ajax($btn_update) . '
+            ' . $this->tools->action_for_ajax($btn_delete);
+            $data[] = $row;
+        }
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->_Datatables->count_all($BaseData),
+            "recordsFiltered" => $this->_Datatables->count_filtered($BaseData),
+            "data" => $data,
+        );
+        //output dalam format JSON
+        // print_r($this->db->last_query());
+        // // die;
         echo json_encode($output);
     }
 }
