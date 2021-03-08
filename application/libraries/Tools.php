@@ -89,4 +89,12 @@ class Tools
         $order_format = "VP-" . $year . "/" . $month . "-" . $day;
         return $order_format;
     }
+    public function invoice_format()
+    {
+        $year = date("Y");
+        $month = date("m");
+        $day = date("d");
+        $invoice_format = "VPAC-" . $year . "/" . $month . "-" . $day . 'A';
+        return $invoice_format;
+    }
 }

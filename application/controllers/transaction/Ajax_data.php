@@ -60,6 +60,17 @@ class Ajax_data extends Base_controller
         }
         echo json_encode($data);
     }
+    public function get_agent()
+    {
+        $data = [];
+        // die;
+        if (isset($_POST['text'])) {
+            $value['search'] =  $_POST['text'];
+            $this->load->model('Transaction/_Invoice', '_Invoice');
+            $data = $this->_Invoice->_get_agent($value);
+        }
+        echo json_encode($data);
+    }
     public function get_all_task_by_order_number()
     {
         $data = [];
@@ -87,6 +98,19 @@ class Ajax_data extends Base_controller
             ON f.`order_number` = g.order_number
             LEFT JOIN list_task AS z  on z.id=g.task_id
             WHERE f.order_number = "' . $_POST['order_number'] . '"';
+            $this->load->model('Transaction/_Job_sheet', '_Job_sheet');
+            $data = $this->_Job_sheet->_custome_query($query);
+        }
+        echo json_encode($data);
+    }
+    public function get_job_order_verified()
+    {
+        $data = [];
+        $arr = [];
+        if (isset($_POST['text'])) {
+            $query =  '
+            SELECT * FROM list_cash_advanced AS a
+            WHERE a.order_number LIKE "' . $_POST['text'] . '%" AND a.status ="Verified"';
             $this->load->model('Transaction/_Job_sheet', '_Job_sheet');
             $data = $this->_Job_sheet->_custome_query($query);
         }

@@ -289,6 +289,42 @@ class Datatables extends Base_controller
         //output dalam format JSON
         echo json_encode($output);
     }
+    function get_invoice()
+    {
+        $BaseData = array(
+            // 'join' => array("table" => "job_order", "on" => "job_order.order_number=list_cash_advanced.order_number"),
+            'table' => 'invoice',
+            'column_order' => array(null, 'invoice_number', 'invoice_date', 'shipment_type', 'job_sheets_id'),
+            'column_search' => array('invoice_number', 'invoice_date', 'shipment_type', 'job_sheets_id'),
+            'order' => array('id' => 'asc')
+        );
+        $list = $this->_Datatables->get_datatables($BaseData);
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $field) {
+            $btn_read = array("url" => $_POST['url'], "action" => "read", "id" => $field->id);
+            $btn_update = array("url" => $_POST['url'], "action" => "update", "id" => $field->id);
+            $btn_delete = array("url" => $_POST['url'], "action" => "delete", "id" => $field->id);
+            $no++;
+            $row = array();
+            $row[] = $field->invoice_number;
+            $row[] = $field->invoice_date;
+            $row[] = $field->shipment_type;
+            $row[] = $field->job_sheets_id;
+            $row[] = $this->tools->action_for_ajax($btn_read) . '
+            ' . $this->tools->action_for_ajax($btn_update) . '
+            ' . $this->tools->action_for_ajax($btn_delete);
+            $data[] = $row;
+        }
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->_Datatables->count_all($BaseData),
+            "recordsFiltered" => $this->_Datatables->count_filtered($BaseData),
+            "data" => $data,
+        );
+        //output dalam format JSON
+        echo json_encode($output);
+    }
     function get_job_sheets()
     {
         $BaseData = array(
