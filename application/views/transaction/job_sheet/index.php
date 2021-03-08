@@ -31,9 +31,10 @@ if (isset($response)) {
                 <table id="table" class="display table table-hover" style="font-size: 12px;" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th>ORDER NUMBER</th>
-                            <th>TOTAL TASK</th>
                             <th>JOB SHEETS NUMBER</th>
+                            <th>TOTAL ORDER NUMBER</th>
+                            <!-- <th>ORDER NUMBER</th> -->
+                            <th>TOTAL TASK</th>
                             <!-- <th>CONSIGNEE</th>
                             <th>VESSEL</th>
                             <th>SHIPPER</th>

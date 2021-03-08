@@ -50,10 +50,11 @@ class Ajax_data extends Base_controller
     {
         $data = [];
         $arr = [];
+        // die;
         if (isset($_POST['text'])) {
             $value['order_number'] =  $_POST['text'];
-            $this->load->model('Transaction/_Cash_advance', '_Cash_advance');
-            $data = $this->_Cash_advance->_get_job_order_for_rca($value);
+            $this->load->model('Transaction/_Job_sheet', '_Job_sheet');
+            $data = $this->_Job_sheet->_get_job_order_for_job_sheet($value);
             foreach ($data as $row) {
             }
         }

@@ -127,222 +127,189 @@ if ($this->session->flashdata('response')) {
                 <div class="box box-primary">
                     <div class="row">
                         <div class="col-md-6">
-                            <table class="table">
-                                <tbody>
-                                    <tr>
-                                        <td>ORDER NO</td>
-                                        <td>
-                                            <div class="input-group">
-                                                <div id="order_number">
-                                                    <input name="id" class="form-control" readonly type="hidden" required value="<?= @$form['id'] ?>" />
-                                                    <input name="order_number" class="form-control" readonly type="text" required value="<?= @$form['order_number'] ?>" />
-                                                </div>
-                                                <div class="input-group-btn">
-                                                    <a class="btn btn-default" onclick="renewOrderNumber('dummy')" id="renew_icon">
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>SHIPPING NAME</td>
-                                        <td>
-                                            <input name="shipping_name" type="text" class="form-control" required value="<?= @$form['shipping_name'] ?>" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>CONSIGNEE</td>
-                                        <td>
-                                            <input name="consignee" class="form-control" type="text" required value="<?= @$form['consignee'] ?>" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>VESSEL</td>
-                                        <td>
-                                            <input name="vessel" class="form-control" type="text" required value="<?= @$form['vessel'] ?>" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>SHIPPER</td>
-                                        <td>
-                                            <input name="shipper" class="form-control" type="text" required value="<?= @$form['shipper'] ?>" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>CONTAINER NO</td>
-                                        <td>
-                                            <textarea name="container_no" class="form-control"><?= @$form['container_no'] ?></textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>PARTY</td>
-                                        <td>
-                                            <input name="party" class="form-control" type="text" required value="<?= @$form['party'] ?>" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>MBL NO</td>
-                                        <td>
-                                            <input name="mbl_no" class="form-control" type="text" required value="<?= @$form['mbl_no'] ?>" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>HBL NO</td>
-                                        <td>
-                                            <input name="hbl_no" class="form-control" type="text" required value="<?= @$form['hbl_no'] ?>" />
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <label>JOB SHEETS NO</label>
+                            <input name="job_sheets_id" readonly type="text" value="<?= $_GET['id'] ?>">
                         </div>
                         <div class="col-md-6">
+                            <label>Add Job Order</label><br>
+                            <button type="button" onclick="add_job_order()" class="btn btn-warning"><i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <br />
+                        <div class="col-md-12">
+                            <ul class="nav nav-tabs" id="tablist" role="tablist">
+                                <?php
+                                $i = 0;
+                                foreach ($job_sheet as $row) {
+                                    if (!@$tab_transisi[$row['order_number']]) {
+                                        $tab_transisi[$row['order_number']] = $row; ?>
+                                        <li class="nav-item">
+                                            <a class="nav-link <?= $i == 0 ? 'active' : '' ?>" id="tab<?= $i ?>" data-toggle="tab" href="#content_tab<?= $i ?>" role="tab" aria-controls="tab<?= $i ?>" aria-selected="true">Sheet <?= $i + 1 ?></a>
+                                        </li>
+                                <?php
+                                        $i = $i + 1;
+                                    }
+                                }
+                                ?>
 
-                            <table class="table">
-                                <tbody>
-                                    <tr>
-                                        <?php
-                                        $invoice = substr(@$form['order_number'], -5);
-                                        ?>
-                                        <td>INVOICE</td>
-                                        <td>
-                                            <div id="invoice">
-                                                <input name="invoice" class="form-control" readonly type="text" required value="<?= @$form['order_number'] . 'A/' . $invoice . 'B/' . $invoice . 'C' ?>" />
+                            </ul>
+
+                            <div class="tab-content" id="tabcontentlist">
+                                <?php
+                                $n = 0;
+                                foreach ($job_sheet as $row) {
+                                    if (!@$transisi[$row['order_number']]) {
+                                        $transisi[$row['order_number']] = $row;
+                                ?>
+                                        <div class="tab-pane fade show <?= $n == 0 ? 'active' : '' ?>" id="content_tab<?= $n ?>" role="tabpanel" aria-labelledby="content_tab<?= $n ?>">
+                                            <table class="table">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>ORDER NO</td>
+                                                        <td>
+                                                            <div class="input-group">
+                                                                <div id="order_number">
+                                                                    <input id="inp_order_number_<?= $n ?>" name="order_number[<?= $n ?>]" required onclick="get_order_number('inp_order_number_<?= $n ?>',<?= $n ?>)" type="text" autocomplete="off" value="<?= $row['order_number'] ?>">
+                                                                    <input id="job_order_id_<?= $n ?>" name="job_order_id[<?= $n ?>]" required type="hidden" value="<?= $row['job_order_id'] ?>">
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>EX VESSEL</td>
+                                                        <td>
+                                                            <input readonly name="ex_vessel[<?= $n ?>]" id="ex_vessel_<?= $n ?>" type="text" class="form-control" required value="<?= $row['vessel'] ?>" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>CONTAINER NO</td>
+                                                        <td>
+                                                            <input id="container_no_<?= $n ?>" type="text" readonly name="container_no[<?= $n ?>]" value="<?= $row['container_no'] ?>" class=" form-control">
+                                                        </td>
+                                                        <td>MBL NO</td>
+                                                        <td>
+                                                            <input id="mbl_no_<?= $n ?>" readonly name="mbl_no[<?= $n ?>]" class="form-control" type="text" required value="<?= $row['mbl_no'] ?>" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>HBL NO</td>
+                                                        <td>
+                                                            <input readonly name="hbl_no[<?= $n ?>]" id="hbl_no_<?= $n ?>" class="form-control" type="text" required value="<?= $row['hbl_no'] ?>" />
+                                                        </td>
+                                                        <td>SHIPPING</td>
+                                                        <td>
+                                                            <input readonly name="shipping[<?= $n ?>]" id="shipping_<?= $n ?>" class="form-control" type="text" required value="<?= $row['shipper'] ?>" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>ETA</td>
+                                                        <td>
+                                                            <input readonly name="eta[<?= $n ?>]" id="eta_<?= $n ?>" class="form-control" type="text" required value="<?= $row['eta'] ?>" />
+                                                        </td>
+                                                        <td>CONSIGNE</td>
+                                                        <td>
+                                                            <input readonly name="consignee[<?= $n ?>]" id="consignee_<?= $n ?>" class="form-control" type="text" required value="<?= $row['consignee'] ?>" />
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <div class="box-header">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label>
+                                                            <h4 class="box-title" id="customControlInline"> Details</h4>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="">
+                                                    <div class="feebox">
+                                                        <table class="table" id="table_<?= $n ?>">
+                                                            <thead>
+                                                                <tr style="text-align: center;">
+                                                                    <td rowspan="2" width="10%">TASK</td>
+                                                                    <td colspan="2">Buying</td>
+                                                                    <td colspan="2">Selling</td>
+                                                                    <td colspan="2">Profit</td>
+                                                                    <td rowspan="2">Action</td>
+                                                                </tr>
+                                                                <tr style="text-align: center;">
+                                                                    <td>IDR</td>
+                                                                    <td>USD</td>
+                                                                    <td>IDR</td>
+                                                                    <td>USD</td>
+                                                                    <td>IDR</td>
+                                                                    <td>USD</td>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <?php
+                                                                foreach ($job_sheet as $row_details) {
+                                                                    if ($row['job_order_id'] == $row_details['job_order_id']) {
+                                                                        $id_row = $row_details['detail_job_sheets_id'];
+                                                                ?>
+                                                                        <input id="detail_job_sheets_id_<?= $n ?>" name="detail_job_sheets_id[<?= $n ?>][]" required type="hidden" value="<?= $row_details['detail_job_sheets_id'] ?>">
+                                                                        <tr id='row_<?= $id_row ?>'>
+                                                                            <td>
+                                                                                <div class="autocomplete" style="width:100%;">
+                                                                                    <input required type="hidden" name="task_id[<?= $n ?>][]" value="<?= $row_details['task_id'] ?>">
+                                                                                    <input type="text" readonly value="<?= $row_details['task_name'] ?>">
+                                                                                </div>
+                                                                            </td>
+                                                                            <td><input type="text" id="buying_idr_<?= $n ?>'" name="buying_idr[<?= $n ?>][]" class=" form-control inp" value="<?= $row_details['buying_idr'] ?>"></td>
+                                                                            <td><input type="text" id="buying_usd_<?= $n ?>" name="buying_usd[<?= $n ?>][]" class=" form-control inp" value="<?= $row_details['buying_usd'] ?>"></td>
+                                                                            <td><input type="text" id="selling_idr_<?= $n ?>" name="selling_idr[<?= $n ?>][]" class=" form-control inp" value="<?= $row_details['selling_idr'] ?>"></td>
+                                                                            <td><input type="text" id="selling_usd_<?= $n ?>" name="selling_usd[<?= $n ?>][]" class=" form-control inp" value="<?= $row_details['selling_usd'] ?>"></td>
+                                                                            <td><input type="text" id="profit_idr_<?= $n ?>" name="profit_idr[<?= $n ?>][]" class=" form-control inp" value="<?= $row_details['profit_idr'] ?>"></td>
+                                                                            <td><input type="text" id="profit_usd_<?= $n ?>" name="profit_usd[<?= $n ?>][]" class=" form-control inp" value="<?= $row_details['profit_usd'] ?>"></td>
+                                                                            <td style="text-align:center;">
+                                                                                <a type='button' onclick='delete_row("row_<?= $id_row ?>")' class='closebtn btn btn-warning'><i class='fas fa-times'></i></a>
+                                                                            </td>
+                                                                        </tr>
+                                                                <?php  }
+                                                                }
+                                                                ?>
+                                                            </tbody>
+                                                        </table>
+                                                        <hr />
+                                                        <table class="table" id="tableTotal">
+                                                            <thead>
+                                                                <tr id="" style="text-align: center;">
+                                                                    <td width="10%"><strong>TOTAL</strong></td>
+                                                                    <td><input type="text" id="total_buying_idr_<?= $n ?>" name="total_buying_idr[<?= $n ?>]" readonly class="form-control inp" value="<?= @$row['total_buying_idr'] ?>"></td>
+                                                                    <td><input type="text" id="total_buying_usd_<?= $n ?>" name="total_buying_usd[<?= $n ?>]" readonly class="form-control inp" value="<?= @$row['total_buying_usd'] ?>"></td>
+                                                                    <td><input type="text" id="total_selling_idr_<?= $n ?>" name="total_selling_idr[<?= $n ?>]" readonly class="form-control inp" value="<?= @$row['total_selling_idr'] ?>"></td>
+                                                                    <td><input type="text" id="total_selling_usd_<?= $n ?>" name="total_selling_usd[<?= $n ?>]" readonly class="form-control inp" value="<?= @$row['total_selling_usd'] ?>"></td>
+                                                                    <td><input type="text" id="total_profit_idr_<?= $n ?>" name="total_profit_idr[<?= $n ?>]" readonly class="form-control inp" value="<?= @$row['total_profit_idr'] ?>"></td>
+                                                                    <td><input type="text" id="total_profit_usd_<?= $n ?>" name="total_profit_usd[<?= $n ?>]" readonly class="form-control inp" value="<?= @$row['total_profit_usd'] ?>"></td>
+                                                                    <td><button type="button" onclick="make_total(<?= $n ?>)" class="btn btn-info"><i class="fa fa-calculator"> </button></td>
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>DATE</td>
-                                        <td>
-                                            <input name="date" type="date" class="form-control" required value="<?= @$form['date'] ? @$form['date'] : $date ?>" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>ETD</td>
-                                        <td>
-                                            <input name="etd" class="form-control" type="month" required value="<?= @$form['etd'] ?>" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>ETA</td>
-                                        <td>
-                                            <input name="eta" class="form-control" type="month" required value="<?= @$form['eta'] ?>" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>POL</td>
-                                        <td>
-                                            <input name="pol" class="form-control" type="text" required value="<?= @$form['pol'] ?>" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>POD</td>
-                                        <td>
-                                            <input name="pod" class="form-control" type="text" required value="<?= @$form['pod'] ?>" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Address</td>
-                                        <td>
-                                            <textarea name="address" class="form-control"><?= @$form['address'] ?></textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>FREIGHT</td>
-                                        <td>
-                                            <input name="freight" class="form-control" type="text" required value="<?= @$form['freight'] ?>" />
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                        </div>
+                                <?php
+                                        $n = $n + 1;
+                                    }
+                                }
+                                ?>
+
+
+                            </div>
                         </div>
                     </div>
                     <!--./box-header-->
                     <!-- /.box-body -->
                     <hr />
-                    <div class="box-header">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label>
-                                    <h4 class="box-title" id="customControlInline"> Details</h4>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="">
-                            <div class="feebox">
-                                <table class="table3" id="tableID" border="1">
-                                    <tr style="text-align: center;">
-                                        <td rowspan="2">DESCRIPTION</td>
-                                        <td colspan="2">BUYING</td>
-                                        <td colspan="2">SELLING</td>
-                                        <td colspan="2">PROFIT</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr style="text-align: center;">
-                                        <td>IDR</td>
-                                        <td>USD</td>
-                                        <td>IDR</td>
-                                        <td>USD</td>
-                                        <td>IDR</td>
-                                        <td>USD</td>
-                                        <td><button type="button" for="customControlInline" onclick="add_more()" class="btn btn-success"><i class="fas fa-plus"></i></button></td>
-                                    </tr>
-
-                                    <?php
-                                    foreach ($form_detail as $row) {
-                                    ?>
-                                        <tr id="row0">
-                                            <td width="20%">
-                                                <div class="autocomplete" style="width:100%;">
-                                                    <input id="inp0" required type="text" class="back-of-everything" name="task_id[]" value="<?= $row['task_id'] ?>">
-                                                    <input id="view0" required onclick="get_task('view0','inp0')" value="<?= $row['task_name'] ?>" type="text" name="task_name[]">
-                                                </div>
-                                            </td>
-                                            <td width="15%">
-                                                <input type="text" id="buying_idr_amount" name="buying_idr[]" class=" form-control" value="<?= $row['buying_idr'] ?>">
-                                            </td>
-                                            <td width="10%">
-                                                <input type="text" id="buying_usd_amount" name="buying_usd[]" class=" form-control inp" value="<?= $row['buying_usd'] ?>">
-                                            </td>
-                                            <td width="15%">
-                                                <input type="text" id="selling_idr_amount" name="selling_idr[]" class=" form-control inp" value="<?= $row['selling_idr'] ?>">
-                                            </td>
-                                            <td width="10%">
-                                                <input type="text" id="selling_usd_amount" name="selling_usd[]" class=" form-control inp" value="<?= $row['selling_usd'] ?>">
-                                            </td>
-                                            <td width="15%">
-                                                <input type="text" id="profit_idr_amount" name="profit_idr[]" class=" form-control inp" value="<?= $row['profit_idr'] ?>">
-                                            </td>
-                                            <td width="10%">
-                                                <input type="text" id="profit_usd_amount" name="profit_usd[]" class=" form-control inp" value="<?= $row['profit_usd'] ?>">
-                                            </td>
-                                            <td width="5%"></td>
-                                        </tr>
-                                    <?php
-                                    }
-                                    ?>
-                                </table>
-                                <hr />
-                                <table class="tableTotal" id="tableTotal" border="1">
-                                    <tr id="" style="text-align: center;">
-                                        <td width="20%"><strong>TOTAL</strong></td>
-                                        <td width="15%"><input type="text" id="total_buying_idr" name="total_buying_idr" readonly class="form-control inp" value="<?= @$form['total_buying_idr'] ?>"></td>
-                                        <td width="10%"><input type="text" id="total_buying_usd" name="total_buying_usd" readonly class="form-control inp" value="<?= @$form['total_buying_usd'] ?>"></td>
-                                        <td width="15%"><input type="text" id="total_selling_idr" name="total_selling_idr" readonly class="form-control inp" value="<?= @$form['total_selling_idr'] ?>"></td>
-                                        <td width="10%"><input type="text" id="total_selling_usd" name="total_selling_usd" readonly class="form-control inp" value="<?= @$form['total_selling_usd'] ?>"></td>
-                                        <td width="15%"><input type="text" id="total_profit_idr" name="total_profit_idr" readonly class="form-control inp" value="<?= @$form['total_profit_idr'] ?>"></td>
-                                        <td width="10%"><input type="text" id="total_profit_usd" name="total_profit_usd" readonly class="form-control inp" value="<?= @$form['total_profit_usd'] ?>"></td>
-                                        <td width="5%"><button type="button" onclick="add_allowance()" class="btn btn-info"><i class="fa fa-calculator" /> </button></td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
                     <!--./col-md-4-->
                     <!--./col-md-4-->
                     <div class="col-md-12 col-sm-12">
                         <br />
                         <button type="submit" name="submit" id="contact_submit" class="btn btn-info pull-right"> Simpan</button>
-                        <a href="#" onclick="window.location.replace(' <?= site_url() . $temp_url  ?>');" class="btn btn-default"> Kembali</a>
+                        <a href="#" onclick="window.location.replace(' <?= site_url() . $temp_url  ?>');" class="btn btn-default pull-right"> Kembali</a>
+
                     </div>
                     <!--./col-md-12-->
                 </div>
@@ -353,22 +320,140 @@ if ($this->session->flashdata('response')) {
 
 <script src="<?= base_url() ?>assets/ajax/3.4.1/jquery.min.js"></script>
 
-
 <script type="text/javascript">
-    function add_allowance() {
-        var buying_idr = document.getElementsByName('buying_idr[]');
-        var buying_usd = document.getElementsByName('buying_usd[]');
-        var selling_idr = document.getElementsByName('selling_idr[]');
-        var selling_usd = document.getElementsByName('selling_usd[]');
-        var profit_idr = document.getElementsByName('profit_idr[]');
-        var profit_usd = document.getElementsByName('profit_usd[]');
+    var arr_list_jobsheet = [];
+    var arr = <?= json_encode($job_sheet) ?>;
+    for (const item of arr) {
+        arr_list_jobsheet.push(item.order_number)
+    }
 
-        var total_buying_idr = 0;
-        var total_buying_usd = 0;
-        var total_selling_idr = 0;
-        var total_selling_usd = 0;
-        var total_profit_idr = 0;
-        var total_profit_usd = 0;
+    function add_job_order() {
+        var no_tab = $("#tablist li").length
+        no_tab = no_tab + 1;
+        var li = ` <li class="nav-item" id="li_tab` + no_tab + `">
+                        <a class="nav-link" id="tab` + no_tab + `" data-toggle="tab" href="#content_tab` + no_tab + `" role="tab" aria-controls="#content_tab` + no_tab + `" aria-selected="false">Sheet ` + no_tab + ` </a>
+                    </li>`;
+        var content = ` 
+                        <a onclick="close_sheet(` + no_tab + `)" class="btn btn-danger float-right" style="color:white;">close sheet <i class="fa fa-times"></i></a>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>ORDER NO</td>
+                                    <td>
+                                        <div class="input-group">
+                                            <div id="order_number">
+                                                <input id="inp_order_number_` + no_tab + `" name="order_number[` + no_tab + `]" required onclick="get_order_number('inp_order_number_` + no_tab + `',` + no_tab + `)" type="text" autocomplete="off" placeholder="Seach Order No">
+                                                <input id="job_order_id_` + no_tab + `" name="job_order_id[` + no_tab + `]" required type="hidden">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>EX VESSEL</td>
+                                    <td>
+                                        <input readonly name="ex_vessel[` + no_tab + `]" id="ex_vessel_` + no_tab + `" type="text" class="form-control" required value="" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>CONTAINER NO</td>
+                                    <td>
+                                        <input id="container_no_` + no_tab + `" type="text" readonly name="container_no[` + no_tab + `]" value="" class=" form-control">
+                                    </td>
+                                    <td>MBL NO</td>
+                                    <td>
+                                        <input id="mbl_no_` + no_tab + `" readonly name="mbl_no[` + no_tab + `]" class="form-control" type="text" required value="" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>HBL NO</td>
+                                    <td>
+                                        <input readonly name="hbl_no[` + no_tab + `]" id="hbl_no_` + no_tab + `" class="form-control" type="text" required value="" />
+                                    </td>
+                                    <td>SHIPPING</td>
+                                    <td>
+                                        <input readonly name="shipping[` + no_tab + `]" id="shipping_` + no_tab + `" class="form-control" type="text" required value="" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ETA</td>
+                                    <td>
+                                        <input readonly name="eta[` + no_tab + `]" id="eta_` + no_tab + `" class="form-control" type="text" required value="" />
+                                    </td>
+                                    <td>CONSIGNE</td>
+                                    <td>
+                                        <input readonly name="consignee[` + no_tab + `]" id="consignee_` + no_tab + `" class="form-control" type="text" required value="" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="box-header">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>
+                                        <h4 class="box-title" id="customControlInline"> Details</h4>
+                                    </label>
+                                </div>
+                            </div>
+                        <div class="">
+                            <div class="feebox">
+                                <table class="table" id="table_` + no_tab + `">
+                                    <thead>
+                                        <tr style="text-align: center;">
+                                            <td rowspan="2" width="10%">TASK</td>
+                                            <td colspan="2">Buying</td>
+                                            <td colspan="2">Selling</td>
+                                            <td colspan="2">Profit</td>
+                                            <td rowspan="2">Action</td>
+                                        </tr>
+                                        <tr style="text-align: center;">
+                                            <td>IDR</td>
+                                            <td>USD</td>
+                                            <td>IDR</td>
+                                            <td>USD</td>
+                                            <td>IDR</td>
+                                            <td>USD</td>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                <hr />
+                                <table class="table" id="tableTotal">
+                                    <thead>
+                                        <tr id="" style="text-align: center;">
+                                            <td width="10%"><strong>TOTAL</strong></td>
+                                            <td><input type="text" id="total_buying_idr_` + no_tab + `" name="total_buying_idr[` + no_tab + `]" readonly class="form-control inp" value="0"></td>
+                                            <td><input type="text" id="total_buying_usd_` + no_tab + `" name="total_buying_usd[` + no_tab + `]" readonly class="form-control inp" value="0"></td>
+                                            <td><input type="text" id="total_selling_idr_` + no_tab + `" name="total_selling_idr[` + no_tab + `]" readonly class="form-control inp" value="0"></td>
+                                            <td><input type="text" id="total_selling_usd_` + no_tab + `" name="total_selling_usd[` + no_tab + `]" readonly class="form-control inp" value="0"></td>
+                                            <td><input type="text" id="total_profit_idr_` + no_tab + `" name="total_profit_idr[` + no_tab + `]" readonly class="form-control inp" value="0"></td>
+                                            <td><input type="text" id="total_profit_usd_` + no_tab + `" name="total_profit_usd[` + no_tab + `]" readonly class="form-control inp" value="0"></td>
+                                            <td><button type="button" onclick="make_total(` + no_tab + `)" class="btn btn-info"><i class="fa fa-calculator"> </button></td>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>`;
+        var tab = ` <div class="tab-pane fade" id="content_tab` + no_tab + `" role="tabpanel" aria-labelledby="content_tab` + no_tab + `">
+                            ` + content + `
+                        </div>`;
+
+        $("#tablist").append(li);
+        $("#tabcontentlist").append(tab);
+        // console.log(no_tab);
+    }
+
+    function make_total(n) {
+        var buying_idr = document.getElementsByName('buying_idr[' + n + '][]');
+        var buying_usd = document.getElementsByName('buying_usd[' + n + '][]');
+        var selling_idr = document.getElementsByName('selling_idr[' + n + '][]');
+        var selling_usd = document.getElementsByName('selling_usd[' + n + '][]');
+        var profit_idr = document.getElementsByName('profit_idr[' + n + '][]');
+        var profit_usd = document.getElementsByName('profit_usd[' + n + '][]');
+
+        var total_buying_idr = 0
+        var total_buying_usd = 0
+        var total_selling_idr = 0
+        var total_selling_usd = 0
+        var total_profit_idr = 0
+        var total_profit_usd = 0
 
         for (var i = 0; i < buying_idr.length; i++) {
             var inp_buying_idr = buying_idr[i].value ? buying_idr[i].value : 0;
@@ -378,6 +463,7 @@ if ($this->session->flashdata('response')) {
             var inp_profit_idr = profit_idr[i].value ? profit_idr[i].value : 0;
             var inp_profit_usd = profit_usd[i].value ? profit_usd[i].value : 0;
 
+
             total_buying_idr += +parseFloat(inp_buying_idr).toFixed(3);
             total_buying_usd += +parseFloat(inp_buying_usd).toFixed(3);
             total_selling_idr += +parseFloat(inp_selling_idr).toFixed(3);
@@ -385,65 +471,36 @@ if ($this->session->flashdata('response')) {
             total_profit_idr += +parseFloat(inp_profit_idr).toFixed(3);
             total_profit_usd += +parseFloat(inp_profit_usd).toFixed(3);
         }
-        $("#total_buying_idr").val(total_buying_idr);
-        $("#total_buying_usd").val(total_buying_usd);
-        $("#total_selling_idr").val(total_selling_idr);
-        $("#total_selling_usd").val(total_selling_usd);
-        $("#total_profit_idr").val(total_profit_idr);
-        $("#total_profit_usd").val(total_profit_usd);
+        $("#total_buying_idr_" + n).val(total_buying_idr);
+        $("#total_buying_usd_" + n).val(total_buying_usd);
+        $("#total_selling_idr_" + n).val(total_selling_idr);
+        $("#total_selling_usd_" + n).val(total_selling_usd);
+        $("#total_profit_idr_" + n).val(total_profit_idr);
+        $("#total_profit_usd_" + n).val(total_profit_usd);
 
     }
 
-    function add_more() {
-        var table = document.getElementById("tableID");
-        var table_len = (table.rows.length);
-        var id = parseInt(table_len);
-        var _row = `
-        <tr id='row` + id + `'>
-            <td>
-                <div class="autocomplete" style="width:auto;">
-                    <input type='text' id="inp` + id + `" required type="text" class="back-of-everything" name="task_id[]">
-                    <input id="view` + id + `" required onclick="get_task('view` + id + `','inp` + id + `')" type="text" name="task_name[]" autocomplete="off" placeholder="Task">
-                </div>    
-            </td>
-            <td><input type="text" id="buying_idr_amount" name="buying_idr[]" class=" form-control inp" value="0"></td>
-            <td><input type="text" id="buying_usd_amount" name="buying_usd[]" class=" form-control inp" value="0"></td>
-            <td><input type="text" id="selling_idr_amount" name="selling_idr[]" class=" form-control inp" value="0"></td>
-            <td><input type="text" id="selling_usd_amount" name="selling_usd[]" class=" form-control inp" value="0"></td>
-            <td><input type="text" id="profit_idr_amount" name="profit_idr[]" class=" form-control inp" value="0"></td>
-            <td><input type="text" id="profit_usd_amount" name="profit_usd[]" class=" form-control inp" value="0"></td>
-            <td style="text-align:center;">
-                <a type='button' onclick='delete_row(` + id + `)' class='closebtn btn btn-warning'><i class='fas fa-times'></i></a>
-            </td>
-        </tr>`;
-        var row = table.insertRow(table_len).outerHTML = _row;
+    function delete_row(_id_row) {
+        $("#" + _id_row).html("");
     }
 
-    function delete_row(id) {
-        var table = document.getElementById("tableID");
-        var rowCount = table.rows.length;
-        $("#row" + id).html("");
+    function close_sheet(_id_row) {
+        delete arr_list_jobsheet[_id_row];
+        var li_tab = $("#li_tab" + _id_row).remove();
+        var content_tab = $("#content_tab" + _id_row).remove();
     }
 </script>
 
 
-
-<!--
-
-MULAI AUTO COMPLETE
-
--->
 <script>
-    function get_task(view, inp) {
-        var view = document.getElementById(view)
-        var inp = document.getElementById(inp)
-        console.log(view);
+    function get_order_number(inp_id, n) {
+        var inp_id = document.getElementById(inp_id)
         /*the autocomplete function takes two arguments,
         the text field element and an array of possible autocompleted values:*/
         var currentFocus;
         var list_task = [];
         /*execute a function when someone writes in the text field:*/
-        view.addEventListener("input", function(e) {
+        inp_id.addEventListener("input", function(e) {
             // console.log('input')
             var a, b, i, val = this.value;
 
@@ -454,40 +511,91 @@ MULAI AUTO COMPLETE
             }
             $.ajax({
                 type: "POST", // Method pengiriman data bisa dengan GET atau POST
-                url: "<?= site_url() ?>transaction/Ajax_data/get_task", // Isi dengan url/path file php yang dituju
+                url: "<?= site_url() ?>transaction/Ajax_data/get_available_order_number", // Isi dengan url/path file php yang dituju
                 data: {
                     text: val
                 },
                 success: function(isi) {
-                    isi = JSON.parse(isi);
-                    var sudah_terpakai = document.getElementsByName('task_id[]');
-                    for (i = 0; i < isi.length; i++) {
-                        /*check if the item starts with the same letters as the text field value:*/
-                        if (isi[i].task_name.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                    if (isi)
+                        isi = JSON.parse(isi);
+                    if (isi.length == 0) {
+                        b = document.createElement("DIV");
+                        b.innerHTML = "...data not found";
+                        a.appendChild(b);
+                    } else {
+                        for (i = 0; i < isi.length; i++) {
+                            if (isi[i].order_number.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                                var tampilkan = true;
+                                for (const jb_sht of arr_list_jobsheet) {
+                                    if (jb_sht == isi[i].order_number) {
+                                        tampilkan = false
+                                    }
+                                }
+                                if (tampilkan == true) {
+                                    b = document.createElement("DIV");
+                                    /*make the matching letters bold:*/
+                                    b.setAttribute('all-data', JSON.stringify(isi[i]));
+                                    b.innerHTML = "<strong>" + isi[i].order_number.substr(0, val.length) + "</strong>";
+                                    b.innerHTML += isi[i].order_number.substr(val.length);
+                                    /*insert a input field that will hold the current array item's value:*/
+                                    b.innerHTML += "<input type='hidden'>";
+                                    /*execute a function when someone clicks on the item value (DIV element):*/
+                                    b.addEventListener("click", function(e) {
+                                        var selected_val = JSON.parse(this.getAttribute('all-data'));
+                                        var order_number = selected_val.order_number;
+                                        $('#inp_order_number_' + n).val(selected_val.order_number);
+                                        $('#job_order_id_' + n).val(selected_val.job_order_id);
+                                        $('#ex_vessel_' + n).val(selected_val.vessel);
+                                        $('#container_no_' + n).val(selected_val.container_no);
+                                        $('#mbl_no_' + n).val(selected_val.mbl_no);
+                                        $('#hbl_no_' + n).val(selected_val.hbl_no);
+                                        $('#shipping_' + n).val(selected_val.shipping_name);
+                                        $('#eta_' + n).val(selected_val.eta);
+                                        $('#consignee_' + n).val(selected_val.consignee);
+                                        $('#consignee_' + n).val(selected_val.consignee);
+                                        arr_list_jobsheet[n] = selected_val.order_number;
+                                        var table = document.getElementById("table_" + n);
+                                        var table_len = (table.rows.length);
+                                        var id = parseInt(table_len);
 
-                            // jika sudah dipilih akan dihilangkan dari list
-                            for (const row of sudah_terpakai) {
-                                if (row.value == isi[i].id) {
-                                    return false
+                                        $.ajax({
+                                            type: "POST", // Method pengiriman data bisa dengan GET atau POST
+                                            url: "<?= site_url() ?>transaction/Ajax_data/get_all_task_by_order_number", // Isi dengan url/path file php yang dituju
+                                            data: {
+                                                order_number: order_number
+                                            },
+                                            success: function(res) {
+                                                res = JSON.parse(res);
+                                                // console.log(res)
+                                                for (i = 0; i < res.length; i++) {
+                                                    var _id_row = n + `_` + id + i
+                                                    var _row = `
+                                                <tr id='row_` + _id_row + `'>
+                                                    <td>
+                                                        <div class="autocomplete" style="width:100%;">
+                                                            <input id="inp` + id + i + `" required type="hidden" name="task_id[` + n + `][]" value="` + res[i].task_id + `">
+                                                            <input type="text" readonly value="` + res[i].task_name + `">
+                                                        </div>    
+                                                    </td> 
+                                                    <td><input type="text" id="buying_idr_` + n + `" name="buying_idr[` + n + `][]" class=" form-control inp" value="` + res[i].buying_idr + `"></td>
+                                                    <td><input type="text" id="buying_usd_` + n + `" name="buying_usd[` + n + `][]" class=" form-control inp" value="` + res[i].buying_usd + `"></td>
+                                                    <td><input type="text" id="selling_idr_` + n + `" name="selling_idr[` + n + `][]" class=" form-control inp" value="` + res[i].selling_idr + `"></td>
+                                                    <td><input type="text" id="selling_usd_` + n + `" name="selling_usd[` + n + `][]" class=" form-control inp" value="` + res[i].selling_usd + `"></td>
+                                                    <td><input type="text" id="profit_idr_` + n + `" name="profit_idr[` + n + `][]" class=" form-control inp" value="` + res[i].profit_idr + `"></td>
+                                                    <td><input type="text" id="profit_usd_` + n + `" name="profit_usd[` + n + `][]" class=" form-control inp" value="` + res[i].profit_usd + `"></td>
+                                                    <td style="text-align:center;">
+                                                        <a type='button' onclick='delete_row("row_` + _id_row + `")' class='closebtn btn btn-warning'><i class='fas fa-times'></i></a>
+                                                    </td>
+                                                </tr>`;
+                                                    var row = table.insertRow(table_len).outerHTML = _row;
+                                                }
+                                            }
+                                        });
+                                        closeAllLists();
+                                    });
+                                    a.appendChild(b);
                                 }
                             }
-                            /*create a DIV element for each matching element:*/
-                            b = document.createElement("DIV");
-                            /*make the matching letters bold:*/
-                            b.innerHTML = "<strong>" + isi[i].task_name.substr(0, val.length) + "</strong>";
-                            b.innerHTML += isi[i].task_name.substr(val.length);
-                            /*insert a input field that will hold the current array item's value:*/
-                            b.innerHTML += "<input type='hidden' name='task_js[]' value='" + isi[i].id + "' placeholder='" + isi[i].task_name + "'>";
-                            /*execute a function when someone clicks on the item value (DIV element):*/
-                            b.addEventListener("click", function(e) {
-                                /*insert the value for the autocomplete text field:*/
-                                view.value = this.getElementsByTagName("input")[0].placeholder;
-                                inp.value = this.getElementsByTagName("input")[0].value;
-                                /*close the list of autocompleted values,
-                                (or any other open lists of autocompleted values:*/
-                                closeAllLists();
-                            });
-                            a.appendChild(b);
                         }
                     }
                 },
@@ -507,7 +615,7 @@ MULAI AUTO COMPLETE
 
         });
         /*execute a function presses a key on the keyboard:*/
-        view.addEventListener("keydown", function(e) {
+        inp_id.addEventListener("keydown", function(e) {
             var x = document.getElementById(this.id + "autocomplete-list");
             // console.log(val = this.value)
             if (x) x = x.getElementsByTagName("div");
@@ -556,7 +664,7 @@ MULAI AUTO COMPLETE
             except the one passed as an argument:*/
             var x = document.getElementsByClassName("autocomplete-items");
             for (var i = 0; i < x.length; i++) {
-                if (elmnt != x[i] && elmnt != view) {
+                if (elmnt != x[i] && elmnt != inp_id) {
                     x[i].parentNode.removeChild(x[i]);
                 }
             }

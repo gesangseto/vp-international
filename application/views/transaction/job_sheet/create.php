@@ -124,80 +124,219 @@ if (isset($response)) {
             <div class="card-body">
                 <div class="box box-primary">
                     <div class="row">
+                        <div class="col-md-6">
+                            <label>JOB SHEETS NO</label>
+                            <input name="job_sheets_id" readonly type="text" value="<?= $form['job_sheets_id'] ?>">
+                        </div>
+                        <div class="col-md-6">
+                            <label>Add Job Order</label><br>
+                            <button type="button" onclick="add_job_order()" class="btn btn-warning"><i class="fa fa-plus"></i></button>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <br />
                         <div class="col-md-12">
-                            <table class="table">
-                                <tbody>
-                                    <tr>
-                                        <td>JOB SHEETS NO</td>
-                                        <td>
-                                            <input name="job_sheets_id" readonly type="text" value="<?= $form['job_sheets_id'] ?>">
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>ORDER NO</td>
-                                        <td>
-                                            <div class="input-group">
-                                                <div id="order_number">
-                                                    <input id="inp_order_number" name="order_number" required onclick="get_order_number('inp_order_number')" type="text" autocomplete="off" placeholder="Seach Order No">
-                                                    <input id="job_order_id" name="job_order_id" required type="hidden">
-                                                </div>
+                            <ul class="nav nav-tabs" id="tablist" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="tab1" data-toggle="tab" href="#content_tab1" role="tab" aria-controls="tab1" aria-selected="true">Sheet 1</a>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content" id="tabcontentlist">
+                                <div class="tab-pane fade show active" id="content_tab1" role="tabpanel" aria-labelledby="content_tab1">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td>ORDER NO</td>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <div id="order_number">
+                                                            <input id="inp_order_number_1" name="order_number[1]" required onclick="get_order_number('inp_order_number_1',1)" type="text" autocomplete="off" placeholder="Seach Order No">
+                                                            <input id="job_order_id_1" name="job_order_id[1]" required type="hidden">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>EX VESSEL</td>
+                                                <td>
+                                                    <input readonly name="ex_vessel[1]" id="ex_vessel_1" type="text" class="form-control" required value="" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>CONTAINER NO</td>
+                                                <td>
+                                                    <input id="container_no_1" type="text" readonly name="container_no[1]" value="" class=" form-control">
+                                                </td>
+                                                <td>MBL NO</td>
+                                                <td>
+                                                    <input id="mbl_no_1" readonly name="mbl_no[1]" class="form-control" type="text" required value="" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>HBL NO</td>
+                                                <td>
+                                                    <input readonly name="hbl_no[1]" id="hbl_no_1" class="form-control" type="text" required value="" />
+                                                </td>
+                                                <td>SHIPPING</td>
+                                                <td>
+                                                    <input readonly name="shipping[1]" id="shipping_1" class="form-control" type="text" required value="" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>ETA</td>
+                                                <td>
+                                                    <input readonly name="eta[1]" id="eta_1" class="form-control" type="text" required value="" />
+                                                </td>
+                                                <td>CONSIGNE</td>
+                                                <td>
+                                                    <input readonly name="consignee[1]" id="consignee_1" class="form-control" type="text" required value="" />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="box-header">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label>
+                                                    <h4 class="box-title" id="customControlInline"> Details</h4>
+                                                </label>
                                             </div>
-                                        </td>
-                                        <td>EX VESSEL</td>
-                                        <td>
-                                            <input readonly name="ex_vessel" id="ex_vessel" type="text" class="form-control" required value="<?= @$form['ex_vessel'] ?>" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>CONTAINER NO</td>
-                                        <td>
-                                            <input id="container_no" type="text" readonly name="container_no" value="<?= @$form['container_no'] ?>" class=" form-control">
-                                        </td>
-                                        <td>MBL NO</td>
-                                        <td>
-                                            <input id="mbl_no" readonly name="mbl_no" class="form-control" type="text" required value="<?= @$form['mbl_no'] ?>" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>HBL NO</td>
-                                        <td>
-                                            <input readonly name="hbl_no" id="hbl_no" class="form-control" type="text" required value="<?= @$form['hbl_no'] ?>" />
-                                        </td>
-                                        <td>SHIPPING</td>
-                                        <td>
-                                            <input readonly name="shipping" id="shipping" class="form-control" type="text" required value="<?= @$form['shipping'] ?>" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>ETA</td>
-                                        <td>
-                                            <input readonly name="eta" id="eta" class="form-control" type="text" required value="<?= @$form['eta'] ?>" />
-                                        </td>
-                                        <td>CONSIGNE</td>
-                                        <td>
-                                            <input readonly name="consignee" id="consignee" class="form-control" type="text" required value="<?= @$form['consignee'] ?>" />
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                        </div>
+                                        <div class="">
+                                            <div class="feebox">
+                                                <table class="table" id="table_1">
+                                                    <thead>
+                                                        <tr style="text-align: center;">
+                                                            <td rowspan="2" width="10%">TASK</td>
+                                                            <td colspan="2">Buying</td>
+                                                            <td colspan="2">Selling</td>
+                                                            <td colspan="2">Profit</td>
+                                                            <td rowspan="2">Action</td>
+                                                        </tr>
+                                                        <tr style="text-align: center;">
+                                                            <td>IDR</td>
+                                                            <td>USD</td>
+                                                            <td>IDR</td>
+                                                            <td>USD</td>
+                                                            <td>IDR</td>
+                                                            <td>USD</td>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                                <hr />
+                                                <table class="table" id="tableTotal">
+                                                    <thead>
+                                                        <tr id="" style="text-align: center;">
+                                                            <td width="10%"><strong>TOTAL</strong></td>
+                                                            <td><input type="text" id="total_buying_idr_1" name="total_buying_idr[1]" readonly class="form-control inp" value="0"></td>
+                                                            <td><input type="text" id="total_buying_usd_1" name="total_buying_usd[1]" readonly class="form-control inp" value="0"></td>
+                                                            <td><input type="text" id="total_selling_idr_1" name="total_selling_idr[1]" readonly class="form-control inp" value="0"></td>
+                                                            <td><input type="text" id="total_selling_usd_1" name="total_selling_usd[1]" readonly class="form-control inp" value="0"></td>
+                                                            <td><input type="text" id="total_profit_idr_1" name="total_profit_idr[1]" readonly class="form-control inp" value="0"></td>
+                                                            <td><input type="text" id="total_profit_usd_1" name="total_profit_usd[1]" readonly class="form-control inp" value="0"></td>
+                                                            <td><button type="button" onclick="make_total(1)" class="btn btn-info"><i class="fa fa-calculator"> </button></td>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!--./box-header-->
                     <!-- /.box-body -->
                     <hr />
-                    <div class="box-header">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label>
-                                    <h4 class="box-title" id="customControlInline"> Details</h4>
-                                </label>
+                    <!--./col-md-4-->
+                    <!--./col-md-4-->
+                    <div class="col-md-12 col-sm-12">
+                        <br />
+                        <button type="submit" name="submit" id="contact_submit" class="btn btn-info pull-right"> Simpan</button>
+                        <a href="#" onclick="window.location.replace(' <?= site_url() . $temp_url  ?>');" class="btn btn-default pull-right"> Kembali</a>
+
+                    </div>
+                    <!--./col-md-12-->
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="<?= base_url() ?>assets/ajax/3.4.1/jquery.min.js"></script>
+
+
+<script type="text/javascript">
+    var arr_list_jobsheet = [];
+
+    function add_job_order() {
+        var no_tab = $("#tablist li").length
+        no_tab = no_tab + 1;
+        var li = ` <li class="nav-item" id="li_tab` + no_tab + `">
+                        <a class="nav-link" id="tab` + no_tab + `" data-toggle="tab" href="#content_tab` + no_tab + `" role="tab" aria-controls="#content_tab` + no_tab + `" aria-selected="false">Sheet ` + no_tab + ` </a>
+                    </li>`;
+        var content = ` 
+                        <a onclick="close_sheet(` + no_tab + `)" class="btn btn-danger float-right" style="color:white;">close sheet <i class="fa fa-times"></i></a>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>ORDER NO</td>
+                                    <td>
+                                        <div class="input-group">
+                                            <div id="order_number">
+                                                <input id="inp_order_number_` + no_tab + `" name="order_number[` + no_tab + `]" required onclick="get_order_number('inp_order_number_` + no_tab + `',` + no_tab + `)" type="text" autocomplete="off" placeholder="Seach Order No">
+                                                <input id="job_order_id_` + no_tab + `" name="job_order_id[` + no_tab + `]" required type="hidden">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>EX VESSEL</td>
+                                    <td>
+                                        <input readonly name="ex_vessel[` + no_tab + `]" id="ex_vessel_` + no_tab + `" type="text" class="form-control" required value="" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>CONTAINER NO</td>
+                                    <td>
+                                        <input id="container_no_` + no_tab + `" type="text" readonly name="container_no[` + no_tab + `]" value="" class=" form-control">
+                                    </td>
+                                    <td>MBL NO</td>
+                                    <td>
+                                        <input id="mbl_no_` + no_tab + `" readonly name="mbl_no[` + no_tab + `]" class="form-control" type="text" required value="" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>HBL NO</td>
+                                    <td>
+                                        <input readonly name="hbl_no[` + no_tab + `]" id="hbl_no_` + no_tab + `" class="form-control" type="text" required value="" />
+                                    </td>
+                                    <td>SHIPPING</td>
+                                    <td>
+                                        <input readonly name="shipping[` + no_tab + `]" id="shipping_` + no_tab + `" class="form-control" type="text" required value="" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ETA</td>
+                                    <td>
+                                        <input readonly name="eta[` + no_tab + `]" id="eta_` + no_tab + `" class="form-control" type="text" required value="" />
+                                    </td>
+                                    <td>CONSIGNE</td>
+                                    <td>
+                                        <input readonly name="consignee[` + no_tab + `]" id="consignee_` + no_tab + `" class="form-control" type="text" required value="" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="box-header">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>
+                                        <h4 class="box-title" id="customControlInline"> Details</h4>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
                         <div class="">
                             <div class="feebox">
-                                <table class="table" id="tableID">
+                                <table class="table" id="table_` + no_tab + `">
                                     <thead>
                                         <tr style="text-align: center;">
                                             <td rowspan="2" width="10%">TASK</td>
@@ -221,46 +360,35 @@ if (isset($response)) {
                                     <thead>
                                         <tr id="" style="text-align: center;">
                                             <td width="10%"><strong>TOTAL</strong></td>
-                                            <td><input type="text" id="total_buying_idr" name="total_buying_idr" readonly class="form-control inp" value="0"></td>
-                                            <td><input type="text" id="total_buying_usd" name="total_buying_usd" readonly class="form-control inp" value="0"></td>
-                                            <td><input type="text" id="total_selling_idr" name="total_selling_idr" readonly class="form-control inp" value="0"></td>
-                                            <td><input type="text" id="total_selling_usd" name="total_selling_usd" readonly class="form-control inp" value="0"></td>
-                                            <td><input type="text" id="total_profit_idr" name="total_profit_idr" readonly class="form-control inp" value="0"></td>
-                                            <td><input type="text" id="total_profit_usd" name="total_profit_usd" readonly class="form-control inp" value="0"></td>
-                                            <td><button type="button" onclick="make_total()" class="btn btn-info"><i class="fa fa-calculator"> </button></td>
+                                            <td><input type="text" id="total_buying_idr_` + no_tab + `" name="total_buying_idr[` + no_tab + `]" readonly class="form-control inp" value="0"></td>
+                                            <td><input type="text" id="total_buying_usd_` + no_tab + `" name="total_buying_usd[` + no_tab + `]" readonly class="form-control inp" value="0"></td>
+                                            <td><input type="text" id="total_selling_idr_` + no_tab + `" name="total_selling_idr[` + no_tab + `]" readonly class="form-control inp" value="0"></td>
+                                            <td><input type="text" id="total_selling_usd_` + no_tab + `" name="total_selling_usd[` + no_tab + `]" readonly class="form-control inp" value="0"></td>
+                                            <td><input type="text" id="total_profit_idr_` + no_tab + `" name="total_profit_idr[` + no_tab + `]" readonly class="form-control inp" value="0"></td>
+                                            <td><input type="text" id="total_profit_usd_` + no_tab + `" name="total_profit_usd[` + no_tab + `]" readonly class="form-control inp" value="0"></td>
+                                            <td><button type="button" onclick="make_total(` + no_tab + `)" class="btn btn-info"><i class="fa fa-calculator"> </button></td>
                                         </tr>
                                     </thead>
                                 </table>
                             </div>
                         </div>
-                    </div>
-                    <!--./col-md-4-->
-                    <!--./col-md-4-->
-                    <div class="col-md-12 col-sm-12">
-                        <br />
-                        <button type="submit" name="submit" id="contact_submit" class="btn btn-info pull-right"> Simpan</button>
-                        <a href="#" onclick="window.location.replace(' <?= site_url() . $temp_url  ?>');" class="btn btn-default pull-right"> Kembali</a>
+                    </div>`;
+        var tab = ` <div class="tab-pane fade" id="content_tab` + no_tab + `" role="tabpanel" aria-labelledby="content_tab` + no_tab + `">
+                            ` + content + `
+                        </div>`;
 
-                    </div>
-                    <!--./col-md-12-->
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-<div id="content_list_task"></div>
+        $("#tablist").append(li);
+        $("#tabcontentlist").append(tab);
+        // console.log(no_tab);
+    }
 
-<script src="<?= base_url() ?>assets/ajax/3.4.1/jquery.min.js"></script>
-
-
-<script type="text/javascript">
-    function make_total() {
-        var buying_idr = document.getElementsByName('buying_idr[]');
-        var buying_usd = document.getElementsByName('buying_usd[]');
-        var selling_idr = document.getElementsByName('selling_idr[]');
-        var selling_usd = document.getElementsByName('selling_usd[]');
-        var profit_idr = document.getElementsByName('profit_idr[]');
-        var profit_usd = document.getElementsByName('profit_usd[]');
+    function make_total(n) {
+        var buying_idr = document.getElementsByName('buying_idr[' + n + '][]');
+        var buying_usd = document.getElementsByName('buying_usd[' + n + '][]');
+        var selling_idr = document.getElementsByName('selling_idr[' + n + '][]');
+        var selling_usd = document.getElementsByName('selling_usd[' + n + '][]');
+        var profit_idr = document.getElementsByName('profit_idr[' + n + '][]');
+        var profit_usd = document.getElementsByName('profit_usd[' + n + '][]');
 
         var total_buying_idr = 0
         var total_buying_usd = 0
@@ -285,25 +413,29 @@ if (isset($response)) {
             total_profit_idr += +parseFloat(inp_profit_idr).toFixed(3);
             total_profit_usd += +parseFloat(inp_profit_usd).toFixed(3);
         }
-        $("#total_buying_idr").val(total_buying_idr);
-        $("#total_buying_usd").val(total_buying_usd);
-        $("#total_selling_idr").val(total_selling_idr);
-        $("#total_selling_usd").val(total_selling_usd);
-        $("#total_profit_idr").val(total_profit_idr);
-        $("#total_profit_usd").val(total_profit_usd);
+        $("#total_buying_idr_" + n).val(total_buying_idr);
+        $("#total_buying_usd_" + n).val(total_buying_usd);
+        $("#total_selling_idr_" + n).val(total_selling_idr);
+        $("#total_selling_usd_" + n).val(total_selling_usd);
+        $("#total_profit_idr_" + n).val(total_profit_idr);
+        $("#total_profit_usd_" + n).val(total_profit_usd);
 
     }
 
-    function delete_row(id) {
-        var table = document.getElementById("tableID");
-        var rowCount = table.rows.length;
-        $("#row" + id).html("");
+    function delete_row(_id_row) {
+        $("#" + _id_row).html("");
+    }
+
+    function close_sheet(_id_row) {
+        delete arr_list_jobsheet[_id_row];
+        var li_tab = $("#li_tab" + _id_row).remove();
+        var content_tab = $("#content_tab" + _id_row).remove();
     }
 </script>
 
 
 <script>
-    function get_order_number(inp_id) {
+    function get_order_number(inp_id, n) {
         var inp_id = document.getElementById(inp_id)
         /*the autocomplete function takes two arguments,
         the text field element and an array of possible autocompleted values:*/
@@ -335,66 +467,76 @@ if (isset($response)) {
                     } else {
                         for (i = 0; i < isi.length; i++) {
                             if (isi[i].order_number.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-                                b = document.createElement("DIV");
-                                /*make the matching letters bold:*/
-                                b.setAttribute('all-data', JSON.stringify(isi[i]));
-                                b.innerHTML = "<strong>" + isi[i].order_number.substr(0, val.length) + "</strong>";
-                                b.innerHTML += isi[i].order_number.substr(val.length);
-                                /*insert a input field that will hold the current array item's value:*/
-                                b.innerHTML += "<input type='hidden'>";
-                                /*execute a function when someone clicks on the item value (DIV element):*/
-                                b.addEventListener("click", function(e) {
-                                    var selected_val = JSON.parse(this.getAttribute('all-data'));
-                                    var order_number = selected_val.order_number;
-                                    $('#inp_order_number').val(selected_val.order_number);
-                                    $('#job_order_id').val(selected_val.job_order_id);
-                                    $('#ex_vessel').val(selected_val.vessel);
-                                    $('#container_no').val(selected_val.container_no);
-                                    $('#mbl_no').val(selected_val.mbl_no);
-                                    $('#hbl_no').val(selected_val.hbl_no);
-                                    $('#shipping').val(selected_val.shipping_name);
-                                    $('#eta').val(selected_val.eta);
-                                    $('#consignee').val(selected_val.consignee);
+                                var tampilkan = true;
+                                for (const jb_sht of arr_list_jobsheet) {
+                                    if (jb_sht == isi[i].order_number) {
+                                        tampilkan = false
+                                    }
+                                }
+                                if (tampilkan == true) {
+                                    b = document.createElement("DIV");
+                                    /*make the matching letters bold:*/
+                                    b.setAttribute('all-data', JSON.stringify(isi[i]));
+                                    b.innerHTML = "<strong>" + isi[i].order_number.substr(0, val.length) + "</strong>";
+                                    b.innerHTML += isi[i].order_number.substr(val.length);
+                                    /*insert a input field that will hold the current array item's value:*/
+                                    b.innerHTML += "<input type='hidden'>";
+                                    /*execute a function when someone clicks on the item value (DIV element):*/
+                                    b.addEventListener("click", function(e) {
+                                        var selected_val = JSON.parse(this.getAttribute('all-data'));
+                                        var order_number = selected_val.order_number;
+                                        $('#inp_order_number_' + n).val(selected_val.order_number);
+                                        $('#job_order_id_' + n).val(selected_val.job_order_id);
+                                        $('#ex_vessel_' + n).val(selected_val.vessel);
+                                        $('#container_no_' + n).val(selected_val.container_no);
+                                        $('#mbl_no_' + n).val(selected_val.mbl_no);
+                                        $('#hbl_no_' + n).val(selected_val.hbl_no);
+                                        $('#shipping_' + n).val(selected_val.shipping_name);
+                                        $('#eta_' + n).val(selected_val.eta);
+                                        $('#consignee_' + n).val(selected_val.consignee);
+                                        $('#consignee_' + n).val(selected_val.consignee);
+                                        arr_list_jobsheet[n] = selected_val.order_number;
+                                        var table = document.getElementById("table_" + n);
+                                        var table_len = (table.rows.length);
+                                        var id = parseInt(table_len);
 
-                                    var table = document.getElementById("tableID");
-                                    var table_len = (table.rows.length);
-                                    var id = parseInt(table_len);
-
-                                    $.ajax({
-                                        type: "POST", // Method pengiriman data bisa dengan GET atau POST
-                                        url: "<?= site_url() ?>transaction/Ajax_data/get_all_task_by_order_number", // Isi dengan url/path file php yang dituju
-                                        data: {
-                                            order_number: order_number
-                                        },
-                                        success: function(res) {
-                                            res = JSON.parse(res);
-                                            console.log(res)
-                                            for (i = 0; i < res.length; i++) {
-                                                var _row = `
-                                                <tr id='row` + id + i + `'>
+                                        $.ajax({
+                                            type: "POST", // Method pengiriman data bisa dengan GET atau POST
+                                            url: "<?= site_url() ?>transaction/Ajax_data/get_all_task_by_order_number", // Isi dengan url/path file php yang dituju
+                                            data: {
+                                                order_number: order_number
+                                            },
+                                            success: function(res) {
+                                                res = JSON.parse(res);
+                                                // console.log(res)
+                                                for (i = 0; i < res.length; i++) {
+                                                    var _id_row = n + `_` + id + i
+                                                    var _row = `
+                                                <tr id='row_` + _id_row + `'>
                                                     <td>
                                                         <div class="autocomplete" style="width:100%;">
-                                                            <input id="inp` + id + i + `" required type="hidden" name="task_id[]" value="` + res[i].task_id + `">
+                                                            <input id="inp` + id + i + `" required type="hidden" name="task_id[` + n + `][]" value="` + res[i].task_id + `">
                                                             <input type="text" readonly value="` + res[i].task_name + `">
                                                         </div>    
                                                     </td> 
-                                                    <td><input type="text" id="buying_idr" name="buying_idr[]" class=" form-control inp" value="` + res[i].buying_idr + `"></td>
-                                                    <td><input type="text" id="buying_usd" name="buying_usd[]" class=" form-control inp" value="` + res[i].buying_usd + `"></td>
-                                                    <td><input type="text" id="selling_idr" name="selling_idr[]" class=" form-control inp" value="` + res[i].selling_idr + `"></td>
-                                                    <td><input type="text" id="selling_usd" name="selling_usd[]" class=" form-control inp" value="` + res[i].selling_usd + `"></td>
-                                                    <td><input type="text" id="profit_idr" name="profit_idr[]" class=" form-control inp" value="` + res[i].profit_idr + `"></td>
-                                                    <td><input type="text" id="profit_usd" name="profit_usd[]" class=" form-control inp" value="` + res[i].profit_usd + `"></td>
+                                                    <td><input type="text" id="buying_idr_` + n + `" name="buying_idr[` + n + `][]" class=" form-control inp" value="` + res[i].buying_idr + `"></td>
+                                                    <td><input type="text" id="buying_usd_` + n + `" name="buying_usd[` + n + `][]" class=" form-control inp" value="` + res[i].buying_usd + `"></td>
+                                                    <td><input type="text" id="selling_idr_` + n + `" name="selling_idr[` + n + `][]" class=" form-control inp" value="` + res[i].selling_idr + `"></td>
+                                                    <td><input type="text" id="selling_usd_` + n + `" name="selling_usd[` + n + `][]" class=" form-control inp" value="` + res[i].selling_usd + `"></td>
+                                                    <td><input type="text" id="profit_idr_` + n + `" name="profit_idr[` + n + `][]" class=" form-control inp" value="` + res[i].profit_idr + `"></td>
+                                                    <td><input type="text" id="profit_usd_` + n + `" name="profit_usd[` + n + `][]" class=" form-control inp" value="` + res[i].profit_usd + `"></td>
                                                     <td style="text-align:center;">
-                                                        <a type='button' onclick='delete_row(` + id + i + `)' class='closebtn btn btn-warning'><i class='fas fa-times'></i></a>
+                                                        <a type='button' onclick='delete_row("row_` + _id_row + `")' class='closebtn btn btn-warning'><i class='fas fa-times'></i></a>
                                                     </td>
                                                 </tr>`;
-                                                var row = table.insertRow(table_len).outerHTML = _row;
+                                                    var row = table.insertRow(table_len).outerHTML = _row;
+                                                }
                                             }
-                                        }
+                                        });
+                                        closeAllLists();
                                     });
-                                    closeAllLists();
-                                });
-                                a.appendChild(b);
+                                    a.appendChild(b);
+                                }
                             }
                         }
                     }

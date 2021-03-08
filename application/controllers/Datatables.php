@@ -292,9 +292,9 @@ class Datatables extends Base_controller
     function get_job_sheets()
     {
         $BaseData = array(
-            'select' => 'detail_job_sheets.*,job_order.order_number,COUNT(task_id) AS total_task',
+            'select' => 'detail_job_sheets.*,COUNT(DISTINCT(detail_job_sheets.job_order_id)) as total_order_number,COUNT(task_id) AS total_task',
             'table' => 'detail_job_sheets',
-            'group_by' => 'order_number',
+            'group_by' => 'job_sheets_id',
             'left_join' => array("table" => "job_order", "on" => "job_order.id=detail_job_sheets.job_order_id"),
             'column_order' => array(null, 'order_number', 'job_order_id'),
             'column_search' => array('order_number', 'job_order_id'),
@@ -309,9 +309,9 @@ class Datatables extends Base_controller
             $btn_delete = array("url" => $_POST['url'], "action" => "delete", "id" => $field->job_sheets_id);
             $no++;
             $row = array();
-            $row[] = $field->order_number;
-            $row[] = $field->total_task;
             $row[] = $field->job_sheets_id;
+            $row[] = $field->total_order_number;
+            $row[] = $field->total_task;
             $row[] = $this->tools->action_for_ajax($btn_read) . '
             ' . $this->tools->action_for_ajax($btn_update) . '
             ' . $this->tools->action_for_ajax($btn_delete);
