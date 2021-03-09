@@ -504,7 +504,7 @@ if (isset($response)) {
 
                                     $.ajax({
                                         type: "POST", // Method pengiriman data bisa dengan GET atau POST
-                                        url: "<?= site_url() ?>transaction/Ajax_data/get_all_task_by_order_number", // Isi dengan url/path file php yang dituju
+                                        url: "<?= site_url() ?>transaction/Ajax_data/get_task_by_order_number", // Isi dengan url/path file php yang dituju
                                         data: {
                                             order_number: order_number
                                         },

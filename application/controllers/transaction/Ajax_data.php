@@ -109,8 +109,23 @@ class Ajax_data extends Base_controller
         $arr = [];
         if (isset($_POST['text'])) {
             $query =  '
-            SELECT * FROM list_cash_advanced AS a
-            WHERE a.order_number LIKE "' . $_POST['text'] . '%" AND a.status ="Verified"';
+            SELECT * FROM job_order AS a
+            WHERE a.order_number LIKE "' . $_POST['text'] . '%"';
+            $this->load->model('Transaction/_Job_sheet', '_Job_sheet');
+            $data = $this->_Job_sheet->_custome_query($query);
+        }
+        echo json_encode($data);
+    }
+    public function get_task_by_order_number()
+    {
+        $data = [];
+        $arr = [];
+        if (isset($_POST['order_number'])) {
+            $query =  '
+            SELECT * FROM job_order AS a
+            LEFT JOIN detail_job_order AS b ON a.id  = b.job_order_id
+            LEFT JOIN list_task AS c ON b.task_id = c.id
+            WHERE a.order_number = "' . $_POST['order_number'] . '"';
             $this->load->model('Transaction/_Job_sheet', '_Job_sheet');
             $data = $this->_Job_sheet->_custome_query($query);
         }

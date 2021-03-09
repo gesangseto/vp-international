@@ -9,7 +9,6 @@ class Invoice extends Base_controller
         parent::__construct();
         $this->_isLogin();
         $this->_check_permission();
-        $this->load->model('Transaction/_Job_order', '_Job_order');
     }
     public function index()
     {
@@ -26,8 +25,26 @@ class Invoice extends Base_controller
         $data['form']['invoice_number'] = $invoice_format;
         $data['form']['invoice_date'] = $year . '-' . $month . '-' . $day;
         if (@$_POST['invoice_number']) {
-            echo json_encode($_POST);
-            die;
+            for ($i = 0; $i < count($_POST['task_id']); $i++) {
+                $form[] = array(
+                    "invoice_number" => $_POST['invoice_number'],
+                    "invoice_date" => $_POST['invoice_date'],
+                    "shipment_type" => $_POST['shipment_type'],
+                    "agent_id" => $_POST['agent_id'],
+                    "job_order_id" => $_POST['job_order_id'],
+                    "task_id" => $_POST['task_id'][$i],
+                    "quantity" => $_POST['quantity'][$i],
+                    "currency" => $_POST['currency'][$i],
+                    "rate" => $_POST['rate'][$i],
+                    "amount" => $_POST['amount'][$i],
+                    "vat" => $_POST['vat'][$i],
+                    "total" => $_POST['total'][$i],
+                    "grand_total" => $_POST['grand_total']
+                );
+            }
+
+            $this->load->model('Transaction/_Invoice', '_Invoice');
+            $data['response'] = $this->_Invoice->_add_batch_invoice($form);
         }
         $this->load->view('transaction/invoice/create', $data);
         $this->load->view('templates/Footer');
