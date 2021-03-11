@@ -66,7 +66,7 @@ class Tools
                         } elseif (@$data['action'] == 'update'  && $row_children['update'] == '1') {
                             $button = '<a  href="' . site_url($url . '/update?id=' . @$data['id']) . '" class="btn btn-warning btn-sm"><i class="fas fa-pen"></i></a>';
                         } elseif (@$data['action'] == 'delete'  && $row_children['delete'] == '1') {
-                            $button = '<button onclick="hapus(' . @$data['id'] . ')" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>';
+                            $button = "<button onclick='hapus(\"" . @$data['id'] . "\")' class='btn btn-danger btn-sm'><i class='fas fa-trash'></i></button>";
                         }
                     }
                 }
@@ -89,12 +89,15 @@ class Tools
         $order_format = "VP-" . $year . "/" . $month . "-" . $day;
         return $order_format;
     }
-    public function invoice_format()
+    public function invoice_format($num = null)
     {
         $year = date("Y");
         $month = date("m");
         $day = date("d");
-        $invoice_format = "VPAC-" . $year . "/" . $month . "-" . $day . 'A';
+        $invoice_format = "VPAC-" . $year . "/" . $month . "-" . $day;
+        if ($num != null) {
+            $invoice_format = "VPAC-" . $year . "/" . $month . "-" . $day .  $num . 'A';
+        }
         return $invoice_format;
     }
 }

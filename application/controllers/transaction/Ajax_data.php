@@ -60,6 +60,17 @@ class Ajax_data extends Base_controller
         }
         echo json_encode($data);
     }
+    public function get_customer()
+    {
+        $data = [];
+        // die;
+        if (isset($_POST['text'])) {
+            $value['search'] =  $_POST['text'];
+            $this->load->model('Transaction/_Bill_note', '_Bill_note');
+            $data = $this->_Bill_note->get_customer($value);
+        }
+        echo json_encode($data);
+    }
     public function get_agent()
     {
         $data = [];

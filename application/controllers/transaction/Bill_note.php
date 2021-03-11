@@ -2,7 +2,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 require_once(APPPATH . 'controllers/Base_controller.php');
 
-class Invoice extends Base_controller
+class Bill_note extends Base_controller
 {
     public function __construct()
     {
@@ -12,19 +12,19 @@ class Invoice extends Base_controller
     }
     public function index()
     {
-        $this->load->view('transaction/invoice/index');
+        $this->load->view('transaction/bill_note/index');
         $this->load->view('templates/Footer');
     }
     public function create()
     {
+        $this->load->model('Transaction/_Bill_note', '_Bill_note');
         $year = date("Y");
         $month = date("m");
         $day = date("d");
         $data = array();
         $invoice_format = $this->tools->invoice_format();
         $query['other'] = ' AND a.invoice_number LIKE "' . $invoice_format . '%" ORDER BY a.invoice_number DESC LIMIT 1';
-        $this->load->model('Transaction/_Invoice', '_Invoice');
-        $result = $this->_Invoice->_get_invoice($query);
+        $result = $this->_Bill_note->_get_bill_note($query);
         $invoice_number = '001';
         if (@$result[0]) {
             $invoice_number = substr($result[0]['invoice_number'], -4, 3);
@@ -40,7 +40,7 @@ class Invoice extends Base_controller
                     "invoice_number" => $_POST['invoice_number'],
                     "invoice_date" => $_POST['invoice_date'],
                     "shipment_type" => $_POST['shipment_type'],
-                    "agent_id" => $_POST['agent_id'],
+                    "customer_id" => $_POST['customer_id'],
                     "job_order_id" => $_POST['job_order_id'],
                     "task_id" => $_POST['task_id'][$i],
                     "quantity" => $_POST['quantity'][$i],
@@ -52,42 +52,40 @@ class Invoice extends Base_controller
                     "grand_total" => $_POST['grand_total']
                 );
             }
-
-            $this->load->model('Transaction/_Invoice', '_Invoice');
-            $data['response'] = $this->_Invoice->_add_batch_invoice($form);
+            $data['response'] = $this->_Bill_note->_add_batch_bill_note($form);
         }
-        $this->load->view('transaction/invoice/create', $data);
+        $this->load->view('transaction/bill_note/create', $data);
         $this->load->view('templates/Footer');
     }
 
     public function read()
     {
         $data = array();
-        $this->load->model('Transaction/_Invoice', '_Invoice');
+        $this->load->model('Transaction/_Bill_note', '_Bill_note');
         if (!empty($_GET['id'])) {
-            $data['invoice']  = $this->_Invoice->_get_invoice(array('invoice_number' => $_GET['id']));
-            $data['agent']  = $this->_Invoice->_custome_query('SELECT a.* FROM list_agent AS a LEFT JOIN invoice AS b ON a.agent_id = b.agent_id WHERE b.invoice_number=\'' . $_GET['id'] . '\' LIMIT 1');
-            $data['agent'] =    $data['agent'][0];
+            $data['bill_note']  = $this->_Bill_note->_get_bill_note(array('invoice_number' => $_GET['id']));
+            $data['customer']  = $this->_Bill_note->_custome_query('SELECT a.* FROM list_customer AS a LEFT JOIN bill_note AS b ON a.customer_id = b.customer_id WHERE b.invoice_number=\'' . $_GET['id'] . '\' LIMIT 1');
+            $data['customer'] =    $data['customer'][0];
         }
-        $this->load->view('transaction/invoice/read', $data);
+        $this->load->view('transaction/bill_note/read', $data);
         $this->load->view('templates/Footer');
     }
 
     public function update()
     {
         $data = array();
-        $this->load->model('Transaction/_Invoice', '_Invoice');
+        $this->load->model('Transaction/_Bill_note', '_Bill_note');
         if (!empty($_GET['id'])) {
-            $data['invoice']  = $this->_Invoice->_get_invoice(array('invoice_number' => $_GET['id']));
-            $data['agent']  = $this->_Invoice->_custome_query('SELECT a.* FROM list_agent AS a LEFT JOIN invoice AS b ON a.agent_id = b.agent_id WHERE b.invoice_number=\'' . $_GET['id'] . '\' LIMIT 1');
-            $data['agent'] =    $data['agent'][0];
+            $data['bill_note']  = $this->_Bill_note->_get_bill_note(array('invoice_number' => $_GET['id']));
+            $data['customer']  = $this->_Bill_note->_custome_query('SELECT a.* FROM list_customer AS a LEFT JOIN bill_note AS b ON a.customer_id = b.customer_id WHERE b.invoice_number=\'' . $_GET['id'] . '\' LIMIT 1');
+            $data['customer'] =    $data['customer'][0];
         } elseif (!empty($_POST['invoice_number'])) {
             if (!$_POST["task_id"][0]) {
                 $response = array('messages' => 'Task cannot be null', 'statusCode' => '400');
                 $this->session->set_flashdata('response', $response);
                 redirect('transaction/invoice/update?id=' . $_POST['invoice_number']);
             }
-            $id = array_values($_POST["invoice_id"]);
+            $id = array_values($_POST["bill_note_id"]);
             $task_id = array_values($_POST["task_id"]);
             $quantity = array_values($_POST["quantity"]);
             $currency = array_values($_POST["currency"]);
@@ -100,7 +98,7 @@ class Invoice extends Base_controller
                     "invoice_number" => $_POST['invoice_number'],
                     "invoice_date" => $_POST['invoice_date'],
                     "shipment_type" => $_POST['shipment_type'],
-                    "agent_id" => $_POST['agent_id'],
+                    "customer_id" => $_POST['customer_id'],
                     "job_order_id" => $_POST['job_order_id'],
                     "id" => @$id[$i],
                     "task_id" => $task_id[$i],
@@ -114,11 +112,11 @@ class Invoice extends Base_controller
                 );
             }
 
-            $data['response'] = $this->_Invoice->_update_batch_invoice($form);
+            $data['response'] = $this->_Bill_note->_update_batch_bill_note($form);
             $this->session->set_flashdata('response', $data['response']);
-            redirect('transaction/invoice/update?id=' . $_POST['invoice_number']);
+            redirect('transaction/bill_note/update?id=' . $_POST['invoice_number']);
         }
-        $this->load->view('transaction/invoice/update', $data);
+        $this->load->view('transaction/bill_note/update', $data);
         $this->load->view('templates/Footer');
     }
 
@@ -126,10 +124,10 @@ class Invoice extends Base_controller
     {
         $data = array();
         if (!empty($_GET['id'])) {
-            $this->load->model('Transaction/_Invoice', '_Invoice');
-            $data['response'] = $this->_Invoice->_delete_invoice(array('invoice_number' => $_GET['id']));
+            $this->load->model('Transaction/_Bill_note', '_Bill_note');
+            $data['response'] = $this->_Bill_note->_delete_bill_note(array('invoice_number' => $_GET['id']));
         }
-        $this->load->view('transaction/invoice/index', $data);
+        $this->load->view('transaction/bill_note/index', $data);
         $this->load->view('templates/Footer');
     }
 }

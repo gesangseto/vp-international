@@ -81,7 +81,7 @@ if (isset($response)) {
             "serverSide": true,
             "order": [],
             "ajax": {
-                "url": "<?= site_url('Datatables/get_invoice') ?>",
+                "url": "<?= site_url('Datatables/get_bill_note') ?>",
                 "type": "POST",
                 "data": {
                     "url": url

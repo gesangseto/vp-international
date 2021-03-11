@@ -331,6 +331,48 @@ class Datatables extends Base_controller
         //output dalam format JSON
         echo json_encode($output);
     }
+    function get_bill_note()
+    {
+        $BaseData = array(
+            'select' => '*,COUNT(task_id) AS total_task',
+            'table' => 'bill_note',
+            'left_join' => array("table" => "list_customer", "on" => "list_customer.customer_id=bill_note.customer_id"),
+            'join' => array("table" => "job_order", "on" => "job_order.id=bill_note.job_order_id"),
+            'column_order' => array(null, 'invoice_number', 'invoice_date', 'shipment_type', 'job_order_id'),
+            'column_search' => array('invoice_number', 'invoice_date', 'shipment_type', 'job_order_id'),
+            'group_by' => 'invoice_number',
+            'order' => array('id' => 'asc')
+        );
+        $list = $this->_Datatables->get_datatables($BaseData);
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $field) {
+            $btn_read = array("url" => $_POST['url'], "action" => "read", "id" => $field->invoice_number);
+            $btn_update = array("url" => $_POST['url'], "action" => "update", "id" => $field->invoice_number);
+            $btn_delete = array("url" => $_POST['url'], "action" => "delete", "id" => $field->invoice_number);
+            $no++;
+            $row = array();
+            $row[] = $field->invoice_number;
+            $row[] = $field->invoice_date;
+            $row[] = $field->order_number;
+            $row[] = $field->customer_name;
+            $row[] = $field->customer_address;
+            $row[] = $field->shipment_type;
+            $row[] = $field->total_task;
+            $row[] = $this->tools->action_for_ajax($btn_read) . '
+            ' . $this->tools->action_for_ajax($btn_update) . '
+            ' . $this->tools->action_for_ajax($btn_delete);
+            $data[] = $row;
+        }
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->_Datatables->count_all($BaseData),
+            "recordsFiltered" => $this->_Datatables->count_filtered($BaseData),
+            "data" => $data,
+        );
+        //output dalam format JSON
+        echo json_encode($output);
+    }
     function get_job_sheets()
     {
         $BaseData = array(

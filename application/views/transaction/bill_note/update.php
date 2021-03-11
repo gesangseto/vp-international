@@ -112,20 +112,20 @@ if ($this->session->flashdata('response')) {
                             <div class="row">
                                 <div class="col-md-12">
                                     <label>TO</label>
-                                    <input id="agent_id" name="agent_id" readonly type="hidden" value="<?= @$agent['agent_id'] ?>">
-                                    <input id="agent_name" name="agent_name" class="form-control" required onclick="get_agent()" value="<?= @$agent['agent_name'] ?>" type="text" autocomplete="off" placeholder="Seach Agent">
+                                    <input id="customer_id" name="customer_id" readonly type="hidden" value="<?= @$customer['customer_id'] ?>">
+                                    <input id="customer_name" name="customer_name" class="form-control" required onclick="get_agent()" value="<?= @$customer['customer_name'] ?>" type="text" autocomplete="off" placeholder="Seach Agent">
                                 </div>
                                 <div class="col-md-12">
                                     <label>Address</label>
                                     <?php
-                                    $address = $agent['agent_address'] . ', ' . $agent['agent_region'] . ', ' . $agent['agent_district'] . ', ' . $agent['agent_city'] . ', ' . $agent['agent_country'] . '. ' . $agent['agent_postal_code'];
+                                    $address = $customer['customer_address'] . ', ' . $customer['customer_region'] . ', ' . $customer['customer_district'] . ', ' . $customer['customer_city'] . ', ' . $customer['customer_country'] . '. ' . $customer['customer_postal_code'];
 
                                     ?>
-                                    <textarea class="form-control" readonly id="agent_address"><?= @$address ?></textarea>
+                                    <textarea class="form-control" readonly id="customer_address"><?= @$address ?></textarea>
                                 </div>
                                 <div class="col-md-12">
                                     <label>PHONE</label>
-                                    <input id="agent_phone" readonly value="<?= @$agent['agent_phone'] ?>" class="form-control">
+                                    <input id="customer_phone" readonly value="<?= @$customer['customer_phone'] ?>" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -133,15 +133,15 @@ if ($this->session->flashdata('response')) {
                             <div class="row">
                                 <div class="col-md-12">
                                     <label>INVOICE NUMBER</label>
-                                    <input name="invoice_number" class="form-control" readonly type="text" value="<?= @$invoice[0]['invoice_number'] ?>">
+                                    <input name="invoice_number" class="form-control" readonly type="text" value="<?= @$bill_note[0]['invoice_number'] ?>">
                                 </div>
                                 <div class="col-md-12">
                                     <label>INVOICE DATE</label>
-                                    <input name="invoice_date" class="form-control" readonly type="text" value="<?= @$invoice[0]['invoice_date'] ?>">
+                                    <input name="invoice_date" class="form-control" readonly type="text" value="<?= @$bill_note[0]['invoice_date'] ?>">
                                 </div>
                                 <div class="col-md-12">
                                     <label>SHIPMENT TYPE</label>
-                                    <input name="shipment_type" class="form-control" type="text" value="<?= @$invoice[0]['shipment_type'] ?>">
+                                    <input name="shipment_type" class="form-control" type="text" value="<?= @$bill_note[0]['shipment_type'] ?>">
                                 </div>
                             </div>
                         </div>
@@ -157,44 +157,44 @@ if ($this->session->flashdata('response')) {
                                         <td>
                                             <div class="input-group">
                                                 <div id="order_number">
-                                                    <input id="inp_order_number" name="order_number" required onclick="get_order_number()" value="<?= @$invoice[0]['order_number'] ?>" type="text" class="form-control" autocomplete="off" placeholder="Seach Order No">
-                                                    <input id="job_order_id" name="job_order_id" value="<?= @$invoice[0]['job_order_id'] ?>" required type="hidden">
+                                                    <input id="inp_order_number" name="order_number" required onclick="get_order_number()" value="<?= @$bill_note[0]['order_number'] ?>" type="text" class="form-control" autocomplete="off" placeholder="Seach Order No">
+                                                    <input id="job_order_id" name="job_order_id" value="<?= @$bill_note[0]['job_order_id'] ?>" required type="hidden">
                                                 </div>
                                             </div>
                                         </td>
                                         <td>EX VESSEL</td>
                                         <td>
-                                            <input readonly id="ex_vessel" type="text" class="form-control" required value="<?= $invoice[0]['vessel'] ?>" />
+                                            <input readonly id="ex_vessel" type="text" class="form-control" required value="<?= $bill_note[0]['vessel'] ?>" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>CONTAINER NO</td>
                                         <td>
-                                            <input id="container_no" type="text" readonly value="<?= @$invoice[0]['container_no'] ?>" class=" form-control">
+                                            <input id="container_no" type="text" readonly value="<?= @$bill_note[0]['container_no'] ?>" class=" form-control">
                                         </td>
                                         <td>MBL NO</td>
                                         <td>
-                                            <input id="mbl_no" readonly class="form-control" type="text" required value="<?= @$invoice[0]['mbl_no'] ?>" />
+                                            <input id="mbl_no" readonly class="form-control" type="text" required value="<?= @$bill_note[0]['mbl_no'] ?>" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>HBL NO</td>
                                         <td>
-                                            <input readonly id="hbl_no" class="form-control" type="text" required value="<?= @$invoice[0]['hbl_no'] ?>" />
+                                            <input readonly id="hbl_no" class="form-control" type="text" required value="<?= @$bill_note[0]['hbl_no'] ?>" />
                                         </td>
                                         <td>SHIPPING</td>
                                         <td>
-                                            <input readonly id="shipping" class="form-control" type="text" required value="<?= @$invoice[0]['shipper'] ?>" />
+                                            <input readonly id="shipping" class="form-control" type="text" required value="<?= @$bill_note[0]['shipper'] ?>" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>ETA</td>
                                         <td>
-                                            <input readonly id="eta" class="form-control" type="text" required value="<?= @$invoice[0]['eta'] ?>" />
+                                            <input readonly id="eta" class="form-control" type="text" required value="<?= @$bill_note[0]['eta'] ?>" />
                                         </td>
                                         <td>CONSIGNE</td>
                                         <td>
-                                            <input readonly id="consignee" class="form-control" type="text" required value="<?= @$invoice[0]['consignee'] ?>" />
+                                            <input readonly id="consignee" class="form-control" type="text" required value="<?= @$bill_note[0]['consignee'] ?>" />
                                         </td>
                                     </tr>
                                 </tbody>
@@ -226,10 +226,10 @@ if ($this->session->flashdata('response')) {
                                                 </tr>
                                             </thead>
                                             <?php
-                                            foreach ($invoice as $row) {
-                                                $id_row = $row['invoice_id'];
+                                            foreach ($bill_note as $row) {
+                                                $id_row = $row['bill_note_id'];
 
-                                                echo  '<input name="invoice_id[]" class="form-control" readonly type="hidden" value="' . @$row['invoice_id'] . '">';
+                                                echo  '<input name="bill_note_id[]" class="form-control" readonly type="hidden" value="' . @$row['bill_note_id'] . '">';
                                                 echo '<tr id="row_' . $id_row . '">
                                                 <td>
                                                     <div class="autocomplete" style="width:100%;">
@@ -257,7 +257,7 @@ if ($this->session->flashdata('response')) {
                                                     <td width="50%"><strong>TOTAL</strong></td>
                                                     <td> <input type="text" id="total_amount" name="total_amount" readonly class="form-control" value="0"></td>
                                                     <td><input type="text" id="total_vat" name="total_vat" readonly class="form-control" value="0"></td>
-                                                    <td><input type="text" id="grand_total" name="grand_total" readonly class="form-control" value="<?= @$invoice[0]['grand_total'] ?>"></td>
+                                                    <td><input type="text" id="grand_total" name="grand_total" readonly class="form-control" value="<?= @$bill_note[0]['grand_total'] ?>"></td>
                                                     <td width="10%"><button type="button" onclick="make_total(1)" class="btn btn-info"><i class="fa fa-calculator"> </button></td>
                                                 </tr>
                                             </thead>
@@ -341,7 +341,7 @@ if ($this->session->flashdata('response')) {
 
 <script>
     function get_agent() {
-        var inp_id = document.getElementById('agent_name')
+        var inp_id = document.getElementById('customer_name')
         /*the autocomplete function takes two arguments,
         the text field element and an array of possible autocompleted values:*/
         var currentFocus;
@@ -371,23 +371,23 @@ if ($this->session->flashdata('response')) {
                         a.appendChild(b);
                     } else {
                         for (i = 0; i < isi.length; i++) {
-                            if (isi[i].agent_name.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                            if (isi[i].customer_name.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
 
                                 b = document.createElement("DIV");
                                 /*make the matching letters bold:*/
                                 b.setAttribute('all-data', JSON.stringify(isi[i]));
-                                b.innerHTML = "<strong>" + isi[i].agent_name.substr(0, val.length) + "</strong>";
-                                b.innerHTML += isi[i].agent_name.substr(val.length);
+                                b.innerHTML = "<strong>" + isi[i].customer_name.substr(0, val.length) + "</strong>";
+                                b.innerHTML += isi[i].customer_name.substr(val.length);
                                 /*insert a input field that will hold the current array item's value:*/
                                 b.innerHTML += "<input type='hidden'>";
                                 /*execute a function when someone clicks on the item value (DIV element):*/
                                 b.addEventListener("click", function(e) {
                                     var selected_val = JSON.parse(this.getAttribute('all-data'));
-                                    var address = selected_val.agent_address + ', ' + selected_val.agent_region + ', ' + selected_val.agent_district + ', ' + selected_val.agent_city + ', ' + selected_val.agent_country + '. ' + selected_val.agent_postal_code
-                                    $('#agent_id').val(selected_val.agent_id);
-                                    $('#agent_name').val(selected_val.agent_name);
-                                    $('#agent_address').val(address);
-                                    $('#agent_phone').val(selected_val.agent_phone);
+                                    var address = selected_val.customer_address + ', ' + selected_val.customer_region + ', ' + selected_val.customer_district + ', ' + selected_val.customer_city + ', ' + selected_val.customer_country + '. ' + selected_val.customer_postal_code
+                                    $('#customer_id').val(selected_val.customer_id);
+                                    $('#customer_name').val(selected_val.customer_name);
+                                    $('#customer_address').val(address);
+                                    $('#customer_phone').val(selected_val.customer_phone);
 
                                     closeAllLists();
                                 });
