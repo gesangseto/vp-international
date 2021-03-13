@@ -213,7 +213,7 @@ if ($this->session->flashdata('response')) {
                                         <td colspan="4"><strong>TOTAL</strong></td>
                                         <td><strong><?= $total_amount ?></strong></td>
                                         <td><strong><?= $total_vat ?></strong></td>
-                                        <td><strong><?= @$bill_note[0]['grand_total'] ?></strong></td>
+                                        <td><strong><?= @$invoice[0]['grand_total'] ?></strong></td>
                                     </tr>
                                     <tr>
                                         <td colspan="7">
