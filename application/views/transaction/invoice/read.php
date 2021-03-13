@@ -232,10 +232,9 @@ if ($this->session->flashdata('response')) {
                                         </tr>
                                     </thead>
                                     <?php
+                                    $total_amount = 0;
+                                    $total_vat = 0;
                                     foreach ($invoice as $row) {
-                                        $id_row = $row['invoice_id'];
-
-                                        echo  '<input name="invoice_id[]" class="form-control" readonly type="hidden" value="' . @$row['invoice_id'] . '">';
                                         echo '<tr>
                                                 <td>
                                                     ' . $row['task_name'] . '
@@ -247,12 +246,14 @@ if ($this->session->flashdata('response')) {
                                                 <td style="text-align: right;">' . $row['vat'] . '</td>
                                                 <td style="text-align: right;">' . $row['total'] . '</td>
                                             </tr>';
+                                        $total_amount += $row['amount'];
+                                        $total_vat += $row['vat'];
                                     }
                                     ?>
                                     <tr id="" style="text-align: center;">
                                         <td colspan="4"><strong>TOTAL</strong></td>
-                                        <td> 0</td>
-                                        <td>0</td>
+                                        <td><?= $total_amount ?></td>
+                                        <td><?= $total_vat ?></td>
                                         <td><?= @$invoice[0]['grand_total'] ?></td>
                                     </tr>
                                     <tr>

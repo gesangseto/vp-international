@@ -226,6 +226,8 @@ if ($this->session->flashdata('response')) {
                                                 </tr>
                                             </thead>
                                             <?php
+                                            $total_amount = 0;
+                                            $total_vat = 0;
                                             foreach ($bill_note as $row) {
                                                 $id_row = $row['bill_note_id'];
 
@@ -247,6 +249,8 @@ if ($this->session->flashdata('response')) {
                                                     <a type="button" onclick="delete_row(\'row_' . $id_row . '\')" class="closebtn btn btn-warning"><i class="fas fa-times"></i></a>
                                                 </td>
                                             </tr>';
+                                                $total_amount += $row['amount'];
+                                                $total_vat += $row['vat'];
                                             }
                                             ?>
                                         </table>
@@ -255,8 +259,8 @@ if ($this->session->flashdata('response')) {
                                             <thead>
                                                 <tr id="" style="text-align: center;">
                                                     <td width="50%"><strong>TOTAL</strong></td>
-                                                    <td> <input type="text" id="total_amount" name="total_amount" readonly class="form-control" value="0"></td>
-                                                    <td><input type="text" id="total_vat" name="total_vat" readonly class="form-control" value="0"></td>
+                                                    <td> <input type="text" id="total_amount" name="total_amount" readonly class="form-control" value="<?= $total_amount ?>"></td>
+                                                    <td><input type="text" id="total_vat" name="total_vat" readonly class="form-control" value="<?= $total_vat ?>"></td>
                                                     <td><input type="text" id="grand_total" name="grand_total" readonly class="form-control" value="<?= @$bill_note[0]['grand_total'] ?>"></td>
                                                     <td width="10%"><button type="button" onclick="make_total(1)" class="btn btn-info"><i class="fa fa-calculator"> </button></td>
                                                 </tr>
