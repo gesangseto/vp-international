@@ -22,6 +22,11 @@
         position: absolute;
         z-index: -1000;
     }
+
+    .borderless td,
+    .borderless th {
+        border: none;
+    }
 </style>
 <style>
     * {
@@ -99,184 +104,232 @@ if ($this->session->flashdata('response')) {
                     <h1 class="h3 mb-0 text-gray-800">Read <?= ucwords(str_replace('_', ' ', $this->router->fetch_class())); ?></h1>
                 </div>
                 <div class="col-md-2">
-                    <!-- <a href="<?= site_url() ?>pengaturan_sistem/pengaturan_bahasa" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-left-arrow fa-sm text-white-50"></i> Kembali</a> -->
+
+                    <input class="btn btn-info pull-right" type="button" onclick="PrintElem('printableArea')" value="Cetak" />
                 </div>
             </div>
         </div>
-        <form class="form-horizontal" action="<?= site_url() .  $temp_url ?>/update" method="post" id="employeeform">
 
-            <div class="card-body">
-                <div class="box box-primary">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <label>TO</label>
-                                    <input id="customer_id" name="customer_id" readonly type="hidden" value="<?= @$customer['customer_id'] ?>">
-                                    <input id="customer_name" name="customer_name" class="form-control" required onclick="get_agent()" value="<?= @$customer['customer_name'] ?>" type="text" autocomplete="off" placeholder="Seach Agent">
-                                </div>
-                                <div class="col-md-12">
-                                    <label>Address</label>
-                                    <?php
-                                    $address = $customer['customer_address'] . ', ' . $customer['customer_region'] . ', ' . $customer['customer_district'] . ', ' . $customer['customer_city'] . ', ' . $customer['customer_country'] . '. ' . $customer['customer_postal_code'];
-
-                                    ?>
-                                    <textarea class="form-control" readonly id="customer_address"><?= @$address ?></textarea>
-                                </div>
-                                <div class="col-md-12">
-                                    <label>PHONE</label>
-                                    <input id="customer_phone" readonly value="<?= @$customer['customer_phone'] ?>" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <label>INVOICE NUMBER</label>
-                                    <input name="invoice_number" class="form-control" readonly type="text" value="<?= @$bill_note[0]['invoice_number'] ?>">
-                                </div>
-                                <div class="col-md-12">
-                                    <label>INVOICE DATE</label>
-                                    <input name="invoice_date" class="form-control" readonly type="text" value="<?= @$bill_note[0]['invoice_date'] ?>">
-                                </div>
-                                <div class="col-md-12">
-                                    <label>SHIPMENT TYPE</label>
-                                    <input name="shipment_type" class="form-control" type="text" value="<?= @$bill_note[0]['shipment_type'] ?>">
-                                </div>
-                            </div>
-                        </div>
+        <div class="card-body" id="printableArea">
+            <div class="box box-primary">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table style="width: 100%;border: none;">
+                            <tr>
+                                <td>
+                                    <h3>TO</h3>
+                                </td>
+                                <td>
+                                    <h3><?= @$customer['customer_name'] ?></h3>
+                                </td>
+                                <td colspan="3" style="text-align: center;">
+                                    <h2>BILL NOTE</h2>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="10%"></td>
+                                <td width="40%">
+                                    <h5>
+                                        <?= $address = $customer['customer_address'] ?>
+                                        <?= $customer['customer_region'] . ',' . $customer['customer_district'] ?>
+                                        <?= ' <br>' . $customer['customer_city'] . ', ' . $customer['customer_country']  ?>
+                                        <?= '<br>' . $customer['customer_postal_code']; ?>
+                                    </h5>
+                                </td>
+                                <td width="15%"> <br></td>
+                                <td width="5%"><br></td>
+                                <td width="30%"><br></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><?= '<br>' . @$customer['customer_phone'] ?></td>
+                                <td>INVOICE NO</td>
+                                <td>:</td>
+                                <td><?= @$bill_note[0]['invoice_number'] ?></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>INVOICE DATE</td>
+                                <td>:</td>
+                                <td><?= @$bill_note[0]['invoice_date'] ?></td>
+                            </tr>
+                            <tr>
+                            <tr>
+                                <td></td>
+                                <td> </td>
+                                <td>SHIPMENT TYPE</td>
+                                <td>:</td>
+                                <td><?= @$bill_note[0]['shipment_type'] ?></td>
+                            </tr>
+                        </table>
                     </div>
-                    <hr>
-                    <div class="row">
-                        <br />
-                        <div class="col-md-12">
-                            <table class="table">
-                                <tbody>
-                                    <tr>
-                                        <td>ORDER NO</td>
-                                        <td>
-                                            <div class="input-group">
-                                                <div id="order_number">
-                                                    <input id="inp_order_number" name="order_number" required onclick="get_order_number()" value="<?= @$bill_note[0]['order_number'] ?>" type="text" class="form-control" autocomplete="off" placeholder="Seach Order No">
-                                                    <input id="job_order_id" name="job_order_id" value="<?= @$bill_note[0]['job_order_id'] ?>" required type="hidden">
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>EX VESSEL</td>
-                                        <td>
-                                            <input readonly id="ex_vessel" type="text" class="form-control" required value="<?= $bill_note[0]['vessel'] ?>" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>CONTAINER NO</td>
-                                        <td>
-                                            <input id="container_no" type="text" readonly value="<?= @$bill_note[0]['container_no'] ?>" class=" form-control">
-                                        </td>
-                                        <td>MBL NO</td>
-                                        <td>
-                                            <input id="mbl_no" readonly class="form-control" type="text" required value="<?= @$bill_note[0]['mbl_no'] ?>" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>HBL NO</td>
-                                        <td>
-                                            <input readonly id="hbl_no" class="form-control" type="text" required value="<?= @$bill_note[0]['hbl_no'] ?>" />
-                                        </td>
-                                        <td>SHIPPING</td>
-                                        <td>
-                                            <input readonly id="shipping" class="form-control" type="text" required value="<?= @$bill_note[0]['shipper'] ?>" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>ETA</td>
-                                        <td>
-                                            <input readonly id="eta" class="form-control" type="text" required value="<?= @$bill_note[0]['eta'] ?>" />
-                                        </td>
-                                        <td>CONSIGNE</td>
-                                        <td>
-                                            <input readonly id="consignee" class="form-control" type="text" required value="<?= @$bill_note[0]['consignee'] ?>" />
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="box-header">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <label>
-                                            <h4 class="box-title" id="customControlInline"> Details</h4>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="">
-                                    <div class="feebox">
-                                        <table class="table" id="table_description">
-                                            <thead>
-                                                <tr style="text-align: center;">
-                                                    <td rowspan="2" width="20%">Description</td>
-                                                    <td rowspan="2" width="10%">QTY</td>
-                                                    <td rowspan="2" width="10%">CURR</td>
-                                                    <td rowspan="2" width="10%">Rate</td>
-                                                    <td colspan="3" width="40%">IDR</td>
-                                                </tr>
-                                                <tr style="text-align: center;">
-                                                    <td>Amount</td>
-                                                    <td>VAT(1%)</td>
-                                                    <td>Total</td>
-                                                </tr>
-                                            </thead>
-                                            <?php
-                                            foreach ($bill_note as $row) {
-                                                $id_row = $row['bill_note_id'];
-
-                                                echo  '<input name="bill_note_id[]" class="form-control" readonly type="hidden" value="' . @$row['bill_note_id'] . '">';
-                                                echo '<tr id="row_' . $id_row . '">
-                                                <td>
-                                                    <div class="autocomplete" style="width:100%;">
-                                                        <input id="inp' . $id_row . '" required type="hidden" name="task_id[]" value="' . $row['task_id'] . '">
-                                                        <input type="text"class="form-control" readonly value="' . $row['task_name'] . '">
-                                                    </div>    
-                                                </td> 
-                                                <td><input id="quantity' . $id_row . '"  onkeyup="sum_total(\'' . $id_row . '\')"  type="text" class="form-control" required name="quantity[]" class=" form-control" value="' . $row['quantity'] . '"></td>
-                                                <td><input id="currency' . $id_row . '" type="text" class="form-control" readonly name="currency[]" class=" form-control" value="IDR"></td>
-                                                <td><input id="rate' . $id_row . '" type="text" class="form-control" readonly name="rate[]" class=" form-control" value="' . $row['rate'] . '"></td>
-                                                <td><input id="amount' . $id_row . '" type="text" class="form-control" readonly name="amount[]" class=" form-control" value="' . $row['amount'] . '"></td>
-                                                <td><input id="vat' . $id_row . '" type="text"class="form-control" readonly name="vat[]" class=" form-control" value="' . $row['vat'] . '"></td>
-                                                <td><input id="total' . $id_row . '" type="text" class="form-control" readonly name="total[]" class=" form-control" value="' . $row['total'] . '"></td>
-                                            </tr>';
-                                            }
-                                            ?>
-                                        </table>
-                                        <hr />
-                                        <table class="table" id="tableTotal">
-                                            <thead>
-                                                <tr id="" style="text-align: center;">
-                                                    <td width="50%"><strong>TOTAL</strong></td>
-                                                    <td> <input type="text" id="total_amount" name="total_amount" readonly class="form-control" value="0"></td>
-                                                    <td><input type="text" id="total_vat" name="total_vat" readonly class="form-control" value="0"></td>
-                                                    <td><input type="text" id="grand_total" name="grand_total" readonly class="form-control" value="<?= @$bill_note[0]['grand_total'] ?>"></td>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--./box-header-->
-                    <!-- /.box-body -->
-                    <hr />
-                    <!--./col-md-4-->
-                    <!--./col-md-4-->
-                    <div class="col-md-12 col-sm-12">
-                        <br />
-                        <a href="#" onclick="window.location.replace(' <?= site_url() . $temp_url  ?>');" class="btn btn-default pull-right"> Kembali</a>
-
-                    </div>
-                    <!--./col-md-12-->
                 </div>
+                <hr>
+                <div class="row">
+                    <br />
+                    <div class="col-md-12">
+                        <table class="table" style="border:2px solid;">
+                            <tbody>
+                                <tr>
+                                    <td>ORDER NO</td>
+                                    <td>
+                                        <?= @$bill_note[0]['order_number'] ?>
+                                    </td>
+                                    <td>EX VESSEL</td>
+                                    <td>
+                                        <?= $bill_note[0]['vessel'] ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>CONTAINER NO</td>
+                                    <td>
+                                        <?= @$bill_note[0]['container_no'] ?>
+                                    </td>
+                                    <td>MBL NO</td>
+                                    <td>
+                                        <?= @$bill_note[0]['mbl_no'] ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>HBL NO</td>
+                                    <td>
+                                        <?= @$bill_note[0]['hbl_no'] ?>
+                                    </td>
+                                    <td>SHIPPING</td>
+                                    <td>
+                                        <?= @$bill_note[0]['shipper'] ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ETA</td>
+                                    <td>
+                                        <?= @$bill_note[0]['eta'] ?>
+                                    </td>
+                                    <td>CONSIGNE</td>
+                                    <td>
+                                        <?= @$bill_note[0]['consignee'] ?>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="box-header">
+                            <div class="feebox">
+                                <table class="table table-bordered" id="table_description" style="border:2px solid;">
+                                    <thead>
+                                        <tr style="text-align: center;">
+                                            <td rowspan="2" width="15%"><strong>Description</strong></td>
+                                            <td rowspan="2" width="10%"><strong>QTY</strong></td>
+                                            <td rowspan="2" width="10%"><strong>CURR</strong></td>
+                                            <td rowspan="2" width="20%"><strong>Rate</strong></td>
+                                            <td colspan="3" width="45%"><strong>IDR</strong></td>
+                                        </tr>
+                                        <tr style="text-align: center;">
+                                            <td><strong>Amount</strong></td>
+                                            <td><strong>VAT(1%)</strong></td>
+                                            <td><strong>Total</strong></td>
+                                        </tr>
+                                    </thead>
+                                    <?php
+                                    foreach ($bill_note as $row) {
+                                        $id_row = $row['bill_note_id'];
+
+                                        echo  '<input name="bill_note_id[]" class="form-control" readonly type="hidden" value="' . @$row['bill_note_id'] . '">';
+                                        echo '<tr>
+                                                <td>
+                                                    ' . $row['task_name'] . '
+                                                </td> 
+                                                <td style="text-align: center;">' . $row['quantity'] . '</td>
+                                                <td style="text-align: center;">IDR</td>
+                                                <td style="text-align: right;">' . $row['rate'] . '</td>
+                                                <td style="text-align: right;">' . $row['amount'] . '</td>
+                                                <td style="text-align: right;">' . $row['vat'] . '</td>
+                                                <td style="text-align: right;">' . $row['total'] . '</td>
+                                            </tr>';
+                                    }
+                                    ?>
+                                    <tr id="" style="text-align: center;">
+                                        <td colspan="4"><strong>TOTAL</strong></td>
+                                        <td> 0</td>
+                                        <td>0</td>
+                                        <td><?= @$bill_note[0]['grand_total'] ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="7">
+                                            <strong>IDR # : <i><?= strtoupper($this->tools->terbilang(@$bill_note[0]['grand_total']))  ?> RUPIAH</i></strong>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--./box-header-->
+                <!-- /.box-body -->
+                <hr />
+                <!--./col-md-4-->
+                <!--./col-md-4-->
+                <div class="col-md-12 col-sm-12">
+                    <br />
+                    <a href="#" onclick="window.location.replace(' <?= site_url() . $temp_url  ?>');" class="btn btn-default pull-right"> Kembali</a>
+
+                </div>
+                <!--./col-md-12-->
             </div>
-        </form>
+        </div>
     </div>
 </div>
 
 <script src="<?= base_url() ?>assets/ajax/3.4.1/jquery.min.js"></script>
+
+
+
+
+<script type="text/javascript">
+    function printDiv(divName) {
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+
+        window.print();
+
+        document.body.innerHTML = originalContents;
+    }
+
+    function PrintElem(elem) {
+
+        var printContents = document.getElementById(elem).innerHTML;
+        Popup($(printContents).html());
+    }
+
+    function Popup(data) {
+        var frame1 = $('<iframe />');
+        frame1[0].name = "frame1";
+
+        $("body").append(frame1);
+        var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
+        frameDoc.document.open();
+        //Create a new HTML document.
+        frameDoc.document.write('<html>');
+        frameDoc.document.write('<head>');
+        frameDoc.document.write('<title></title>');
+        frameDoc.document.write('<link href="<?= base_url() ?>assets/templates/css/sb-admin-2.min.css" rel="stylesheet">');
+        frameDoc.document.write('</head>');
+        frameDoc.document.write('<body>');
+        frameDoc.document.write('<div style="background-image: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url("http://google.com"); background-repeat: no-repeat;background-position: center;">');
+        frameDoc.document.write(data);
+        frameDoc.document.write('<div>');
+        frameDoc.document.write('</body>');
+        frameDoc.document.write('</html>');
+        frameDoc.document.close();
+        setTimeout(function() {
+            window.frames["frame1"].focus();
+            window.frames["frame1"].print();
+            frame1.remove();
+        }, 500);
+        return true;
+    }
+</script>
