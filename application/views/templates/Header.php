@@ -1,3 +1,6 @@
+<?php
+$config = $this->session->userdata('config');
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,7 +45,9 @@
                 <!-- <div class="sidebar-brand-icon">
                     <img src="<?= base_url('assets/logo.png') ?>" width="60">
                 </div> -->
-                <div class="sidebar-brand-text mx-3">VP Int </div>
+                <div class="sidebar-brand-text mx-3">
+                    <img src="<?= @$config['logo'] ?>" style="width: auto; height:75px;"></img>
+                </div>
             </a>
             <!-- Divider -->
             <!-- <hr class="sidebar-divider"> -->

@@ -1,78 +1,6 @@
-<style>
-    .inp {
-        border: none;
-        padding: 5px 10px;
-        outline: none;
-    }
-
-    [placeholder]:focus::-webkit-input-placeholder {
-        transition: text-indent 0.4s 0.4s ease;
-        text-indent: -100%;
-        opacity: 1;
-    }
-
-    .border-class {
-        border: thin whitesmoke solid;
-        /* margin: 5px; */
-        padding: 10px;
-        /* height: 400; */
-    }
-
-    .back-of-everything {
-        position: absolute;
-        z-index: -1000;
-    }
-
-    .borderless td,
-    .borderless th {
-        border: none;
-    }
-</style>
-<style>
-    * {
-        box-sizing: border-box;
-    }
-
-    body {
-        font: 16px Arial;
-    }
-
-    /*the container must be positioned relative:*/
-    .autocomplete {
-        position: relative;
-        display: inline-block;
-    }
-
-    .autocomplete-items {
-        position: absolute;
-        border: 1px solid #d4d4d4;
-        border-bottom: none;
-        border-top: none;
-        z-index: 99;
-        /*position the autocomplete items to be the same width as the container:*/
-        top: 100%;
-        left: 0;
-        right: 0;
-    }
-
-    .autocomplete-items div {
-        padding: 10px;
-        cursor: pointer;
-        background-color: #fff;
-        border-bottom: 1px solid #d4d4d4;
-    }
-
-    /*when hovering an item:*/
-    .autocomplete-items div:hover {
-        background-color: #e9e9e9;
-    }
-
-    /*when navigating through the items using the arrow keys:*/
-    .autocomplete-active {
-        background-color: DodgerBlue !important;
-        color: #ffffff;
-    }
-</style>
+<?php
+$config = $this->session->userdata('config');
+?>
 <?php
 $date = date("Y-m-d");
 @$data_staff = $data_staff['data'][0];
@@ -112,6 +40,37 @@ if ($this->session->flashdata('response')) {
 
         <div class="card-body" id="printableArea">
             <div class="box box-primary">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <table style="width: 100%;border: none;">
+                            <tr>
+                                <td width="20%" rowspan="4">
+                                    <img src="<?= @$config['logo'] ?>" style="width: auto; height:75px;"></img>
+                                </td>
+                                <td width="80%">
+                                    <h3><?= @$config['name'] ?></h3>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5><?= $config['address'] ?></h5>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <small>TEL : <?= @$config['phone_number'] ?> FAX : <?= @$config['phone_number'] ?></small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <small>Email : <?= @$config['email'] ?> Website : <?= @$config['website'] ?></small>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <hr>
                 <div class="row">
                     <div class="col-md-12">
                         <table style="width: 100%;border: none;">
@@ -216,7 +175,7 @@ if ($this->session->flashdata('response')) {
 
                         <div class="box-header">
                             <div class="feebox">
-                                <table class="table table-bordered" id="table_description" style="border:2px solid;">
+                                <table class="table table-bordered" style="border:2px solid;">
                                     <thead>
                                         <tr style="text-align: center;">
                                             <td rowspan="2" width="15%"><strong>Description</strong></td>
@@ -250,15 +209,41 @@ if ($this->session->flashdata('response')) {
                                         $total_vat += $row['vat'];
                                     }
                                     ?>
-                                    <tr id="" style="text-align: center;">
+                                    <tr id="" style="text-align: right;">
                                         <td colspan="4"><strong>TOTAL</strong></td>
-                                        <td><?= $total_amount ?></td>
-                                        <td><?= $total_vat ?></td>
-                                        <td><?= @$invoice[0]['grand_total'] ?></td>
+                                        <td><strong><?= $total_amount ?></strong></td>
+                                        <td><strong><?= $total_vat ?></strong></td>
+                                        <td><strong><?= @$bill_note[0]['grand_total'] ?></strong></td>
                                     </tr>
                                     <tr>
                                         <td colspan="7">
-                                            <strong>IDR # : <i><?= strtoupper($this->tools->terbilang(@$invoice[0]['grand_total']))  ?> RUPIAH</i></strong>
+                                            Payment Term : 30 Day(s) ; Due Date :<br>
+                                            <strong>IDR : # <i><?= strtoupper($this->tools->terbilang(@$invoice[0]['grand_total']))  ?> RUPIAH</i></strong>
+                                            <br><br>
+                                            E. & O.E.<br>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table class="table" style="border:2px solid;">
+                                    <tr>
+                                        <td>
+                                            <strong>Bank Information </strong><br>
+                                            ALL CHEQUE SHOULD BE CROSS MADE PAYABLE TO<br>
+                                            "<?= @$config['account_name'];  ?>"<br>
+                                            <strong><?= @$config['bank_branch'];  ?></strong><br>
+                                            <strong>ACC (IDR) NO. : <?= @$config['account_number_idr'];  ?></strong><br>
+                                            ACC (USD) NO. : <?= @$config['account_number_usd'];  ?><br>
+                                        </td>
+                                        <td>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            NPWP : <?= @$config['npwp'];  ?><br>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            ........................................<br>
+                                            Authorized Signature
                                         </td>
                                     </tr>
                                 </table>
@@ -267,21 +252,13 @@ if ($this->session->flashdata('response')) {
                         </div>
                     </div>
                 </div>
-                <!--./box-header-->
-                <!-- /.box-body -->
-                <hr />
-                <!--./col-md-4-->
-                <!--./col-md-4-->
-                <div class="col-md-12 col-sm-12">
-                    <br />
-                    <a href="#" onclick="window.location.replace(' <?= site_url() . $temp_url  ?>');" class="btn btn-default pull-right"> Kembali</a>
-
-                </div>
-                <!--./col-md-12-->
             </div>
         </div>
+
     </div>
 </div>
+
+
 
 <script src="<?= base_url() ?>assets/ajax/3.4.1/jquery.min.js"></script>
 

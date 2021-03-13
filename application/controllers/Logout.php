@@ -12,6 +12,8 @@ class Logout extends CI_Controller
     }
     public function index()
     {
+        $data['config'] = $this->db->get('uac_configuration')->result_array();
+        $data['config'] = $data['config'][0];
         $this->session->sess_destroy();
         $data['response'] = array(
             'statusCode' => 200,

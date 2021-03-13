@@ -32,8 +32,8 @@
                     <div class="clearfix"></div>
 
                 </div> <!-- end login -->
-                <div class="logo">VP
-
+                <div class="logo">
+                    <img src="<?= @$config['logo'] ?>" style="width: auto; height:75px;"></img>
                     <div class="clearfix"></div>
                 </div>
 
