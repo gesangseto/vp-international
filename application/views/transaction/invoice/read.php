@@ -230,7 +230,7 @@ if ($this->session->flashdata('response')) {
                                             <strong>Bank Information </strong><br>
                                             ALL CHEQUE SHOULD BE CROSS MADE PAYABLE TO<br>
                                             "<?= @$config['account_name'];  ?>"<br>
-                                            <strong><?= @$config['bank_branch'];  ?></strong><br>
+                                            <strong><?= @$config['bank_name'];  ?> <?= @$config['bank_branch'];  ?></strong><br>
                                             <strong>ACC (IDR) NO. : <?= @$config['account_number_idr'];  ?></strong><br>
                                             ACC (USD) NO. : <?= @$config['account_number_usd'];  ?><br>
                                         </td>
