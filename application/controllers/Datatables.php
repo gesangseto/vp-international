@@ -162,6 +162,44 @@ class Datatables extends Base_controller
         //output dalam format JSON
         echo json_encode($output);
     }
+    function get_report_expense()
+    {
+        $BaseData = array(
+            'select' => '*,trx_expense.id AS trx_expense_id',
+            'table' => 'trx_expense',
+            'left_join' => array("table" => "mst_expense", "on" => "mst_expense.id=trx_expense.mst_expense_id"),
+            'column_order' => array(null, 'expense_name', 'expense_code', 'year_month', 'note', 'total'),
+            'column_search' => array('expense_name', 'expense_code', 'year_month', 'note', 'total'),
+            'order' => array('trx_expense_id' => 'asc')
+        );
+        $list = $this->_Datatables->get_datatables($BaseData);
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $field) {
+            $btn_read = array("url" => $_POST['url'], "action" => "read", "id" => $field->trx_expense_id);
+            $btn_update = array("url" => $_POST['url'], "action" => "update", "id" => $field->trx_expense_id);
+            $btn_delete = array("url" => $_POST['url'], "action" => "delete", "id" => $field->trx_expense_id);
+            $no++;
+            $row = array();
+            $row[] = $field->expense_name;
+            $row[] = $field->expense_code;
+            $row[] = $field->year_month;
+            $row[] = $field->note;
+            $row[] = $field->total;
+            $row[] = $this->tools->action_for_ajax($btn_read) . '
+            ' . $this->tools->action_for_ajax($btn_update) . '
+            ' . $this->tools->action_for_ajax($btn_delete);
+            $data[] = $row;
+        }
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->_Datatables->count_all($BaseData),
+            "recordsFiltered" => $this->_Datatables->count_filtered($BaseData),
+            "data" => $data,
+        );
+        //output dalam format JSON
+        echo json_encode($output);
+    }
     function get_expense()
     {
         $BaseData = array(
