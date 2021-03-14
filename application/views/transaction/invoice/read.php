@@ -59,7 +59,7 @@ if ($this->session->flashdata('response')) {
                             </tr>
                             <tr>
                                 <td>
-                                    <small>TEL : <?= @$config['phone_number'] ?> FAX : <?= @$config['phone_number'] ?></small>
+                                    <small>TEL : <?= @$config['phone'] ?> FAX : <?= @$config['fax'] ?></small>
                                 </td>
                             </tr>
                             <tr>
