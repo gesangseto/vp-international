@@ -162,6 +162,40 @@ class Datatables extends Base_controller
         //output dalam format JSON
         echo json_encode($output);
     }
+    function get_expense()
+    {
+        $BaseData = array(
+            'table' => 'mst_expense',
+            'column_order' => array(null, 'expense_name', 'expense_code', 'created_by'),
+            'column_search' => array('expense_name', 'expense_code', 'created_by'),
+            'order' => array('id' => 'asc')
+        );
+        $list = $this->_Datatables->get_datatables($BaseData);
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $field) {
+            $btn_read = array("url" => $_POST['url'], "action" => "read", "id" => $field->id);
+            $btn_update = array("url" => $_POST['url'], "action" => "update", "id" => $field->id);
+            $btn_delete = array("url" => $_POST['url'], "action" => "delete", "id" => $field->id);
+            $no++;
+            $row = array();
+            $row[] = $no;
+            $row[] = $field->expense_name;
+            $row[] = $field->expense_code;
+            $row[] = $this->tools->action_for_ajax($btn_read) . '
+            ' . $this->tools->action_for_ajax($btn_update) . '
+            ' . $this->tools->action_for_ajax($btn_delete);
+            $data[] = $row;
+        }
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->_Datatables->count_all($BaseData),
+            "recordsFiltered" => $this->_Datatables->count_filtered($BaseData),
+            "data" => $data,
+        );
+        //output dalam format JSON
+        echo json_encode($output);
+    }
 
     function get_job_order()
     {
