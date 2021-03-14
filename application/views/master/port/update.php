@@ -24,14 +24,14 @@ if (isset($response)) {
 
             <div class="row">
                 <div class="col-md-10">
-                    <h1 class="h3 mb-0 text-gray-800">Pendaftaran Port</h1>
+                    <h1 class="h3 mb-0 text-gray-800">Ubah Port</h1>
                 </div>
                 <div class="col-md-2">
                 </div>
             </div>
         </div>
         <div class="card-body">
-            <form action=" <?= site_url('database/port/create') ?>" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+            <form action=" <?= site_url('master/port/update') ?>" method="post" accept-charset="utf-8" enctype="multipart/form-data">
 
                 <div class="box-body">
                     <div class="row">
@@ -39,6 +39,7 @@ if (isset($response)) {
                             <div class="form-group">
                                 <label for=""> Kode Port</label>
                                 <small>*</small>
+                                <input id="" name="id" required placeholder="" type="hidden" class="form-control" value="<?= @$form['id'] ?>" />
                                 <input id="" name="port_code" required placeholder="" type="text" class="form-control" value="<?= @$form['port_code'] ?>" />
                             </div>
                         </div>

@@ -24,31 +24,30 @@ if (isset($response)) {
 
             <div class="row">
                 <div class="col-md-10">
-                    <h1 class="h3 mb-0 text-gray-800">Update Agent</h1>
+                    <h1 class="h3 mb-0 text-gray-800">Pendaftaran Customer</h1>
                 </div>
                 <div class="col-md-2">
                 </div>
             </div>
         </div>
         <div class="card-body">
-            <form action=" <?= site_url('database/agent/update') ?>" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+            <form action=" <?= site_url('master/customer/create') ?>" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                 <strong>Data</strong>
                 <hr />
                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for=""> ID Agent</label>
+                                <label for=""> ID Customer</label>
                                 <small>*</small>
-                                <input name="id" required type="hidden" value="<?= @$form['id'] ?>" />
-                                <input name="agent_id" required type="text" class="form-control" value="<?= @$form['agent_id'] ?>" />
+                                <input name="customer_id" required type="text" class="form-control" value="<?= @$form['customer_id'] ?>" />
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for=""> Nama Agent</label>
+                                <label for=""> Nama Customer</label>
                                 <small>*</small>
-                                <input id="" name="agent_name" required placeholder="" type="text" class="form-control" value="<?= @$form['agent_name'] ?>" />
+                                <input id="" name="customer_name" required placeholder="" type="text" class="form-control" value="<?= @$form['customer_name'] ?>" />
                             </div>
                         </div>
                     </div>
@@ -59,7 +58,7 @@ if (isset($response)) {
                         <div class="form-group">
                             <label> Alamat</label>
                             <small>*</small>
-                            <textarea name="agent_address" required class="form-control"><?= @$form['agent_address'] ?></textarea>
+                            <textarea name="customer_address" required class="form-control"><?= @$form['customer_address'] ?></textarea>
                         </div>
                     </div>
 
@@ -68,7 +67,7 @@ if (isset($response)) {
                             <label> Nomor Telp</label>
                             <small>*</small>
                             <div>
-                                <input class="form-control" required type='number' name='agent_phone' value="<?= @$form['agent_phone'] ?>" />
+                                <input class="form-control" required type='number' name='customer_phone' value="<?= @$form['customer_phone'] ?>" />
                             </div>
                         </div>
                     </div>
@@ -79,7 +78,7 @@ if (isset($response)) {
                         <div class="form-group">
                             <label> Kota</label>
                             <small>*</small>
-                            <input name="agent_city" required type="text" class="form-control" value="<?= @$form['agent_city'] ?>" />
+                            <input name="customer_city" required type="text" class="form-control" value="<?= @$form['customer_city'] ?>" />
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -87,7 +86,7 @@ if (isset($response)) {
                             <label> Distrik</label>
                             <small>*</small>
                             <div>
-                                <input class="form-control" required type='text' name='agent_district' value="<?= @$form['agent_district'] ?>" />
+                                <input class="form-control" required type='text' name='customer_district' value="<?= @$form['customer_district'] ?>" />
                             </div>
                         </div>
                     </div>
@@ -98,7 +97,7 @@ if (isset($response)) {
                         <div class="form-group">
                             <label> Wilayah</label>
                             <small>*</small>
-                            <input name="agent_region" required type="text" class="form-control" value="<?= @$form['agent_region'] ?>" />
+                            <input name="customer_region" required type="text" class="form-control" value="<?= @$form['customer_region'] ?>" />
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -106,7 +105,7 @@ if (isset($response)) {
                             <label> Negara</label>
                             <small>*</small>
                             <div>
-                                <input class="form-control" required type='text' name='agent_country' value="<?= @$form['agent_country'] ?>" />
+                                <input class="form-control" required type='text' name='customer_country' value="<?= @$form['customer_country'] ?>" />
                             </div>
                         </div>
                     </div>
@@ -116,7 +115,7 @@ if (isset($response)) {
                         <div class="form-group">
                             <label> Kode Pos</label>
                             <small>*</small>
-                            <input name="agent_postal_code" required type="number" class="form-control" value="<?= @$form['agent_postal_code'] ?>" />
+                            <input name="customer_postal_code" required type="number" class="form-control" value="<?= @$form['customer_postal_code'] ?>" />
                         </div>
                     </div>
                     <div class="col-md-6">

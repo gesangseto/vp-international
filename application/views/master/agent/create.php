@@ -24,14 +24,14 @@ if (isset($response)) {
 
             <div class="row">
                 <div class="col-md-10">
-                    <h1 class="h3 mb-0 text-gray-800">Update Agent</h1>
+                    <h1 class="h3 mb-0 text-gray-800">Pendaftaran Agent</h1>
                 </div>
                 <div class="col-md-2">
                 </div>
             </div>
         </div>
         <div class="card-body">
-            <form action=" <?= site_url('database/agent/update') ?>" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+            <form action=" <?= site_url('master/agent/create') ?>" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                 <strong>Data</strong>
                 <hr />
                 <div class="box-body">
@@ -40,7 +40,6 @@ if (isset($response)) {
                             <div class="form-group">
                                 <label for=""> ID Agent</label>
                                 <small>*</small>
-                                <input name="id" required type="hidden" value="<?= @$form['id'] ?>" />
                                 <input name="agent_id" required type="text" class="form-control" value="<?= @$form['agent_id'] ?>" />
                             </div>
                         </div>

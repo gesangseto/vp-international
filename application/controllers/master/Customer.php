@@ -9,11 +9,11 @@ class Customer extends Base_controller
         parent::__construct();
         $this->_isLogin();
         $this->_check_permission();
-        $this->load->model('Database/_Customer', '_Customer');
+        $this->load->model('Master/_Customer', '_Customer');
     }
     public function index()
     {
-        $this->load->view('database/customer/index');
+        $this->load->view('master/customer/index');
         $this->load->view('templates/Footer');
     }
     public function create()
@@ -25,7 +25,7 @@ class Customer extends Base_controller
             $data['form'] = $value;
             $data['response'] =  $this->_Customer->_add_customer($value);
         }
-        $this->load->view('database/customer/create', $data);
+        $this->load->view('master/customer/create', $data);
         $this->load->view('templates/Footer');
     }
 
@@ -34,7 +34,7 @@ class Customer extends Base_controller
         $temp['id'] = $_GET['id'];
         $data['form'] =  $this->_Customer->_get_customer($temp);
         $data['form'] = @$data['form'][0];
-        $this->load->view('database/customer/read', $data);
+        $this->load->view('master/customer/read', $data);
         $this->load->view('templates/Footer');
     }
 
@@ -51,7 +51,7 @@ class Customer extends Base_controller
             $data['form'] = $value;
             $data['response'] =  $this->_Customer->_update_customer($value);
         }
-        $this->load->view('database/customer/update', $data);
+        $this->load->view('master/customer/update', $data);
         $this->load->view('templates/Footer');
     }
 
